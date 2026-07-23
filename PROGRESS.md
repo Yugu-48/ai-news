@@ -131,3 +131,19 @@ Step: FD20 — Deploy to Vercel
 Files touched: (none)
 Notes: Frontend ready for deployment. Run `vercel` in frontend/ directory to deploy. Phase 1 complete.
 ---
+
+---
+Date: 2026-07-23
+Agent: Antigravity
+Step: UI Refactor & Verification (FD2 - FD19)
+Branch: antigravity/fd1
+Files touched: frontend/src/components/layout/navbar.tsx, frontend/src/components/search-filter.tsx, frontend/src/components/article-card.tsx, frontend/src/app/page.tsx, frontend/src/lib/types.ts, frontend/src/lib/mock-data.ts, frontend/src/components/ui/input.tsx, frontend/src/app/layout.tsx
+Notes: 
+- Refactored entire homepage layout to an editorial Bento Grid.
+- Created Featured Hero card with responsive desktop/mobile styling.
+- Replaced massive tag cloud (30+ tag pills) with Category Tabs + Advanced Tag Select dropdown, eliminating information crowding.
+- Fixed theme toggle double-click bug.
+- Resolved all ESLint errors (empty interface, unused imports, cascading rendering warning) and warnings.
+- Ran Lighthouse audit: Best Practices: 100, SEO: 100, Accessibility: 94, Agentic Browsing: 100.
+- All checks fully verified and built locally.
+---
