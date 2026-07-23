@@ -146,4 +146,5 @@ Notes:
 - Resolved all ESLint errors (empty interface, unused imports, cascading rendering warning) and warnings.
 - Ran Lighthouse audit: Best Practices: 100, SEO: 100, Accessibility: 94, Agentic Browsing: 100.
 - All checks fully verified and built locally.
+- Upgraded color schemes in globals.css using developer-grade Catppuccin Latte (light mode) and Mocha (dark mode) palettes.
 ---
