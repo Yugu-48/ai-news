@@ -31,8 +31,9 @@ export function Navbar() {
               Home
             </Link>
             <Link
-              href="/about"
-              className="transition-colors hover:text-foreground text-foreground/60"
+              href="#"
+              className="transition-colors hover:text-foreground text-foreground/60 cursor-not-allowed opacity-50"
+              onClick={(e) => e.preventDefault()}
             >
               About
             </Link>
