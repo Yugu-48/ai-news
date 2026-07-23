@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useState } from "react"
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Article } from "@/lib/types"
 
@@ -47,6 +47,7 @@ export function ArticleCard({ article, isHero = false }: ArticleCardProps) {
             : "w-full aspect-video"
         }`}>
           {article.imageUrl && !imgError ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
             <img
               src={article.imageUrl}
               alt={article.title}
