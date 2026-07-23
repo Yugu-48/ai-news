@@ -7,4 +7,6 @@ export interface Article {
   url: string
   tags: string[]
   slug: string
+  category: "Research" | "Industry" | "Policy" | "Hardware"
+  imageUrl?: string
 }

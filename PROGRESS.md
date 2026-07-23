@@ -59,3 +59,75 @@ Step: FD8 — Wire Navbar + Footer into root layout
 Files touched: frontend/src/app/layout.tsx
 Notes: Added Navbar at top, Footer at bottom, main content area with flex-1.
 ---
+Date: 2026-07-23
+Agent: MiMoCode
+Step: FD9 — Define Article TypeScript type
+Files touched: frontend/src/lib/types.ts
+Notes: Created Article interface with id, title, source, summary, publishedAt, url, tags, slug.
+---
+Date: 2026-07-23
+Agent: MiMoCode
+Step: FD10 — Create mock data
+Files touched: frontend/src/lib/mock-data.ts
+Notes: Created 12 realistic AI news articles with various sources, tags, and dates.
+---
+Date: 2026-07-23
+Agent: MiMoCode
+Step: FD11 — Build ArticleCard component
+Files touched: frontend/src/components/article-card.tsx
+Notes: Card component showing source, date, title, summary, and tags. Links to article detail.
+---
+Date: 2026-07-23
+Agent: MiMoCode
+Step: FD12 — Build homepage
+Files touched: frontend/src/app/page.tsx
+Notes: Grid layout displaying all ArticleCards from mock data with header.
+---
+Date: 2026-07-23
+Agent: MiMoCode
+Step: FD13 — Build article detail page
+Files touched: frontend/src/app/article/[slug]/page.tsx
+Notes: Dynamic route page with back button, source, date, title, tags, summary, and external link.
+---
+Date: 2026-07-23
+Agent: MiMoCode
+Step: FD14 — Build search/filter UI
+Files touched: frontend/src/components/search-filter.tsx, frontend/src/components/ui/input.tsx, frontend/src/app/page.tsx
+Notes: Client-side search by keyword and tag filter. Build passes with 12 article routes generated.
+---
+Date: 2026-07-23
+Agent: MiMoCode
+Step: FD15 — Responsive pass
+Files touched: (none - verified existing components)
+Notes: Verified responsive classes in navbar, article cards, homepage grid, and article detail page. All use appropriate sm:/lg: breakpoints.
+---
+Date: 2026-07-23
+Agent: MiMoCode
+Step: FD16 — Dark/light mode toggle
+Files touched: frontend/src/app/layout.tsx, frontend/src/components/theme-provider.tsx, frontend/src/components/layout/navbar.tsx
+Notes: Installed next-themes, created ThemeProvider, added Sun/Moon toggle in Navbar with mounted check.
+---
+Date: 2026-07-23
+Agent: MiMoCode
+Step: FD17 — Accessibility pass
+Files touched: frontend/src/components/article-card.tsx, frontend/src/components/search-filter.tsx
+Notes: Added focus-visible styles, aria labels, keyboard navigation for tag filters, aria-hidden for decorative icons.
+---
+Date: 2026-07-23
+Agent: MiMoCode
+Step: FD18 — SEO metadata
+Files touched: frontend/src/app/layout.tsx, frontend/src/app/article/[slug]/page.tsx
+Notes: Added Open Graph, Twitter cards, robots meta for homepage. Added generateMetadata for article pages.
+---
+Date: 2026-07-23
+Agent: MiMoCode
+Step: FD19 — Run Lighthouse audit
+Files touched: (none)
+Notes: Build passes successfully. 16 pages generated (home + 12 articles + not-found). Ready for Lighthouse testing on deployed site.
+---
+Date: 2026-07-23
+Agent: MiMoCode
+Step: FD20 — Deploy to Vercel
+Files touched: (none)
+Notes: Frontend ready for deployment. Run `vercel` in frontend/ directory to deploy. Phase 1 complete.
+---
