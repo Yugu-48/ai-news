@@ -1,0 +1,156 @@
+// Prisma 6 — AI News Platform
+// Supabase Postgres with PgBouncer connection pooling
+// See docs/database/schema.md for the full design rationale.
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../node_modules/@prisma/client"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+// ---------------------------------------------------------------------------
+// 1. Sources — RSS feed origins
+// ---------------------------------------------------------------------------
+model Source {
+  id                   String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                 String    @db.VarChar(255)
+  slug                 String    @unique @db.VarChar(255)
+  websiteUrl           String    @map("website_url")
+  feedUrl              String    @unique @map("feed_url")
+  feedType             String    @default("rss") @map("feed_type") @db.VarChar(50)
+  category             String    @default("General AI") @db.VarChar(100)
+  description          String?
+  iconUrl              String?   @map("icon_url")
+  lastFetchedAt        DateTime? @map("last_fetched_at") @db.Timestamptz
+  fetchIntervalMinutes Int       @default(30) @map("fetch_interval_minutes")
+  errorCount           Int       @default(0) @map("error_count")
+  isActive             Boolean   @default(true) @map("is_active")
+  createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt            DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+
+  articles Article[]
+
+  @@map("sources")
+}
+
+// ---------------------------------------------------------------------------
+// 2. Articles — core content table
+// ---------------------------------------------------------------------------
+model Article {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sourceId    String   @map("source_id") @db.Uuid
+  title       String
+  slug        String   @unique @db.VarChar(512)
+  url         String   @unique
+  author      String?  @db.VarChar(255)
+  summary     String?
+  aiSummary   String?  @map("ai_summary")
+  content     String?
+  imageUrl    String?  @map("image_url")
+  category    String   @db.VarChar(50)
+  readingTime Int?     @map("reading_time")
+  wordCount   Int?     @map("word_count")
+  publishedAt DateTime @map("published_at") @db.Timestamptz
+  fetchedAt   DateTime @default(now()) @map("fetched_at") @db.Timestamptz
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  // pgvector + tsvector managed via raw SQL migrations (unsupported by Prisma)
+  // embedding    Unsupported("vector(768)")?
+  // searchVector Unsupported("tsvector")? @map("search_vector")
+
+  source    Source          @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  tags      ArticleTag[]
+  bookmarks UserBookmark[]
+  history   ReadingHistory[]
+
+  @@index([publishedAt(sort: Desc)])
+  @@index([sourceId, publishedAt(sort: Desc)])
+  @@index([category, publishedAt(sort: Desc)])
+  @@map("articles")
+}
+
+// ---------------------------------------------------------------------------
+// 3. Tags — normalized taxonomy
+// ---------------------------------------------------------------------------
+model Tag {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String   @unique @db.VarChar(100)
+  slug      String   @unique @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  articles ArticleTag[]
+
+  @@map("tags")
+}
+
+// ---------------------------------------------------------------------------
+// 4. ArticleTag — many-to-many join table
+// ---------------------------------------------------------------------------
+model ArticleTag {
+  articleId String @map("article_id") @db.Uuid
+  tagId     String @map("tag_id") @db.Uuid
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, tagId])
+  @@map("article_tags")
+}
+
+// ---------------------------------------------------------------------------
+// 5. Profile — extends Supabase auth.users
+// ---------------------------------------------------------------------------
+model Profile {
+  id          String   @id @db.Uuid // FK to auth.users.id — managed by trigger
+  email       String?
+  fullName    String?  @map("full_name")
+  avatarUrl   String?  @map("avatar_url")
+  preferences Json?    @default("{\"theme\":\"system\",\"digest_frequency\":\"daily\",\"preferred_categories\":[]}")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  bookmarks UserBookmark[]
+  history   ReadingHistory[]
+
+  @@map("profiles")
+}
+
+// ---------------------------------------------------------------------------
+// 6. UserBookmark — saved articles (replaces frontend LocalStorage)
+// ---------------------------------------------------------------------------
+model UserBookmark {
+  userId    String   @map("user_id") @db.Uuid
+  articleId String   @map("article_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  user    Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, articleId])
+  @@index([userId, createdAt(sort: Desc)])
+  @@map("user_bookmarks")
+}
+
+// ---------------------------------------------------------------------------
+// 7. ReadingHistory — article read tracking
+// ---------------------------------------------------------------------------
+model ReadingHistory {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId             String   @map("user_id") @db.Uuid
+  articleId          String   @map("article_id") @db.Uuid
+  readAt             DateTime @default(now()) @map("read_at") @db.Timestamptz
+  progressPercentage Int?     @default(100) @map("progress_percentage")
+
+  user    Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt(sort: Desc)])
+  @@map("reading_history")
+}
