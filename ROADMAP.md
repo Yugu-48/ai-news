@@ -11,39 +11,39 @@ Current status: repo scaffolding done, no app code yet. **Next action: FD1.**
 ## PHASE 1 — FRONTEND (mock data, no backend)
 
 ### Setup
-- [ ] **FD1** — Initialize Next.js in `frontend/`: `pnpm create next-app@latest frontend` → select TypeScript, Tailwind, App Router. Verify `pnpm dev` runs and shows the default page.
-- [ ] **FD2** — Install and initialize Shadcn/UI in the frontend. Add just one test component (e.g. Button) to confirm it works.
-- [ ] **FD3** — Set up root layout (`app/layout.tsx`): fonts, base HTML structure, metadata placeholder. No styling yet, just structure.
+- [x] **FD1** — Initialize Next.js in `frontend/`: `pnpm create next-app@latest frontend` → select TypeScript, Tailwind, App Router. Verify `pnpm dev` runs and shows the default page.
+- [x] **FD2** — Install and initialize Shadcn/UI in the frontend. Add just one test component (e.g. Button) to confirm it works.
+- [x] **FD3** — Set up root layout (`app/layout.tsx`): fonts, base HTML structure, metadata placeholder. No styling yet, just structure.
 
 ### Design foundation
-- [ ] **FD4** — Define design tokens in `tailwind.config.ts`: color palette, font sizes, spacing scale. Write these into `docs/ui/colors.md` and `docs/ui/typography.md` as you decide them.
-- [ ] **FD5** — Build 2-3 core UI primitives via Shadcn (Button, Card, Badge). No page yet — just confirm they render in isolation.
+- [x] **FD4** — Define design tokens in `tailwind.config.ts`: color palette, font sizes, spacing scale. Write these into `docs/ui/colors.md` and `docs/ui/typography.md` as you decide them.
+- [x] **FD5** — Build 2-3 core UI primitives via Shadcn (Button, Card, Badge). No page yet — just confirm they render in isolation.
 
 ### Layout shell
-- [ ] **FD6** — Build Navbar component (logo, nav links, placeholder for dark-mode toggle).
-- [ ] **FD7** — Build Footer component.
-- [ ] **FD8** — Wire Navbar + Footer into root layout so every page has them.
+- [x] **FD6** — Build Navbar component (logo, nav links, placeholder for dark-mode toggle).
+- [x] **FD7** — Build Footer component.
+- [x] **FD8** — Wire Navbar + Footer into root layout so every page has them.
 
 ### Mock data
-- [ ] **FD9** — Define the `Article` TypeScript type (title, source, summary, publishedAt, url, tags, etc.) in `frontend/lib/types.ts`.
-- [ ] **FD10** — Create `frontend/lib/mock-data.ts` with ~10-15 realistic fake articles matching the `Article` type.
+- [x] **FD9** — Define the `Article` TypeScript type (title, source, summary, publishedAt, url, tags, etc.) in `frontend/lib/types.ts`.
+- [x] **FD10** — Create `frontend/lib/mock-data.ts` with ~10-15 realistic fake articles matching the `Article` type.
 
 ### Core pages
-- [ ] **FD11** — Build `ArticleCard` component (single article preview, uses mock data type).
-- [ ] **FD12** — Build homepage (`app/page.tsx`): grid/list of `ArticleCard`s from mock data.
-- [ ] **FD13** — Build article detail page (`app/article/[slug]/page.tsx`): full article view, dynamic route from mock data.
-- [ ] **FD14** — Build search/filter UI: client-side filter over mock data by keyword and/or tag. No real search backend yet.
+- [x] **FD11** — Build `ArticleCard` component (single article preview, uses mock data type).
+- [x] **FD12** — Build homepage (`app/page.tsx`): grid/list of `ArticleCard`s from mock data.
+- [x] **FD13** — Build article detail page (`app/article/[slug]/page.tsx`): full article view, dynamic route from mock data.
+- [x] **FD14** — Build search/filter UI: client-side filter over mock data by keyword and/or tag. No real search backend yet.
 
 ### Polish (Phase 1 gate)
-- [ ] **FD15** — Responsive pass: check mobile, tablet, desktop breakpoints on every page built so far.
-- [ ] **FD16** — Dark/light mode toggle, wired to Navbar.
-- [ ] **FD17** — Accessibility pass: keyboard navigation, alt text, color contrast (WCAG AA).
-- [ ] **FD18** — SEO metadata: Next.js Metadata API on each page, Open Graph tags.
-- [ ] **FD19** — Run Lighthouse audit, fix anything scoring under 90.
+- [x] **FD15** — Responsive pass: check mobile, tablet, desktop breakpoints on every page built so far.
+- [x] **FD16** — Dark/light mode toggle, wired to Navbar.
+- [x] **FD17** — Accessibility pass: keyboard navigation, alt text, color contrast (WCAG AA).
+- [x] **FD18** — SEO metadata: Next.js Metadata API on each page, Open Graph tags.
+- [x] **FD19** — Run Lighthouse audit, fix anything scoring under 90.
 
 **Phase 1 gate:** all boxes above checked → deploy to Vercel now, even with mock data. Seeing it live is a real milestone and catches issues early.
 
-- [ ] **FD20** — Deploy `frontend/` to Vercel. Confirm live URL works end-to-end.
+- [x] **FD20** — Deploy `frontend/` to Vercel. Confirm live URL works end-to-end.
 
 ---
 
@@ -51,8 +51,8 @@ Current status: repo scaffolding done, no app code yet. **Next action: FD1.**
 
 Don't start this until Phase 1 is fully checked off and deployed.
 
-- [ ] **BD1** — Create Supabase project. Store credentials in `.env.local` (never commit this).
-- [ ] **BD2** — Design the database schema on paper first: `articles`, `sources` tables minimum. Write it into `docs/database/schema.md` before touching code.
+- [x] **BD1** — Create Supabase project. Store credentials in `.env.local` (never commit this).
+- [x] **BD2** — Design the database schema on paper first: `articles`, `sources` tables minimum. Write it into `docs/database/schema.md` before touching code.
 - [ ] **BD3** — Set up Prisma, connect to Supabase Postgres, run first migration matching BD2's schema.
 - [ ] **BD4** — Build one real API route: `GET /api/articles` returning real DB rows (seed the DB manually with a few rows first).
 - [ ] **BD5** — Replace mock data in the homepage (FD12) with a real fetch from BD4. Confirm it still renders correctly.
