@@ -3,7 +3,9 @@
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Article } from "@/lib/types"
-import { Search, SlidersHorizontal } from "lucide-react"
+import { Search, SlidersHorizontal, Bookmark, Heart, X } from "lucide-react"
+import { useBookmarks } from "@/lib/use-bookmarks"
+import { useLikes } from "@/lib/use-likes"
 
 interface SearchFilterProps {
   articles: Article[]
@@ -14,8 +16,10 @@ export function SearchFilter({ articles, onFilter }: SearchFilterProps) {
   const [query, setQuery] = useState("")
   const [activeCategory, setActiveCategory] = useState<string>("All")
   const [selectedTag, setSelectedTag] = useState<string>("All")
+  const { bookmarkedIds, mounted: bookmarksMounted } = useBookmarks()
+  const { likedIds, mounted: likesMounted } = useLikes()
 
-  const categories = ["All", "Research", "Industry", "Policy", "Hardware"]
+  const categories = ["All", "Research", "Industry", "Policy", "Hardware", "Saved", "Liked"]
   
   // Get all unique tags and sort them
   const allTags = ["All", ...Array.from(new Set(articles.flatMap((a) => a.tags))).sort()]
@@ -34,8 +38,12 @@ export function SearchFilter({ articles, onFilter }: SearchFilterProps) {
       )
     }
 
-    // 2. Category filter
-    if (category !== "All") {
+    // 2. Category / Saved / Liked filter
+    if (category === "Saved") {
+      filtered = filtered.filter((a) => bookmarkedIds.includes(a.id))
+    } else if (category === "Liked") {
+      filtered = filtered.filter((a) => likedIds.includes(a.id))
+    } else if (category !== "All") {
       filtered = filtered.filter((a) => a.category === category)
     }
 
@@ -50,6 +58,11 @@ export function SearchFilter({ articles, onFilter }: SearchFilterProps) {
   const handleSearch = (value: string) => {
     setQuery(value)
     applyFilters(value, activeCategory, selectedTag)
+  }
+
+  const handleClearSearch = () => {
+    setQuery("")
+    applyFilters("", activeCategory, selectedTag)
   }
 
   const handleCategoryClick = (category: string) => {
@@ -72,9 +85,19 @@ export function SearchFilter({ articles, onFilter }: SearchFilterProps) {
             placeholder="Search AI articles, research, and analysis..."
             value={query}
             onChange={(e) => handleSearch(e.target.value)}
-            className="pl-10 h-11 bg-background border-border/60 rounded-full focus-visible:ring-indigo-500"
+            className="pl-10 pr-10 h-11 bg-background border-border/60 rounded-full focus-visible:ring-indigo-500"
             aria-label="Search articles"
           />
+          {query && (
+            <button
+              type="button"
+              onClick={handleClearSearch}
+              aria-label="Clear search text"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          )}
         </div>
         <div className="relative min-w-[160px] flex items-center">
           <SlidersHorizontal className="absolute left-3.5 h-4 w-4 text-muted-foreground pointer-events-none" />
@@ -105,17 +128,31 @@ export function SearchFilter({ articles, onFilter }: SearchFilterProps) {
         <div className="flex space-x-8 overflow-x-auto no-scrollbar scroll-smooth">
           {categories.map((cat) => {
             const isActive = activeCategory === cat
+            const isSaved = cat === "Saved"
+            const isLiked = cat === "Liked"
             return (
               <button
                 key={cat}
                 onClick={() => handleCategoryClick(cat)}
-                className={`pb-3 text-sm font-semibold relative transition-colors whitespace-nowrap ${
+                className={`pb-3 text-sm font-semibold relative transition-colors whitespace-nowrap flex items-center gap-1.5 ${
                   isActive
                     ? "text-primary font-bold"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
+                {isSaved && <Bookmark className="h-3.5 w-3.5 fill-current" />}
+                {isLiked && <Heart className="h-3.5 w-3.5 fill-rose-500 text-rose-500" />}
                 {cat}
+                {isSaved && bookmarksMounted && (
+                  <span className="px-1.5 py-0.5 text-[10px] rounded-full bg-primary/10 text-primary font-bold">
+                    {bookmarkedIds.length}
+                  </span>
+                )}
+                {isLiked && likesMounted && (
+                  <span className="px-1.5 py-0.5 text-[10px] rounded-full bg-rose-500/10 text-rose-500 font-bold">
+                    {likedIds.length}
+                  </span>
+                )}
                 {isActive && (
                   <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500 rounded-full" />
                 )}

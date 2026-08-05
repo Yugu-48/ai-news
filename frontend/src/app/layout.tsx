@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
+import { TrendingTicker } from "@/components/trending-ticker"
 import "./globals.css"
 
 const geistSans = Geist({
@@ -55,10 +56,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} min-h-screen w-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-screen w-full flex flex-col bg-background text-foreground antialiased selection:bg-primary/20">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -66,6 +67,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
+          <TrendingTicker />
           <main className="flex-1">{children}</main>
           <Footer />
         </ThemeProvider>

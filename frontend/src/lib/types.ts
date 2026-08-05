@@ -9,4 +9,5 @@ export interface Article {
   slug: string
   category: "Research" | "Industry" | "Policy" | "Hardware"
   imageUrl?: string
+  readingTime?: number
 }
