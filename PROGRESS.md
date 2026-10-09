@@ -249,3 +249,37 @@ Step: BD2 — Design the database schema
 Files touched: docs/database/schema.md, ROADMAP.md
 Notes: Queried graphify knowledge graph to map the complete frontend architecture (components, types, data flow). Designed a 7-table PostgreSQL schema (sources, articles, tags, article_tags, profiles, user_bookmarks, reading_history) with full frontend Article interface parity. Includes: ER diagram, weighted tsvector FTS (title=A, summary=B, content=C), pg_trgm fuzzy deduplication, pgvector(768) embedding column for Phase 3, 8 indexes, RLS policies (public read / service-role write for content, user-scoped for personal data), Supabase Auth sync trigger, complete Prisma 6 schema reference, and a 5-step migration plan for BD3.
 ---
+
+---
+Date: 2026-08-05
+Agent: Antigravity
+Step: BD3 — Set up Prisma, connect to Supabase Postgres, run first migration
+Files touched: frontend/prisma/schema.prisma, frontend/prisma/migrations/0_init/migration.sql, frontend/src/lib/prisma.ts, ROADMAP.md, PROGRESS.md
+Notes: Configured Prisma 6 schema with postgresqlExtensions preview feature. Created initial SQL migration `0_init/migration.sql` creating all 7 core tables (`sources`, `articles`, `tags`, `article_tags`, `profiles`, `user_bookmarks`, `reading_history`), FTS `tsvector` generated column + GIN index, `pg_trgm` title deduplication index, partial active polling index, RLS policies, and Supabase auth sync trigger. Generated Prisma Client (`npx prisma generate`) and initialized typed singleton instance in `src/lib/prisma.ts`. Verified production build (`npx next build`) compiles 100% cleanly across all 16 static routes.
+---
+
+---
+Date: 2026-08-05
+Agent: Antigravity
+Step: BD4 — Build GET /api/articles API route
+Files touched: frontend/src/app/api/articles/route.ts, ROADMAP.md, PROGRESS.md
+Notes: Built Next.js dynamic API route `GET /api/articles` with Prisma 6 query supporting category, tag, search, limit, and offset filtering parameters. Formatted database rows to match the frontend `Article` interface contract 1:1. Verified TypeScript type checking and production build (`npx next build`) compiling cleanly.
+---
+
+---
+Date: 2026-08-16
+Agent: Antigravity
+Step: BD6 — Connect Article Detail Page to Real Database Data
+Files touched: frontend/src/app/article/[slug]/page.tsx, ROADMAP.md, PROGRESS.md
+Notes: Connected `/article/[slug]` page, `generateMetadata`, and `generateStaticParams` to PostgreSQL database via Prisma ORM client with React request-level caching. Formatted query results to match frontend Article interface contract, queried related articles by category, and removed mock-data dependency from the article detail route while preserving visual design, interactions, reading progress, and SEO tags. Verified TypeScript compiler and Next.js production build (`npx next build`) compile successfully with 0 errors.
+---
+
+Date: 2026-08-16
+Agent: Antigravity
+Step: BD5 — Connect Homepage to Real Database-Backed Article Data
+Files touched: frontend/src/lib/articles.ts (created), frontend/src/components/home-feed.tsx (created), frontend/src/app/page.tsx, ROADMAP.md, PROGRESS.md
+Notes: Chose direct Prisma Server Component access (matching the existing BD6 article-detail pattern) over an API fetch. Converted `app/page.tsx` to an async server component that queries the `articles` table with source/tags relations, maps rows to the frontend `Article` contract, and passes them into a new `HomeFeed` client component preserving the existing editorial layout, featured hero, client-side search/filter, Saved/Liked tabs, and empty states. Added graceful empty-DB and query-error handling (empty array on error, no mock fallback). Kept `/api/articles` untouched. `npx tsc --noEmit` passed; BD5 files pass ESLint; `npx next build` compiled successfully with 0 errors (exit 0) but logged a placeholder `DATABASE_URL` query failure from BD6's `generateStaticParams`, so live DB behavior remains unverified.
+---
+
+
+
