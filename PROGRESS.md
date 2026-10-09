@@ -308,3 +308,13 @@ Files touched: frontend/src/app/loading.tsx, frontend/src/app/error.tsx, docs/UI
 Notes:
 - Reused the existing skeleton card for route loading and added a retryable route error state. Production build and TypeScript compilation passed; the states were not forced in browser interaction tests.
 ---
+
+Date: 2026-10-09
+Agent: Codex
+Step: P0 database and ingestion stabilization
+Files touched: frontend/.env.example, frontend/package.json, frontend/src/lib/news/ingest.ts, frontend/src/lib/news/ingest-core.ts, frontend/src/lib/database-config.ts, frontend/src/lib/ingest-auth.ts, frontend/src/lib/status-core.ts, frontend/src/lib/article-mapper.ts, frontend/src/lib/articles.ts, frontend/src/app/api/articles/route.ts, frontend/src/app/api/status/route.ts, frontend/src/app/api/ingest/route.ts, frontend/tests/ingestion.test.mjs, README.md, docs/ARCHITECTURE.md, docs/DEPLOYMENT.md, docs/TEST_PLAN.md, TASKS.md, PROGRESS.md
+Notes:
+- Replaced per-article check/create with source-batch `createMany(skipDuplicates)` guarded by the schema's unique URL and slug constraints. Added deterministic ingestion core, sanitized source error codes, and accurate inserted counts.
+- Clarified URL configuration and API health states; added database preflight before ingestion and server-only bearer verification. Documented Supabase runtime/direct connection roles and migration prerequisites.
+- TypeScript, eight focused tests, Prisma schema validation and client generation, and focused ESLint passed. The current build was blocked by Google Fonts access; localhost HTTP checks were denied by sandbox socket permissions. No compatible database or real secret was available, so migration and durable ingestion remain unverified.
+---

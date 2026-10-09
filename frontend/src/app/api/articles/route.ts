@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import type { Prisma } from "@prisma/client"
 import { prisma } from "@/lib/prisma"
-import { isDatabaseConfigured } from "@/lib/articles"
+import { getDatabaseConfiguration } from "@/lib/database-config"
 import { fetchLiveArticles } from "@/lib/news/ingest"
 
 export async function GET(request: Request) {
@@ -15,7 +15,9 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Invalid pagination" }, { status: 400 })
   }
 
-  if (isDatabaseConfigured()) {
+  const databaseConfigured = getDatabaseConfiguration().configured
+  let databaseUnavailable = false
+  if (databaseConfigured) {
     try {
       // Build Prisma query filter
       const where: Prisma.ArticleWhereInput = { NOT: { url: { contains: "/example/" } } }
@@ -85,6 +87,8 @@ export async function GET(request: Request) {
         return NextResponse.json({
           success: true,
           data: formattedArticles,
+          mode: "database",
+          persistence: "operational",
           pagination: {
             total: totalCount,
             limit,
@@ -93,8 +97,9 @@ export async function GET(request: Request) {
           },
         })
       }
-    } catch (error) {
-      console.warn("GET /api/articles database query failed, using fallback data:", error)
+    } catch {
+      databaseUnavailable = true
+      console.warn("GET /api/articles database query failed; using live read-through")
     }
   }
 
@@ -106,7 +111,7 @@ export async function GET(request: Request) {
       const query = search.toLowerCase()
       data = data.filter((article) => `${article.title} ${article.summary} ${article.source}`.toLowerCase().includes(query))
     }
-    return NextResponse.json({ success: true, data: data.slice(offset, offset + limit), pagination: { total: data.length, limit, offset, hasMore: offset + limit < data.length }, mode: "live-read-through" })
+    return NextResponse.json({ success: true, data: data.slice(offset, offset + limit), pagination: { total: data.length, limit, offset, hasMore: offset + limit < data.length }, mode: "live-read-through", persistence: databaseUnavailable ? "unavailable" : "not_configured" })
   } catch (error) {
     console.error("Live article fetch failed:", error)
     return NextResponse.json({ error: "Live articles unavailable", data: [] }, { status: 503 })
