@@ -13,12 +13,13 @@ import { LikeButton } from "@/components/like-button"
 import { ReadingProgressBar } from "@/components/reading-progress-bar"
 import { prisma } from "@/lib/prisma"
 import { Article } from "@/lib/types"
-import { isDatabaseConfigured } from "@/lib/articles"
-import { articles as mockArticles } from "@/lib/mock-data"
+import { fetchArticles, isDatabaseConfigured } from "@/lib/articles"
 
 interface ArticlePageProps {
   params: Promise<{ slug: string }>
 }
+
+export const dynamic = "force-dynamic"
 
 const CATEGORY_ACCENT: Record<string, string> = {
   Research: "text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/50",
@@ -36,8 +37,7 @@ const CATEGORY_GRADIENT: Record<string, string> = {
 
 /**
  * Cached article fetcher for Server Component and metadata generation.
- * Queries PostgreSQL via Prisma when configured; falls back to mock data
- * during preview/local development if database is unseeded or unconfigured.
+ * Queries PostgreSQL via Prisma when configured.
  */
 const getArticleBySlug = cache(async (slug: string): Promise<Article | null> => {
   if (isDatabaseConfigured()) {
@@ -58,7 +58,7 @@ const getArticleBySlug = cache(async (slug: string): Promise<Article | null> => 
         },
       })
 
-      if (article) {
+      if (article && !article.url.includes("/example/")) {
         return {
           id: article.id,
           title: article.title,
@@ -74,16 +74,16 @@ const getArticleBySlug = cache(async (slug: string): Promise<Article | null> => 
         }
       }
     } catch (error) {
-      console.warn(`Database query failed for slug "${slug}", using fallback data:`, error)
+      console.error(`Database query failed for slug "${slug}":`, error)
     }
   }
 
-  const mock = mockArticles.find((a) => a.slug === slug)
-  return mock ?? null
+  const live = await fetchArticles(100)
+  return live.find((article) => article.slug === slug) ?? null
 })
 
 /**
- * Fetch related articles in the same category from the database or mock data.
+ * Fetch related articles in the same category from the database.
  */
 async function getRelatedArticles(category: string, currentSlug: string): Promise<Article[]> {
   if (isDatabaseConfigured()) {
@@ -92,6 +92,7 @@ async function getRelatedArticles(category: string, currentSlug: string): Promis
         where: {
           category,
           slug: { not: currentSlug },
+          NOT: { url: { contains: "/example/" } },
         },
         take: 3,
         orderBy: { publishedAt: "desc" },
@@ -125,36 +126,12 @@ async function getRelatedArticles(category: string, currentSlug: string): Promis
         }))
       }
     } catch (error) {
-      console.warn("Error fetching related articles from DB, using fallback:", error)
+      console.error("Error fetching related articles from DB:", error)
     }
   }
 
-  return mockArticles
-    .filter((a) => a.category === category && a.slug !== currentSlug)
-    .slice(0, 3)
-}
-
-export async function generateStaticParams() {
-  if (isDatabaseConfigured()) {
-    try {
-      const articles = await prisma.article.findMany({
-        select: { slug: true },
-        take: 50,
-        orderBy: { publishedAt: "desc" },
-      })
-      if (articles.length > 0) {
-        return articles.map((article) => ({
-          slug: article.slug,
-        }))
-      }
-    } catch (error) {
-      console.warn("Failed to generate static params from DB:", error)
-    }
-  }
-
-  return mockArticles.map((article) => ({
-    slug: article.slug,
-  }))
+  const live = await fetchArticles(100)
+  return live.filter((article) => article.category === category && article.slug !== currentSlug).slice(0, 3)
 }
 
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {

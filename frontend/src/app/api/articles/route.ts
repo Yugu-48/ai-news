@@ -1,20 +1,24 @@
 import { NextResponse } from "next/server"
+import type { Prisma } from "@prisma/client"
 import { prisma } from "@/lib/prisma"
 import { isDatabaseConfigured } from "@/lib/articles"
-import { articles as mockArticles } from "@/lib/mock-data"
+import { fetchLiveArticles } from "@/lib/news/ingest"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const category = searchParams.get("category")
   const tag = searchParams.get("tag")
   const search = searchParams.get("search")
-  const limit = Math.min(parseInt(searchParams.get("limit") || "20", 10), 100)
-  const offset = Math.max(parseInt(searchParams.get("offset") || "0", 10), 0)
+  const limit = Number(searchParams.get("limit") ?? 20)
+  const offset = Number(searchParams.get("offset") ?? 0)
+  if (!Number.isInteger(limit) || limit < 1 || limit > 100 || !Number.isInteger(offset) || offset < 0) {
+    return NextResponse.json({ error: "Invalid pagination" }, { status: 400 })
+  }
 
   if (isDatabaseConfigured()) {
     try {
       // Build Prisma query filter
-      const where: any = {}
+      const where: Prisma.ArticleWhereInput = { NOT: { url: { contains: "/example/" } } }
 
       if (category && category !== "All") {
         where.category = category
@@ -62,7 +66,7 @@ export async function GET(request: Request) {
         prisma.article.count({ where }),
       ])
 
-      if (articles.length > 0 || totalCount > 0) {
+      {
         // Format response to match frontend Article type
         const formattedArticles = articles.map((article) => ({
           id: article.id,
@@ -94,39 +98,18 @@ export async function GET(request: Request) {
     }
   }
 
-  // Graceful fallback for local development / preview when DB is not seeded or configured
-  let result = [...mockArticles]
-
-  if (category && category !== "All") {
-    result = result.filter((a) => a.category === category)
+  try {
+    let data = await fetchLiveArticles(100)
+    if (category && category !== "All") data = data.filter((article) => article.category === category)
+    if (tag) data = data.filter((article) => article.tags.some((value) => value.toLowerCase() === tag.toLowerCase()))
+    if (search) {
+      const query = search.toLowerCase()
+      data = data.filter((article) => `${article.title} ${article.summary} ${article.source}`.toLowerCase().includes(query))
+    }
+    return NextResponse.json({ success: true, data: data.slice(offset, offset + limit), pagination: { total: data.length, limit, offset, hasMore: offset + limit < data.length }, mode: "live-read-through" })
+  } catch (error) {
+    console.error("Live article fetch failed:", error)
+    return NextResponse.json({ error: "Live articles unavailable", data: [] }, { status: 503 })
   }
-
-  if (tag) {
-    result = result.filter((a) =>
-      a.tags.some((t) => t.toLowerCase() === tag.toLowerCase())
-    )
-  }
-
-  if (search) {
-    const q = search.toLowerCase()
-    result = result.filter(
-      (a) =>
-        a.title.toLowerCase().includes(q) ||
-        a.summary.toLowerCase().includes(q)
-    )
-  }
-
-  const paginated = result.slice(offset, offset + limit)
-
-  return NextResponse.json({
-    success: true,
-    data: paginated,
-    pagination: {
-      total: result.length,
-      limit,
-      offset,
-      hasMore: offset + limit < result.length,
-    },
-  })
 }
 

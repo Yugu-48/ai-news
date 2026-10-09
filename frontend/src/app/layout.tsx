@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
-import { TrendingTicker } from "@/components/trending-ticker"
 import "./globals.css"
 
 const geistSans = Geist({
@@ -68,7 +67,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          <TrendingTicker />
           <main className="flex-1">{children}</main>
           <Footer />
         </ThemeProvider>

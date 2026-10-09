@@ -283,3 +283,28 @@ Notes: Chose direct Prisma Server Component access (matching the existing BD6 ar
 
 
 
+---
+Date: 2026-10-09
+Agent: Codex
+Step: Prototype P0 pass — live read-through news, ingestion routes, UI verification, and documentation
+Files touched: AGENTS.md, TASKS.md, README.md, .env.example, frontend/.env.example, frontend/package.json, frontend/pnpm-lock.yaml, frontend/src/lib/news/ingest.ts, frontend/src/lib/articles.ts, frontend/src/lib/categories.ts, frontend/src/app/api/articles/route.ts, frontend/src/app/api/status/route.ts, frontend/src/app/api/ingest/route.ts, frontend/src/app/page.tsx, frontend/src/app/layout.tsx, frontend/src/app/article/[slug]/page.tsx, frontend/src/components/home-feed.tsx, frontend/src/components/search-filter.tsx, frontend/src/components/trending-ticker.tsx, frontend/src/components/layout/navbar.tsx, frontend/src/components/article-card.tsx, frontend/scripts/capture-mobile.mjs, docs/RESEARCH.md, docs/UI_SPEC.md, docs/ARCHITECTURE.md, docs/NEWS_SOURCES.md, docs/TEST_PLAN.md, docs/DEPLOYMENT.md, docs/screenshots/home-desktop.png, docs/screenshots/home-mobile-emulated.png
+Notes:
+- Added four verified live sources, server-side RSS/API parsing, normalization, exact URL deduplication, authenticated ingestion endpoint, status endpoint, live read-through fallback, and 60-second browser refresh.
+- Removed mock news from the live feed and article views; excluded known fabricated seed URLs from database reads. Added eight topic lenses and verified mobile menu, search, category filter, and theme toggle at 390px.
+- TypeScript and production build passed. Production API returned 46 current stories across TechCrunch, arXiv, Hacker News, and Hugging Face; homepage and article routes returned HTTP 200. Database URL is a placeholder, so durable ingestion and restart persistence remain unverified. ESLint hung without output. No scheduler configured.
+---
+Date: 2026-10-09
+Agent: Codex
+Step: Source expansion — arXiv cs.LG and final live verification
+Files touched: frontend/src/lib/news/ingest.ts, README.md, docs/ARCHITECTURE.md, docs/NEWS_SOURCES.md, docs/TEST_PLAN.md, TASKS.md
+Notes:
+- Verified official arXiv cs.LG RSS responds HTTP 200 and added it to server-side ingestion and read-through mode.
+- Final production build and TypeScript check passed. Production API returned 48 current articles across five source feeds (TechCrunch 9, arXiv AI 10, arXiv ML 9, Hacker News 10, Hugging Face 10); status reported five source-health entries.
+---
+Date: 2026-10-09
+Agent: Codex
+Step: Loading and route error states
+Files touched: frontend/src/app/loading.tsx, frontend/src/app/error.tsx, docs/UI_SPEC.md, docs/TEST_PLAN.md, TASKS.md
+Notes:
+- Reused the existing skeleton card for route loading and added a retryable route error state. Production build and TypeScript compilation passed; the states were not forced in browser interaction tests.
+---

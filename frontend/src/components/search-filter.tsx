@@ -6,20 +6,22 @@ import { Article } from "@/lib/types"
 import { Search, SlidersHorizontal, Bookmark, Heart, X } from "lucide-react"
 import { useBookmarks } from "@/lib/use-bookmarks"
 import { useLikes } from "@/lib/use-likes"
+import { feedCategories, matchesCategory, type FeedCategory } from "@/lib/categories"
 
 interface SearchFilterProps {
   articles: Article[]
   onFilter: (filtered: Article[]) => void
+  initialCategory: FeedCategory
 }
 
-export function SearchFilter({ articles, onFilter }: SearchFilterProps) {
+export function SearchFilter({ articles, onFilter, initialCategory }: SearchFilterProps) {
   const [query, setQuery] = useState("")
-  const [activeCategory, setActiveCategory] = useState<string>("All")
+  const [activeCategory, setActiveCategory] = useState<string>(initialCategory)
   const [selectedTag, setSelectedTag] = useState<string>("All")
   const { bookmarkedIds, mounted: bookmarksMounted } = useBookmarks()
   const { likedIds, mounted: likesMounted } = useLikes()
 
-  const categories = ["All", "Research", "Industry", "Policy", "Hardware", "Saved", "Liked"]
+  const categories = [...feedCategories, "Saved", "Liked"]
   
   // Get all unique tags and sort them
   const allTags = ["All", ...Array.from(new Set(articles.flatMap((a) => a.tags))).sort()]
@@ -43,8 +45,8 @@ export function SearchFilter({ articles, onFilter }: SearchFilterProps) {
       filtered = filtered.filter((a) => bookmarkedIds.includes(a.id))
     } else if (category === "Liked") {
       filtered = filtered.filter((a) => likedIds.includes(a.id))
-    } else if (category !== "All") {
-      filtered = filtered.filter((a) => a.category === category)
+    } else if (feedCategories.includes(category as FeedCategory)) {
+      filtered = filtered.filter((a) => matchesCategory(a, category as FeedCategory))
     }
 
     // 3. Tag filter

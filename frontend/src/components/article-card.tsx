@@ -35,9 +35,8 @@ export function ArticleCard({ article, isHero = false, className = "" }: Article
   const accentColor = CATEGORY_ACCENT[article.category] ?? "text-muted-foreground"
 
   return (
-    <Link
-      href={`/article/${article.slug}`}
-      className={`group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-2xl transition-all duration-300 ${
+    <article
+      className={`group block rounded-2xl transition-all duration-300 ${
         isHero ? "col-span-full" : "h-full"
       } ${className}`}
     >
@@ -51,6 +50,7 @@ export function ArticleCard({ article, isHero = false, className = "" }: Article
             ? "w-full md:w-1/2 aspect-video md:aspect-auto min-h-[240px] md:min-h-full"
             : "w-full aspect-video"
         }`}>
+          <Link href={`/article/${article.slug}`} aria-label={`Read ${article.title}`} className="block h-full w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset">
           {article.imageUrl && !imgError ? (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
@@ -65,6 +65,7 @@ export function ArticleCard({ article, isHero = false, className = "" }: Article
               <span className="font-extrabold text-7xl tracking-tighter select-none">AI</span>
             </div>
           )}
+          </Link>
 
           {/* Subtle gradient overlay on image for text legibility */}
           {article.imageUrl && !imgError && (
@@ -123,7 +124,7 @@ export function ArticleCard({ article, isHero = false, className = "" }: Article
           <CardTitle className={`font-bold tracking-tight text-foreground group-hover:text-primary transition-colors leading-tight ${
             isHero ? "text-2xl md:text-3xl" : "text-lg line-clamp-2"
           }`}>
-            {article.title}
+            <Link href={`/article/${article.slug}`} className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm">{article.title}</Link>
           </CardTitle>
 
           <CardDescription className={`text-muted-foreground/90 leading-relaxed ${
@@ -149,6 +150,6 @@ export function ArticleCard({ article, isHero = false, className = "" }: Article
           </div>
         </div>
       </Card>
-    </Link>
+    </article>
   )
 }

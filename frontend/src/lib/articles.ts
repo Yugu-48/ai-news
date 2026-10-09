@@ -1,6 +1,6 @@
 import { prisma } from "./prisma"
 import type { Article } from "./types"
-import { articles as mockArticles } from "./mock-data"
+import { fetchLiveArticles } from "./news/ingest"
 
 const HOME_ARTICLES_LIMIT = 50
 
@@ -45,6 +45,7 @@ export async function fetchArticles(limit = HOME_ARTICLES_LIMIT): Promise<Articl
   if (isDatabaseConfigured()) {
     try {
       const rows = await prisma.article.findMany({
+        where: { NOT: { url: { contains: "/example/" } } },
         take: limit,
         orderBy: { publishedAt: "desc" },
         include: {
@@ -61,15 +62,11 @@ export async function fetchArticles(limit = HOME_ARTICLES_LIMIT): Promise<Articl
         },
       })
 
-      if (rows.length > 0) {
-        return rows.map(toArticle)
-      }
+      return rows.map(toArticle)
     } catch (error) {
-      console.warn("Database query failed, falling back to mock articles:", error)
+      console.error("Database query failed:", error)
     }
   }
-
-  // Gracefully fallback to mock articles for development / preview when DB is not seeded or configured
-  return mockArticles.slice(0, limit)
+  return fetchLiveArticles(limit)
 }
 

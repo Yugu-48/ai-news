@@ -1,62 +1,24 @@
 # AI News
 
-An AI-powered tech news platform that aggregates, summarizes, and personalizes AI news from across the web.
+A responsive AI news reader built with Next.js 16, React 19, TypeScript, Tailwind CSS 4 and Prisma 6. The site reads current headlines from TechCrunch AI, arXiv cs.AI/cs.LG, Hacker News Algolia and Hugging Face Daily Papers. It links to original publications and displays excerpts only.
 
-## Features (Planned)
+The homepage, article previews, local search and filters, theme switcher, saved and liked controls, and `/api/articles` are available. Without PostgreSQL, the site uses a live read-through feed with a 60-second in-memory cache. This mode does **not** persist articles across restarts. The database ingestion path and `/api/status` and `/api/ingest` routes are implemented, but have not been exercised against a real PostgreSQL instance in this workspace.
 
-- **News Aggregation** - RSS feed collection from top AI sources
-- **AI Summaries** - Intelligent article summarization
-- **Semantic Search** - Find articles by meaning, not just keywords
-- **Personalized Feed** - AI-curated content based on your interests
-- **Source Ranking** - Trust scores for news sources
-- **Newsletter** - Weekly AI news digest
+`fast-xml-parser` is the only new runtime dependency in this pass; it parses RSS metadata because Node.js has no built-in XML feed parser.
 
-## Tech Stack
+## Local setup
 
-- **Frontend**: Next.js 14+ (App Router) - *Coming soon*
-- **Styling**: Tailwind CSS - *Coming soon*
-- **Backend**: Node.js / Python - *Coming soon*
-- **Database**: PostgreSQL - *Coming soon*
-- **AI**: OpenAI / Anthropic - *Coming soon*
+1. Use a current Node.js release and pnpm.
+2. Run `cd frontend` and `pnpm install`.
+3. Copy `frontend/.env.example` to `frontend/.env.local`. Configure `DATABASE_URL` and `DIRECT_URL` for persistence, and set a long random `INGEST_SECRET` before enabling ingestion. Leave the database values empty to use live read-through mode.
+4. Run `pnpm dev` and open `http://localhost:3000`.
 
-## Getting Started
+The Prisma schema and initial migration are in `frontend/prisma`. With a configured PostgreSQL instance, run `pnpm exec prisma migrate deploy` and `pnpm exec prisma generate` from `frontend` before starting the app. Do not run `prisma/seed.ts` for a public news feed: it contains fabricated demonstration articles.
 
-### Prerequisites
+To trigger ingestion manually, send `POST /api/ingest` with `Authorization: Bearer <INGEST_SECRET>`; for example, `curl -X POST http://localhost:3000/api/ingest -H "Authorization: Bearer $INGEST_SECRET"`. Configure an external scheduler to call this endpoint every 10–15 minutes. Browser data refresh runs every 60 seconds. Polling does not guarantee immediate coverage.
 
-- Node.js 18+
-- pnpm (recommended)
+## Checks
 
-### Installation
+From `frontend`: `pnpm exec tsc --noEmit`, `pnpm lint`, and `pnpm build`. `GET /api/articles` supports `category`, `tag`, `search`, `limit`, and `offset`; `GET /api/status` reports persistence or live read-through status.
 
-```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/ai-news.git
-cd ai-news
-
-# Install dependencies
-pnpm install
-
-# Start development server
-pnpm dev
-```
-
-## Project Structure
-
-```
-ai-news/
-├── src/                 # Source code (coming soon)
-├── public/              # Static assets
-├── docs/                # Documentation
-├── scripts/             # Build/utility scripts
-├── .github/             # GitHub Actions & templates
-└── package.json
-```
-
-## Documentation
-
-- [Architecture](docs/ARCHITECTURE.md) - System design
-- [Contributing](docs/CONTRIBUTING.md) - Development guidelines
-
-## License
-
-MIT
+See [TASKS.md](TASKS.md) for actual verification results and remaining work. Operational details are in `docs/DEPLOYMENT.md` and source notes in `docs/NEWS_SOURCES.md`.
