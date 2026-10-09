@@ -25,8 +25,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/article/[slug]/page.tsx": {
-    "mtime": 1786898173.7537484,
-    "ast_hash": "4e33e839322cdb17b266298a517c8912",
+    "mtime": 1785289971.7756114,
+    "ast_hash": "05d9145fe4cc7c6dff724fe93a406d4e",
     "semantic_hash": ""
   },
   "frontend/src/app/layout.tsx": {
@@ -305,8 +305,8 @@
     "semantic_hash": ""
   },
   "PROGRESS.md": {
-    "mtime": 1785945956.7050967,
-    "ast_hash": "2c164a6a1026950725325495f5ea7c65",
+    "mtime": 1785945774.9672015,
+    "ast_hash": "0bd4a6b3fbb513383993b2dd0f8acfe5",
     "semantic_hash": ""
   },
   "PROJECT_BRIEF.md": {
@@ -325,8 +325,8 @@
     "semantic_hash": ""
   },
   "ROADMAP.md": {
-    "mtime": 1785945941.0572793,
-    "ast_hash": "9654a9a3c47770ddffd0a2f8cd1b432e",
+    "mtime": 1785945638.6297052,
+    "ast_hash": "e34ba6ac07cceddf61c427f7df23daaa",
     "semantic_hash": ""
   },
   "SKILLS_INDEX.md": {
@@ -482,11 +482,6 @@
   "docs/database/schema.md": {
     "mtime": 1785289035.717318,
     "ast_hash": "b322a4857577b8a1a04951277543d319",
-    "semantic_hash": ""
-  },
-  "frontend/src/app/api/articles/route.ts": {
-    "mtime": 1785945883.238839,
-    "ast_hash": "7d9e22cd28141e438f5504c718fb1bed",
     "semantic_hash": ""
   }
 }

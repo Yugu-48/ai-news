@@ -840,28 +840,6 @@
       "norm_label": "main()"
     },
     {
-      "label": "route.ts",
-      "file_type": "code",
-      "source_file": "frontend/src/app/api/articles/route.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "frontend_src_app_api_articles_route",
-      "community": 0,
-      "community_name": "[slug]/page.tsx",
-      "norm_label": "route.ts"
-    },
-    {
-      "label": "GET()",
-      "file_type": "code",
-      "source_file": "frontend/src/app/api/articles/route.ts",
-      "source_location": "L4",
-      "_origin": "ast",
-      "id": "frontend_src_app_api_articles_route_get",
-      "community": 0,
-      "community_name": "[slug]/page.tsx",
-      "norm_label": "get()"
-    },
-    {
       "label": "[slug]/page.tsx",
       "file_type": "code",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
@@ -876,7 +854,7 @@
       "label": "ArticlePageProps",
       "file_type": "code",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L17",
+      "source_location": "L14",
       "_origin": "ast",
       "id": "frontend_src_app_article_slug_page_articlepageprops",
       "community": 0,
@@ -887,7 +865,7 @@
       "label": "CATEGORY_ACCENT",
       "file_type": "code",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L21",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "frontend_src_app_article_slug_page_category_accent",
       "community": 0,
@@ -898,7 +876,7 @@
       "label": "CATEGORY_GRADIENT",
       "file_type": "code",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L28",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "frontend_src_app_article_slug_page_category_gradient",
       "community": 0,
@@ -906,32 +884,10 @@
       "norm_label": "category_gradient"
     },
     {
-      "label": "getArticleBySlug",
-      "file_type": "code",
-      "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L39",
-      "_origin": "ast",
-      "id": "frontend_src_app_article_slug_page_getarticlebyslug",
-      "community": 0,
-      "community_name": "[slug]/page.tsx",
-      "norm_label": "getarticlebyslug"
-    },
-    {
-      "label": "getRelatedArticles()",
-      "file_type": "code",
-      "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L83",
-      "_origin": "ast",
-      "id": "frontend_src_app_article_slug_page_getrelatedarticles",
-      "community": 0,
-      "community_name": "[slug]/page.tsx",
-      "norm_label": "getrelatedarticles()"
-    },
-    {
       "label": "generateStaticParams()",
       "file_type": "code",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L125",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "frontend_src_app_article_slug_page_generatestaticparams",
       "community": 0,
@@ -942,7 +898,7 @@
       "label": "generateMetadata()",
       "file_type": "code",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L141",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "frontend_src_app_article_slug_page_generatemetadata",
       "community": 0,
@@ -953,7 +909,7 @@
       "label": "ArticlePage()",
       "file_type": "code",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L173",
+      "source_location": "L66",
       "_origin": "ast",
       "id": "frontend_src_app_article_slug_page_articlepage",
       "community": 0,
@@ -1407,8 +1363,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "frontend_src_components_trending_ticker",
-      "community": 0,
-      "community_name": "[slug]/page.tsx",
+      "community": 38,
+      "community_name": "layout.tsx",
       "norm_label": "trending-ticker.tsx"
     },
     {
@@ -1418,8 +1374,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "frontend_src_components_trending_ticker_trendingticker",
-      "community": 0,
-      "community_name": "[slug]/page.tsx",
+      "community": 38,
+      "community_name": "layout.tsx",
       "norm_label": "trendingticker()"
     },
     {
@@ -1671,8 +1627,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "frontend_src_lib_prisma",
-      "community": 0,
-      "community_name": "[slug]/page.tsx",
+      "community": 65,
+      "community_name": "prisma.ts",
       "norm_label": "prisma.ts"
     },
     {
@@ -1682,8 +1638,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "frontend_src_lib_prisma_globalforprisma",
-      "community": 0,
-      "community_name": "[slug]/page.tsx",
+      "community": 65,
+      "community_name": "prisma.ts",
       "norm_label": "globalforprisma"
     },
     {
@@ -2969,7 +2925,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_backend_authorization",
-      "community": 35,
+      "community": 28,
       "community_name": "authorization.md - Backend Authorization Skill",
       "norm_label": "authorization.md"
     },
@@ -2980,7 +2936,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_backend_authorization_authorization_md_backend_authorization_skill",
-      "community": 35,
+      "community": 28,
       "community_name": "authorization.md - Backend Authorization Skill",
       "norm_label": "authorization.md - backend authorization skill"
     },
@@ -2991,7 +2947,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "skills_backend_authorization_purpose",
-      "community": 35,
+      "community": 28,
       "community_name": "authorization.md - Backend Authorization Skill",
       "norm_label": "purpose"
     },
@@ -3002,7 +2958,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "skills_backend_authorization_problem_solved",
-      "community": 35,
+      "community": 28,
       "community_name": "authorization.md - Backend Authorization Skill",
       "norm_label": "problem solved"
     },
@@ -3013,7 +2969,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "skills_backend_authorization_when_to_load",
-      "community": 35,
+      "community": 28,
       "community_name": "authorization.md - Backend Authorization Skill",
       "norm_label": "when to load"
     },
@@ -3024,7 +2980,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "skills_backend_authorization_when_not_to_load",
-      "community": 35,
+      "community": 28,
       "community_name": "authorization.md - Backend Authorization Skill",
       "norm_label": "when not to load"
     },
@@ -3035,7 +2991,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "skills_backend_authorization_prerequisites",
-      "community": 35,
+      "community": 28,
       "community_name": "authorization.md - Backend Authorization Skill",
       "norm_label": "prerequisites"
     },
@@ -3046,7 +3002,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "skills_backend_authorization_rules",
-      "community": 35,
+      "community": 28,
       "community_name": "authorization.md - Backend Authorization Skill",
       "norm_label": "rules"
     },
@@ -3057,7 +3013,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "skills_backend_authorization_best_practices",
-      "community": 35,
+      "community": 28,
       "community_name": "authorization.md - Backend Authorization Skill",
       "norm_label": "best practices"
     },
@@ -3068,7 +3024,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "skills_backend_authorization_middleware_pattern",
-      "community": 35,
+      "community": 28,
       "community_name": "authorization.md - Backend Authorization Skill",
       "norm_label": "middleware pattern"
     },
@@ -3079,7 +3035,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "skills_backend_authorization_resource_ownership",
-      "community": 35,
+      "community": 28,
       "community_name": "authorization.md - Backend Authorization Skill",
       "norm_label": "resource ownership"
     },
@@ -3090,7 +3046,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "skills_backend_authorization_project_conventions",
-      "community": 35,
+      "community": 28,
       "community_name": "authorization.md - Backend Authorization Skill",
       "norm_label": "project conventions"
     },
@@ -3101,7 +3057,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "skills_backend_authorization_common_mistakes",
-      "community": 35,
+      "community": 28,
       "community_name": "authorization.md - Backend Authorization Skill",
       "norm_label": "common mistakes"
     },
@@ -3112,7 +3068,7 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "skills_backend_authorization_checklist",
-      "community": 35,
+      "community": 28,
       "community_name": "authorization.md - Backend Authorization Skill",
       "norm_label": "checklist"
     },
@@ -3123,7 +3079,7 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "skills_backend_authorization_related_skills",
-      "community": 35,
+      "community": 28,
       "community_name": "authorization.md - Backend Authorization Skill",
       "norm_label": "related skills"
     },
@@ -3134,8 +3090,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_backend_caching",
-      "community": 6,
-      "community_name": "SKILLS_INDEX.md",
+      "community": 35,
+      "community_name": "caching.md - Caching Strategies Skill",
       "norm_label": "caching.md"
     },
     {
@@ -3145,8 +3101,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_backend_caching_caching_md_caching_strategies_skill",
-      "community": 6,
-      "community_name": "SKILLS_INDEX.md",
+      "community": 35,
+      "community_name": "caching.md - Caching Strategies Skill",
       "norm_label": "caching.md - caching strategies skill"
     },
     {
@@ -3156,8 +3112,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "skills_backend_caching_purpose",
-      "community": 6,
-      "community_name": "SKILLS_INDEX.md",
+      "community": 35,
+      "community_name": "caching.md - Caching Strategies Skill",
       "norm_label": "purpose"
     },
     {
@@ -3167,8 +3123,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "skills_backend_caching_problem_solved",
-      "community": 6,
-      "community_name": "SKILLS_INDEX.md",
+      "community": 35,
+      "community_name": "caching.md - Caching Strategies Skill",
       "norm_label": "problem solved"
     },
     {
@@ -3178,8 +3134,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "skills_backend_caching_when_to_load",
-      "community": 6,
-      "community_name": "SKILLS_INDEX.md",
+      "community": 35,
+      "community_name": "caching.md - Caching Strategies Skill",
       "norm_label": "when to load"
     },
     {
@@ -3189,8 +3145,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "skills_backend_caching_when_not_to_load",
-      "community": 6,
-      "community_name": "SKILLS_INDEX.md",
+      "community": 35,
+      "community_name": "caching.md - Caching Strategies Skill",
       "norm_label": "when not to load"
     },
     {
@@ -3200,8 +3156,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "skills_backend_caching_prerequisites",
-      "community": 6,
-      "community_name": "SKILLS_INDEX.md",
+      "community": 35,
+      "community_name": "caching.md - Caching Strategies Skill",
       "norm_label": "prerequisites"
     },
     {
@@ -3211,8 +3167,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "skills_backend_caching_rules",
-      "community": 6,
-      "community_name": "SKILLS_INDEX.md",
+      "community": 35,
+      "community_name": "caching.md - Caching Strategies Skill",
       "norm_label": "rules"
     },
     {
@@ -3222,8 +3178,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "skills_backend_caching_best_practices",
-      "community": 6,
-      "community_name": "SKILLS_INDEX.md",
+      "community": 35,
+      "community_name": "caching.md - Caching Strategies Skill",
       "norm_label": "best practices"
     },
     {
@@ -3233,8 +3189,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "skills_backend_caching_in_memory_cache",
-      "community": 6,
-      "community_name": "SKILLS_INDEX.md",
+      "community": 35,
+      "community_name": "caching.md - Caching Strategies Skill",
       "norm_label": "in-memory cache"
     },
     {
@@ -3244,8 +3200,8 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "skills_backend_caching_project_conventions",
-      "community": 6,
-      "community_name": "SKILLS_INDEX.md",
+      "community": 35,
+      "community_name": "caching.md - Caching Strategies Skill",
       "norm_label": "project conventions"
     },
     {
@@ -3255,8 +3211,8 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "skills_backend_caching_common_mistakes",
-      "community": 6,
-      "community_name": "SKILLS_INDEX.md",
+      "community": 35,
+      "community_name": "caching.md - Caching Strategies Skill",
       "norm_label": "common mistakes"
     },
     {
@@ -3266,8 +3222,8 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "skills_backend_caching_checklist",
-      "community": 6,
-      "community_name": "SKILLS_INDEX.md",
+      "community": 35,
+      "community_name": "caching.md - Caching Strategies Skill",
       "norm_label": "checklist"
     },
     {
@@ -3277,8 +3233,8 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "skills_backend_caching_related_skills",
-      "community": 6,
-      "community_name": "SKILLS_INDEX.md",
+      "community": 35,
+      "community_name": "caching.md - Caching Strategies Skill",
       "norm_label": "related skills"
     },
     {
@@ -3970,8 +3926,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_backend_rest_api",
-      "community": 28,
-      "community_name": "rest-api.md - REST API Design Skill",
+      "community": 6,
+      "community_name": "SKILLS_INDEX.md",
       "norm_label": "rest-api.md"
     },
     {
@@ -3981,8 +3937,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_backend_rest_api_rest_api_md_rest_api_design_skill",
-      "community": 28,
-      "community_name": "rest-api.md - REST API Design Skill",
+      "community": 6,
+      "community_name": "SKILLS_INDEX.md",
       "norm_label": "rest-api.md - rest api design skill"
     },
     {
@@ -3992,8 +3948,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "skills_backend_rest_api_purpose",
-      "community": 28,
-      "community_name": "rest-api.md - REST API Design Skill",
+      "community": 6,
+      "community_name": "SKILLS_INDEX.md",
       "norm_label": "purpose"
     },
     {
@@ -4003,8 +3959,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "skills_backend_rest_api_problem_solved",
-      "community": 28,
-      "community_name": "rest-api.md - REST API Design Skill",
+      "community": 6,
+      "community_name": "SKILLS_INDEX.md",
       "norm_label": "problem solved"
     },
     {
@@ -4014,8 +3970,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "skills_backend_rest_api_when_to_load",
-      "community": 28,
-      "community_name": "rest-api.md - REST API Design Skill",
+      "community": 6,
+      "community_name": "SKILLS_INDEX.md",
       "norm_label": "when to load"
     },
     {
@@ -4025,8 +3981,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "skills_backend_rest_api_when_not_to_load",
-      "community": 28,
-      "community_name": "rest-api.md - REST API Design Skill",
+      "community": 6,
+      "community_name": "SKILLS_INDEX.md",
       "norm_label": "when not to load"
     },
     {
@@ -4036,8 +3992,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "skills_backend_rest_api_prerequisites",
-      "community": 28,
-      "community_name": "rest-api.md - REST API Design Skill",
+      "community": 6,
+      "community_name": "SKILLS_INDEX.md",
       "norm_label": "prerequisites"
     },
     {
@@ -4047,8 +4003,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "skills_backend_rest_api_rules",
-      "community": 28,
-      "community_name": "rest-api.md - REST API Design Skill",
+      "community": 6,
+      "community_name": "SKILLS_INDEX.md",
       "norm_label": "rules"
     },
     {
@@ -4058,8 +4014,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "skills_backend_rest_api_best_practices",
-      "community": 28,
-      "community_name": "rest-api.md - REST API Design Skill",
+      "community": 6,
+      "community_name": "SKILLS_INDEX.md",
       "norm_label": "best practices"
     },
     {
@@ -4069,8 +4025,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "skills_backend_rest_api_endpoint_design",
-      "community": 28,
-      "community_name": "rest-api.md - REST API Design Skill",
+      "community": 6,
+      "community_name": "SKILLS_INDEX.md",
       "norm_label": "endpoint design"
     },
     {
@@ -4080,8 +4036,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "skills_backend_rest_api_response_format",
-      "community": 28,
-      "community_name": "rest-api.md - REST API Design Skill",
+      "community": 6,
+      "community_name": "SKILLS_INDEX.md",
       "norm_label": "response format"
     },
     {
@@ -4091,8 +4047,8 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "skills_backend_rest_api_status_codes",
-      "community": 28,
-      "community_name": "rest-api.md - REST API Design Skill",
+      "community": 6,
+      "community_name": "SKILLS_INDEX.md",
       "norm_label": "status codes"
     },
     {
@@ -4102,8 +4058,8 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "skills_backend_rest_api_project_conventions",
-      "community": 28,
-      "community_name": "rest-api.md - REST API Design Skill",
+      "community": 6,
+      "community_name": "SKILLS_INDEX.md",
       "norm_label": "project conventions"
     },
     {
@@ -4113,8 +4069,8 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "skills_backend_rest_api_common_mistakes",
-      "community": 28,
-      "community_name": "rest-api.md - REST API Design Skill",
+      "community": 6,
+      "community_name": "SKILLS_INDEX.md",
       "norm_label": "common mistakes"
     },
     {
@@ -4124,8 +4080,8 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "skills_backend_rest_api_checklist",
-      "community": 28,
-      "community_name": "rest-api.md - REST API Design Skill",
+      "community": 6,
+      "community_name": "SKILLS_INDEX.md",
       "norm_label": "checklist"
     },
     {
@@ -4135,8 +4091,8 @@
       "source_location": "L102",
       "_origin": "ast",
       "id": "skills_backend_rest_api_related_skills",
-      "community": 28,
-      "community_name": "rest-api.md - REST API Design Skill",
+      "community": 6,
+      "community_name": "SKILLS_INDEX.md",
       "norm_label": "related skills"
     },
     {
@@ -4146,8 +4102,8 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "skills_backend_rest_api_related_mcps",
-      "community": 28,
-      "community_name": "rest-api.md - REST API Design Skill",
+      "community": 6,
+      "community_name": "SKILLS_INDEX.md",
       "norm_label": "related mcps"
     },
     {
@@ -10708,31 +10664,8 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "frontend/src/app/api/articles/route.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "frontend_src_app_api_articles_route",
-      "target": "frontend_src_app_api_articles_route_get",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "frontend/src/app/api/articles/route.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "frontend_src_app_api_articles_route",
-      "target": "frontend_src_lib_prisma",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L173",
+      "source_location": "L66",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10743,7 +10676,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L17",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10754,7 +10687,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L21",
+      "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10765,7 +10698,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L28",
+      "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10776,7 +10709,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L141",
+      "source_location": "L38",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10787,7 +10720,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L125",
+      "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10795,33 +10728,11 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L39",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "frontend_src_app_article_slug_page",
-      "target": "frontend_src_app_article_slug_page_getarticlebyslug",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L83",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "frontend_src_app_article_slug_page",
-      "target": "frontend_src_app_article_slug_page_getrelatedarticles",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L9",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10833,7 +10744,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L9",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10845,7 +10756,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L11",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10857,7 +10768,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L11",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10869,7 +10780,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L12",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10881,7 +10792,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L12",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10893,7 +10804,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L13",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10905,7 +10816,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L13",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10917,7 +10828,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L10",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10929,7 +10840,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L10",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10941,7 +10852,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L7",
+      "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10953,7 +10864,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L7",
+      "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10965,7 +10876,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L8",
+      "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10977,7 +10888,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L8",
+      "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
@@ -10989,23 +10900,11 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L14",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
-      "target": "frontend_src_lib_prisma",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L15",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "frontend_src_app_article_slug_page",
-      "target": "frontend_src_lib_types",
+      "target": "frontend_src_lib_mock_data",
       "confidence_score": 1.0
     },
     {
@@ -11013,47 +10912,11 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L15",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "frontend_src_app_article_slug_page",
-      "target": "frontend_src_lib_types_article",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L175",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "frontend_src_app_article_slug_page_articlepage",
-      "target": "frontend_src_app_article_slug_page_getarticlebyslug",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L143",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "frontend_src_app_article_slug_page_generatemetadata",
-      "target": "frontend_src_app_article_slug_page_getarticlebyslug",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "frontend/src/app/article/[slug]/page.tsx",
-      "source_location": "L182",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "frontend_src_app_article_slug_page_articlepage",
-      "target": "frontend_src_app_article_slug_page_getrelatedarticles",
+      "target": "frontend_src_lib_mock_data_articles",
       "confidence_score": 1.0
     },
     {
@@ -20325,5 +20188,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "c592c7e1ae47c8c383b5894580fe598280c4f0b1"
+  "built_at_commit": "d65016c1b8e999e40aa9b5b3dadf79250ea8625c"
 }

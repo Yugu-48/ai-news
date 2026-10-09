@@ -27,14 +27,14 @@
   "25": "validation.md - Validation Skill",
   "26": "seed.ts",
   "27": "package.json",
-  "28": "rest-api.md - REST API Design Skill",
+  "28": "authorization.md - Backend Authorization Skill",
   "29": "database.md - Database Design Skill",
   "30": "rbac.md - Role-Based Access Control Skill",
   "31": "workers.md - Background Workers Skill",
   "32": "forms.md - Form Handling Skill",
   "33": "AI News - AI Assistant Context",
   "34": "AI News — Roadmap",
-  "35": "authorization.md - Backend Authorization Skill",
+  "35": "caching.md - Caching Strategies Skill",
   "36": "validation.md - Backend Validation Skill",
   "37": "rules/graphify.md",
   "38": "layout.tsx",
@@ -63,5 +63,6 @@
   "61": "PROGRESS.md",
   "62": "verification/SKILL.md",
   "63": "workflows/graphify.md",
-  "64": "skeleton-card.tsx"
+  "64": "skeleton-card.tsx",
+  "65": "prisma.ts"
 }

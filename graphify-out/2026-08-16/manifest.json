@@ -25,8 +25,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/article/[slug]/page.tsx": {
-    "mtime": 1786898173.7537484,
-    "ast_hash": "4e33e839322cdb17b266298a517c8912",
+    "mtime": 1785289971.7756114,
+    "ast_hash": "05d9145fe4cc7c6dff724fe93a406d4e",
     "semantic_hash": ""
   },
   "frontend/src/app/layout.tsx": {

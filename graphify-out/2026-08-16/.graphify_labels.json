@@ -1,5 +1,5 @@
 {
-  "0": "[slug]/page.tsx",
+  "0": "search-filter.tsx",
   "1": "PROJECT_BRIEF.md",
   "2": "TASK_SKILL_MAPPING.md",
   "3": "compilerOptions",
@@ -34,7 +34,7 @@
   "32": "forms.md - Form Handling Skill",
   "33": "AI News - AI Assistant Context",
   "34": "AI News — Roadmap",
-  "35": "authorization.md - Backend Authorization Skill",
+  "35": "caching.md - Caching Strategies Skill",
   "36": "validation.md - Backend Validation Skill",
   "37": "rules/graphify.md",
   "38": "layout.tsx",
@@ -63,5 +63,12 @@
   "61": "PROGRESS.md",
   "62": "verification/SKILL.md",
   "63": "workflows/graphify.md",
-  "64": "skeleton-card.tsx"
+  "64": "skeleton-card.tsx",
+  "65": "route.ts",
+  "66": "[slug]/page.tsx",
+  "67": "article-card.tsx",
+  "68": "button.tsx",
+  "69": "badge.tsx",
+  "70": "like-button.tsx",
+  "71": "bookmark-button.tsx"
 }
