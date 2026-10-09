@@ -2,10 +2,12 @@
 
 import Link from "next/link"
 import { Flame } from "lucide-react"
-import { articles } from "@/lib/mock-data"
+import type { Article } from "@/lib/types"
 
-export function TrendingTicker() {
+export function TrendingTicker({ articles }: { articles: Article[] }) {
   const trendingArticles = articles.slice(0, 5)
+
+  if (trendingArticles.length === 0) return null
 
   return (
     <div className="w-full bg-muted/40 border-b border-border/30 overflow-hidden py-2 text-xs">
@@ -13,7 +15,7 @@ export function TrendingTicker() {
         {/* Flame Badge */}
         <div className="flex items-center gap-1.5 shrink-0 px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold uppercase tracking-wider text-[10px]">
           <Flame className="h-3 w-3 fill-amber-500 text-amber-500 animate-bounce" />
-          <span>Trending</span>
+          <span>Latest</span>
         </div>
 
         {/* Ticker Items */}

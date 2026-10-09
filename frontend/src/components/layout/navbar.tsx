@@ -7,11 +7,14 @@ import { Sun, Moon, Menu, X } from "lucide-react"
 import { useEffect, useState } from "react"
 
 const NAV_LINKS = [
-  { label: "Home", href: "/" },
+  { label: "All News", href: "/" },
+  { label: "Breaking", href: "/?category=Breaking" },
+  { label: "AI Models", href: "/?category=AI%20Models" },
   { label: "Research", href: "/?category=Research" },
-  { label: "Industry", href: "/?category=Industry" },
-  { label: "Policy", href: "/?category=Policy" },
-  { label: "Hardware", href: "/?category=Hardware" },
+  { label: "Companies", href: "/?category=Companies" },
+  { label: "Open Source", href: "/?category=Open%20Source" },
+  { label: "AI Policy", href: "/?category=AI%20Policy" },
+  { label: "AI Hardware", href: "/?category=AI%20Hardware" },
 ]
 
 export function Navbar() {
@@ -65,12 +68,12 @@ export function Navbar() {
           </Link>
 
           {/* Desktop navigation */}
-          <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
+          <nav className="hidden lg:flex min-w-0 items-center gap-0.5 overflow-x-auto no-scrollbar" aria-label="Main navigation">
             {NAV_LINKS.map(({ label, href }) => (
               <Link
                 key={label}
                 href={href}
-                className="px-3 py-1.5 rounded-full text-sm font-medium transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                className="px-2 py-1.5 rounded-full text-xs xl:text-sm whitespace-nowrap font-medium transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/60"
               >
                 {label}
               </Link>
@@ -103,7 +106,7 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden rounded-full hover:bg-muted/80 transition-colors"
+              className="lg:hidden rounded-full hover:bg-muted/80 transition-colors"
               onClick={() => setMobileOpen((v) => !v)}
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
             >
@@ -118,7 +121,7 @@ export function Navbar() {
 
         {/* Mobile dropdown menu */}
         {mobileOpen && (
-          <div className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur-xl animate-fade-in">
+          <div className="lg:hidden border-t border-border/40 bg-background/95 backdrop-blur-xl animate-fade-in">
             <nav className="container max-w-7xl px-4 py-4 flex flex-col gap-1" aria-label="Mobile navigation">
               {NAV_LINKS.map(({ label, href }) => (
                 <Link

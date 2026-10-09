@@ -1,16 +1,16 @@
-# Graph Report - AI-News  (2026-07-29)
+# Graph Report - AI-News  (2026-08-16)
 
 ## Corpus Check
-- 79 files · ~23,942 words
+- 92 files · ~29,343 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 880 nodes · 887 edges · 64 communities (57 shown, 7 thin omitted)
+- 901 nodes · 934 edges · 65 communities (57 shown, 8 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ba1ad31d`
+- Built from commit: `c592c7e1`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -24,14 +24,14 @@
 - SKILLS_INDEX.md
 - nextjs.md - Next.js App Router Skill
 - dependencies
-- Start development server
+- Database Schema — AI News Platform
 - react.md - React Patterns Skill
 - components.json
 - animations.md - Animations Skill
 - performance.md - Performance Optimization Skill
 - tailwind.md - Tailwind CSS Skill
 - Core Rules
-- rest-api.md - REST API Design Skill
+- Skill Categories
 - accessibility.md - Accessibility Skill
 - shadcn.md - Shadcn/UI Skill
 - typescript.md - TypeScript Best Practices Skill
@@ -41,16 +41,16 @@
 - redis.md - Redis Usage Skill
 - seo.md - SEO Optimization Skill
 - validation.md - Validation Skill
-- mcp.json
+- seed.ts
 - package.json
-- authorization.md - Backend Authorization Skill
+- rest-api.md - REST API Design Skill
 - database.md - Database Design Skill
 - rbac.md - Role-Based Access Control Skill
 - workers.md - Background Workers Skill
 - forms.md - Form Handling Skill
 - AI News - AI Assistant Context
 - AI News — Roadmap
-- caching.md - Caching Strategies Skill
+- authorization.md - Backend Authorization Skill
 - validation.md - Backend Validation Skill
 - rules/graphify.md
 - layout.tsx
@@ -97,17 +97,21 @@
   frontend/src/components/article-card.tsx → frontend/src/lib/types.ts
 - `SearchFilterProps` --references--> `Article`  [EXTRACTED]
   frontend/src/components/search-filter.tsx → frontend/src/lib/types.ts
-- `Badge()` --calls--> `cn()`  [EXTRACTED]
-  frontend/src/components/ui/badge.tsx → frontend/src/lib/utils.ts
+- `BookmarkButton()` --calls--> `useBookmarks()`  [EXTRACTED]
+  frontend/src/components/bookmark-button.tsx → frontend/src/lib/use-bookmarks.ts
+- `LikeButton()` --calls--> `useLikes()`  [EXTRACTED]
+  frontend/src/components/like-button.tsx → frontend/src/lib/use-likes.ts
+- `SearchFilter()` --calls--> `useBookmarks()`  [EXTRACTED]
+  frontend/src/components/search-filter.tsx → frontend/src/lib/use-bookmarks.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (64 total, 7 thin omitted)
+## Communities (65 total, 8 thin omitted)
 
 ### Community 0 - "[slug]/page.tsx"
-Cohesion: 0.08
-Nodes (28): ArticlePageProps, CATEGORY_ACCENT, CATEGORY_GRADIENT, STAGGER_CLASSES, ArticleCard(), ArticleCardProps, CATEGORY_ACCENT, CATEGORY_GRADIENTS (+20 more)
+Cohesion: 0.06
+Nodes (41): ArticlePage(), ArticlePageProps, CATEGORY_ACCENT, CATEGORY_GRADIENT, generateMetadata(), getArticleBySlug, getRelatedArticles(), STAGGER_CLASSES (+33 more)
 
 ### Community 1 - "PROJECT_BRIEF.md"
 Cohesion: 0.05
@@ -119,15 +123,15 @@ Nodes (38): Add Animations, Add Authentication, Add Authorization, Add Caching, 
 
 ### Community 3 - "compilerOptions"
 Cohesion: 0.07
-Nodes (28): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+20 more)
+Nodes (29): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+21 more)
 
 ### Community 4 - "compilerOptions"
 Cohesion: 0.07
 Nodes (26): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+18 more)
 
 ### Community 5 - "devDependencies"
-Cohesion: 0.08
-Nodes (25): eslint, eslint-config-next, devDependencies, eslint, eslint-config-next, tailwindcss, @tailwindcss/postcss, @types/node (+17 more)
+Cohesion: 0.07
+Nodes (27): eslint, eslint-config-next, devDependencies, eslint, eslint-config-next, prisma, tailwindcss, @tailwindcss/postcss (+19 more)
 
 ### Community 6 - "SKILLS_INDEX.md"
 Cohesion: 0.06
@@ -138,12 +142,12 @@ Cohesion: 0.10
 Nodes (19): Best Practices, Checklist, Client Component (When Needed), Common Mistakes, Future Improvements, nextjs.md - Next.js App Router Skill, Parallel Data Fetching, Prerequisites (+11 more)
 
 ### Community 8 - "dependencies"
-Cohesion: 0.11
-Nodes (19): class-variance-authority, clsx, dependencies, class-variance-authority, clsx, lucide-react, next, next-themes (+11 more)
+Cohesion: 0.10
+Nodes (21): class-variance-authority, clsx, dependencies, class-variance-authority, clsx, lucide-react, next, next-themes (+13 more)
 
-### Community 9 - "Start development server"
-Cohesion: 0.11
-Nodes (18): Actions (8 Steps), Clone the repository, Execution Order, Files Created, Install dependencies, Objective, Phase 0: Critical Setup Plan, Start development server (+10 more)
+### Community 9 - "Database Schema — AI News Platform"
+Cohesion: 0.10
+Nodes (19): 1. `sources` — RSS Feed Sources, 2. `articles` — News Articles, 3. `tags` — Taxonomy Tags, 4. `article_tags` — Join Table, 5. `profiles` — User Profiles (Supabase Auth), 6. `user_bookmarks` — Saved Articles, 7. `reading_history` — Article Read Tracking, Database Schema — AI News Platform (+11 more)
 
 ### Community 10 - "react.md - React Patterns Skill"
 Cohesion: 0.11
@@ -169,9 +173,9 @@ Nodes (17): Basic Styling, Best Practices, Checklist, Common Mistakes, Condition
 Cohesion: 0.12
 Nodes (16): Common Mistakes, Core Rules, Loading Sequence, MCP Integration, Purpose, Rule 1: Never Load Unrelated Skills, Rule 2: Never Load an Entire Category, Rule 3: Prefer 2-5 Skills Maximum (+8 more)
 
-### Community 16 - "rest-api.md - REST API Design Skill"
-Cohesion: 0.12
-Nodes (16): Best Practices, Checklist, Common Mistakes, Endpoint Design, Prerequisites, Problem Solved, Project Conventions, Purpose (+8 more)
+### Community 16 - "Skill Categories"
+Cohesion: 0.14
+Nodes (13): AI Skills, Backend Skills, By Size, By Task, Deployment Skills, Frontend Skills, General Skills, Git Skills (+5 more)
 
 ### Community 17 - "accessibility.md - Accessibility Skill"
 Cohesion: 0.12
@@ -209,17 +213,13 @@ Nodes (15): Best Practices, Checklist, Common Mistakes, Page Metadata, Prerequis
 Cohesion: 0.12
 Nodes (15): Basic Schema, Best Practices, Checklist, Common Mistakes, Complex Validation, Prerequisites, Problem Solved, Project Conventions (+7 more)
 
-### Community 26 - "mcp.json"
-Cohesion: 0.17
-Nodes (14): npx, uvx, mcp-server-fetch, @modelcontextprotocol/server-filesystem, @modelcontextprotocol/server-sequential-thinking, @playwright/mcp, @upstash/context7-mcp, chrome-devtools (+6 more)
-
 ### Community 27 - "package.json"
 Cohesion: 0.13
 Nodes (14): description, engines, node, name, packageManager, private, scripts, build (+6 more)
 
-### Community 28 - "authorization.md - Backend Authorization Skill"
-Cohesion: 0.13
-Nodes (14): authorization.md - Backend Authorization Skill, Best Practices, Checklist, Common Mistakes, Middleware Pattern, Prerequisites, Problem Solved, Project Conventions (+6 more)
+### Community 28 - "rest-api.md - REST API Design Skill"
+Cohesion: 0.12
+Nodes (16): Best Practices, Checklist, Common Mistakes, Endpoint Design, Prerequisites, Problem Solved, Project Conventions, Purpose (+8 more)
 
 ### Community 29 - "database.md - Database Design Skill"
 Cohesion: 0.13
@@ -245,17 +245,17 @@ Nodes (13): AI News - AI Assistant Context, Anti-patterns to Avoid, Code Style, 
 Cohesion: 0.14
 Nodes (13): AI News — Roadmap, Core pages, Design foundation, Full stack reference, Layout shell, Mock data, PHASE 1 — FRONTEND (mock data, no backend), PHASE 2 — BACKEND (real data, no AI yet) (+5 more)
 
-### Community 35 - "caching.md - Caching Strategies Skill"
-Cohesion: 0.14
-Nodes (13): Best Practices, caching.md - Caching Strategies Skill, Checklist, Common Mistakes, In-Memory Cache, Prerequisites, Problem Solved, Project Conventions (+5 more)
+### Community 35 - "authorization.md - Backend Authorization Skill"
+Cohesion: 0.13
+Nodes (14): authorization.md - Backend Authorization Skill, Best Practices, Checklist, Common Mistakes, Middleware Pattern, Prerequisites, Problem Solved, Project Conventions (+6 more)
 
 ### Community 36 - "validation.md - Backend Validation Skill"
 Cohesion: 0.14
 Nodes (13): Best Practices, Checklist, Common Mistakes, Prerequisites, Problem Solved, Project Conventions, Purpose, Related Skills (+5 more)
 
 ### Community 38 - "layout.tsx"
-Cohesion: 0.18
-Nodes (7): geistMono, geistSans, metadata, Footer(), NAV_LINKS, Navbar(), ThemeProvider()
+Cohesion: 0.15
+Nodes (9): geistMono, geistSans, metadata, Footer(), NAV_LINKS, Navbar(), NewsletterModal(), NewsletterModalProps (+1 more)
 
 ### Community 39 - "AI News"
 Cohesion: 0.20
@@ -334,24 +334,24 @@ Cohesion: 0.50
 Nodes (3): Agent Branches, Branching, Workflow
 
 ## Knowledge Gaps
-- **634 isolated node(s):** `@upstash/context7-mcp`, `@playwright/mcp`, `@modelcontextprotocol/server-sequential-thinking`, `@modelcontextprotocol/server-filesystem`, `uvx` (+629 more)
+- **637 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+632 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **8 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **What connects `@upstash/context7-mcp`, `@playwright/mcp`, `@modelcontextprotocol/server-sequential-thinking` to the rest of the system?**
-  _634 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **What connects `$schema`, `style`, `rsc` to the rest of the system?**
+  _637 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `[slug]/page.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.0824524312896406 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05874125874125874 - nodes in this community are weakly interconnected._
 - **Should `PROJECT_BRIEF.md` be split into smaller, more focused modules?**
   _Cohesion score 0.05 - nodes in this community are weakly interconnected._
 - **Should `TASK_SKILL_MAPPING.md` be split into smaller, more focused modules?**
   _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._
 - **Should `compilerOptions` be split into smaller, more focused modules?**
-  _Cohesion score 0.06896551724137931 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06666666666666667 - nodes in this community are weakly interconnected._
 - **Should `compilerOptions` be split into smaller, more focused modules?**
   _Cohesion score 0.07407407407407407 - nodes in this community are weakly interconnected._
 - **Should `devDependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.07692307692307693 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07142857142857142 - nodes in this community are weakly interconnected._
