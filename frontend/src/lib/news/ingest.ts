@@ -1,28 +1,7 @@
-import { createHash } from "node:crypto"
 import { XMLParser } from "fast-xml-parser"
 import { prisma } from "@/lib/prisma"
 import type { Article } from "@/lib/types"
-
-type Category = "Research" | "Industry" | "Policy" | "Hardware"
-
-interface Candidate {
-  title: string
-  url: string
-  summary: string
-  publishedAt: Date
-  category: Category
-  author?: string
-}
-
-interface NewsSource {
-  name: string
-  slug: string
-  websiteUrl: string
-  feedUrl: string
-  feedType: "rss" | "api"
-  category: Category
-  load: () => Promise<Candidate[]>
-}
+import { aiRelevant, articleSlug, canonicalUrl, ingestSources, type Candidate, type IngestionStore, type NewsCategory, type NewsSource } from "./ingest-core"
 
 const parser = new XMLParser({ ignoreAttributes: false, processEntities: true })
 const timeoutMs = 12_000
@@ -63,35 +42,11 @@ function validDate(value: unknown): Date | null {
     : null
 }
 
-function canonicalUrl(value: string): string | null {
-  try {
-    const url = new URL(value)
-    if (url.protocol !== "https:" && url.protocol !== "http:") return null
-    for (const key of [...url.searchParams.keys()]) {
-      if (/^(utm_|fbclid$|gclid$)/i.test(key)) url.searchParams.delete(key)
-    }
-    url.hash = ""
-    return url.toString()
-  } catch {
-    return null
-  }
-}
-
-function aiRelevant(title: string, summary: string): boolean {
-  return /\b(ai|artificial intelligence|machine learning|llm|language model|neural|deep learning|chatgpt|openai|anthropic|gemini|deepmind|hugging face|nvidia|inference|transformer|robotics|agentic)\b/i.test(
-    `${title} ${summary}`
-  )
-}
-
-function classify(title: string, fallback: Category): Category {
+function classify(title: string, fallback: NewsCategory): NewsCategory {
   if (/\b(regulat|law|policy|safety|governance|copyright|ban)\b/i.test(title)) return "Policy"
   if (/\b(chip|gpu|hardware|data cent|semiconductor|robot)\b/i.test(title)) return "Hardware"
   if (/\b(paper|research|study|benchmark|model architecture)\b/i.test(title)) return "Research"
   return fallback
-}
-
-function articleSlug(title: string, url: string): string {
-  return `${title.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 90)}-${createHash("sha256").update(url).digest("hex").slice(0, 10)}`
 }
 
 async function fetchJson(url: string): Promise<unknown> {
@@ -118,7 +73,7 @@ async function fetchXml(url: string): Promise<Record<string, unknown>> {
   return parsed as Record<string, unknown>
 }
 
-async function rss(url: string, category: Category): Promise<Candidate[]> {
+async function rss(url: string, category: NewsCategory): Promise<Candidate[]> {
   const document = await fetchXml(url)
   const rssRoot = document.rss as Record<string, unknown> | undefined
   const channel = rssRoot?.channel as Record<string, unknown> | undefined
@@ -215,41 +170,28 @@ export async function fetchLiveArticles(limit = 50): Promise<Article[]> {
   return (liveCache?.articles ?? []).slice(0, limit)
 }
 
-export interface SourceResult {
-  source: string
-  fetched: number
-  inserted: number
-  error?: string
+const prismaStore: IngestionStore = {
+  upsertSource: (source) => prisma.source.upsert({
+    where: { slug: source.slug },
+    update: { feedUrl: source.feedUrl, feedType: source.feedType, isActive: true },
+    create: { name: source.name, slug: source.slug, websiteUrl: source.websiteUrl, feedUrl: source.feedUrl, feedType: source.feedType, category: source.category },
+    select: { id: true },
+  }),
+  insertArticles: async (articles) => {
+    const result = await prisma.article.createMany({
+      data: articles.map(({ sourceId, title, slug, url, summary, author, category, publishedAt }) => ({ sourceId, title, slug, url, summary, author, category, publishedAt })),
+      skipDuplicates: true,
+    })
+    return result.count
+  },
+  markSourceSuccess: async (sourceId, at) => {
+    await prisma.source.update({ where: { id: sourceId }, data: { lastFetchedAt: at, errorCount: 0 } })
+  },
+  markSourceFailure: async (sourceId) => {
+    await prisma.source.update({ where: { id: sourceId }, data: { errorCount: { increment: 1 } } })
+  },
 }
 
-export async function ingestNews(): Promise<SourceResult[]> {
-  const results: SourceResult[] = []
-  for (const source of sources) {
-    let dbSource: { id: string } | undefined
-    try {
-      dbSource = await prisma.source.upsert({
-        where: { slug: source.slug },
-        update: { feedUrl: source.feedUrl, feedType: source.feedType, isActive: true },
-        create: { name: source.name, slug: source.slug, websiteUrl: source.websiteUrl, feedUrl: source.feedUrl, feedType: source.feedType, category: source.category },
-      })
-      const candidates = await source.load()
-      let inserted = 0
-      const seen = new Set<string>()
-      for (const item of candidates.slice(0, 50)) {
-        if (seen.has(item.url) || !aiRelevant(item.title, item.summary) && item.category !== "Research") continue
-        seen.add(item.url)
-        const exists = await prisma.article.findUnique({ where: { url: item.url }, select: { id: true } })
-        if (exists) continue
-        const slug = articleSlug(item.title, item.url)
-        await prisma.article.create({ data: { sourceId: dbSource.id, title: item.title, slug, url: item.url, summary: item.summary, author: item.author, category: item.category, publishedAt: item.publishedAt } })
-        inserted++
-      }
-      await prisma.source.update({ where: { id: dbSource.id }, data: { lastFetchedAt: new Date(), errorCount: 0 } })
-      results.push({ source: source.name, fetched: candidates.length, inserted })
-    } catch (error) {
-      if (dbSource) await prisma.source.update({ where: { id: dbSource.id }, data: { errorCount: { increment: 1 } } }).catch(() => undefined)
-      results.push({ source: source.name, fetched: 0, inserted: 0, error: error instanceof Error ? error.message : "Unknown error" })
-    }
-  }
-  return results
+export async function ingestNews() {
+  return ingestSources(sources, prismaStore)
 }

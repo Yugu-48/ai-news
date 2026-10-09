@@ -1,33 +1,31 @@
-import { timingSafeEqual } from "node:crypto"
 import { NextResponse } from "next/server"
 import { ingestNews } from "@/lib/news/ingest"
-import { isDatabaseConfigured } from "@/lib/articles"
+import { getDatabaseConfiguration } from "@/lib/database-config"
+import { isIngestAuthorized } from "@/lib/ingest-auth"
+import { prisma } from "@/lib/prisma"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 
-function authorized(request: Request): boolean {
-  const secret = process.env.INGEST_SECRET
-  const provided = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "")
-  if (!secret || !provided) return false
-  const expected = Buffer.from(secret)
-  const actual = Buffer.from(provided)
-  return expected.length === actual.length && timingSafeEqual(expected, actual)
-}
-
 export async function POST(request: Request) {
-  if (!authorized(request)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  if (!isDatabaseConfigured()) return NextResponse.json({ error: "Database is not configured" }, { status: 503 })
+  if (!isIngestAuthorized(request)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  if (!getDatabaseConfiguration().configured) return NextResponse.json({ error: "Database is not configured" }, { status: 503 })
+
+  try {
+    await prisma.source.count()
+  } catch {
+    return NextResponse.json({ error: "Database unavailable or schema not migrated" }, { status: 503 })
+  }
 
   try {
     const sources = await ingestNews()
+    const success = sources.some((source) => !source.error)
     return NextResponse.json({
-      success: sources.some((source) => !source.error),
+      success,
       sources,
       inserted: sources.reduce((sum, source) => sum + source.inserted, 0),
-    })
-  } catch (error) {
-    console.error("Ingestion failed:", error)
+    }, { status: success ? 200 : 502 })
+  } catch {
     return NextResponse.json({ error: "Ingestion failed" }, { status: 500 })
   }
 }
