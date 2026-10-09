@@ -1,5 +1,9 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
+import { cache } from "react"
+import Link from "next/link"
+import { ArrowLeft, Clock, ExternalLink } from "lucide-react"
+
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ArticleCard } from "@/components/article-card"
@@ -7,9 +11,10 @@ import { ShareButton } from "@/components/share-button"
 import { BookmarkButton } from "@/components/bookmark-button"
 import { LikeButton } from "@/components/like-button"
 import { ReadingProgressBar } from "@/components/reading-progress-bar"
-import { articles } from "@/lib/mock-data"
-import { ArrowLeft, Clock, ExternalLink } from "lucide-react"
-import Link from "next/link"
+import { prisma } from "@/lib/prisma"
+import { Article } from "@/lib/types"
+import { isDatabaseConfigured } from "@/lib/articles"
+import { articles as mockArticles } from "@/lib/mock-data"
 
 interface ArticlePageProps {
   params: Promise<{ slug: string }>
@@ -29,18 +34,138 @@ const CATEGORY_GRADIENT: Record<string, string> = {
   Hardware: "from-pink-600/80 to-rose-600/60",
 }
 
+/**
+ * Cached article fetcher for Server Component and metadata generation.
+ * Queries PostgreSQL via Prisma when configured; falls back to mock data
+ * during preview/local development if database is unseeded or unconfigured.
+ */
+const getArticleBySlug = cache(async (slug: string): Promise<Article | null> => {
+  if (isDatabaseConfigured()) {
+    try {
+      const article = await prisma.article.findUnique({
+        where: { slug },
+        include: {
+          source: {
+            select: { name: true, slug: true, websiteUrl: true },
+          },
+          tags: {
+            include: {
+              tag: {
+                select: { name: true, slug: true },
+              },
+            },
+          },
+        },
+      })
+
+      if (article) {
+        return {
+          id: article.id,
+          title: article.title,
+          source: article.source.name,
+          summary: article.summary || article.content || "",
+          publishedAt: article.publishedAt.toISOString(),
+          url: article.url,
+          tags: article.tags.map((t) => t.tag.name),
+          slug: article.slug,
+          category: article.category as Article["category"],
+          imageUrl: article.imageUrl || undefined,
+          readingTime: article.readingTime || undefined,
+        }
+      }
+    } catch (error) {
+      console.warn(`Database query failed for slug "${slug}", using fallback data:`, error)
+    }
+  }
+
+  const mock = mockArticles.find((a) => a.slug === slug)
+  return mock ?? null
+})
+
+/**
+ * Fetch related articles in the same category from the database or mock data.
+ */
+async function getRelatedArticles(category: string, currentSlug: string): Promise<Article[]> {
+  if (isDatabaseConfigured()) {
+    try {
+      const related = await prisma.article.findMany({
+        where: {
+          category,
+          slug: { not: currentSlug },
+        },
+        take: 3,
+        orderBy: { publishedAt: "desc" },
+        include: {
+          source: {
+            select: { name: true, slug: true, websiteUrl: true },
+          },
+          tags: {
+            include: {
+              tag: {
+                select: { name: true, slug: true },
+              },
+            },
+          },
+        },
+      })
+
+      if (related.length > 0) {
+        return related.map((article) => ({
+          id: article.id,
+          title: article.title,
+          source: article.source.name,
+          summary: article.summary || article.content || "",
+          publishedAt: article.publishedAt.toISOString(),
+          url: article.url,
+          tags: article.tags.map((t) => t.tag.name),
+          slug: article.slug,
+          category: article.category as Article["category"],
+          imageUrl: article.imageUrl || undefined,
+          readingTime: article.readingTime || undefined,
+        }))
+      }
+    } catch (error) {
+      console.warn("Error fetching related articles from DB, using fallback:", error)
+    }
+  }
+
+  return mockArticles
+    .filter((a) => a.category === category && a.slug !== currentSlug)
+    .slice(0, 3)
+}
+
 export async function generateStaticParams() {
-  return articles.map((article) => ({
+  if (isDatabaseConfigured()) {
+    try {
+      const articles = await prisma.article.findMany({
+        select: { slug: true },
+        take: 50,
+        orderBy: { publishedAt: "desc" },
+      })
+      if (articles.length > 0) {
+        return articles.map((article) => ({
+          slug: article.slug,
+        }))
+      }
+    } catch (error) {
+      console.warn("Failed to generate static params from DB:", error)
+    }
+  }
+
+  return mockArticles.map((article) => ({
     slug: article.slug,
   }))
 }
 
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { slug } = await params
-  const article = articles.find((a) => a.slug === slug)
+  const article = await getArticleBySlug(slug)
 
   if (!article) {
-    return { title: "Article Not Found" }
+    return {
+      title: "Article Not Found | AI News",
+      description: "The requested article could not be found.",
+    }
   }
 
   return {
@@ -59,22 +184,21 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
       card: "summary_large_image",
       title: article.title,
       description: article.summary,
+      images: article.imageUrl ? [article.imageUrl] : undefined,
     },
   }
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params
-  const article = articles.find((a) => a.slug === slug)
+  const article = await getArticleBySlug(slug)
 
   if (!article) {
     notFound()
   }
 
   // Related articles: same category, different slug, up to 3
-  const relatedArticles = articles
-    .filter((a) => a.category === article.category && a.slug !== article.slug)
-    .slice(0, 3)
+  const relatedArticles = await getRelatedArticles(article.category, article.slug)
 
   const accentClass = CATEGORY_ACCENT[article.category] ?? "text-muted-foreground border-border bg-muted"
   const gradientClass = CATEGORY_GRADIENT[article.category] ?? "from-slate-600/80 to-slate-800/60"
