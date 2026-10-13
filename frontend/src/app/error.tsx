@@ -7,9 +7,10 @@ export default function ErrorPage({ error, reset }: { error: Error & { digest?: 
   return (
     <div className="container max-w-2xl mx-auto px-4 py-24 text-center space-y-5" role="alert">
       <p className="text-xs font-bold uppercase tracking-widest text-primary">Feed unavailable</p>
-      <h1 className="text-3xl font-bold">We could not load the news right now.</h1>
+      <h1 className="editorial-heading text-3xl">We could not load the news right now.</h1>
       <p className="text-muted-foreground">The sources may be temporarily unavailable. Please try again.</p>
-      <button type="button" onClick={reset} className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">Try again</button>
+      <button type="button" onClick={reset} className="min-h-11 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">Try again</button>
     </div>
   )
 }
+

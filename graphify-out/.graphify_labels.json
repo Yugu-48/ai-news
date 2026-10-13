@@ -35,7 +35,7 @@
   "33": "AI News - AI Assistant Context",
   "34": "AI News — Roadmap",
   "35": "authorization.md - Backend Authorization Skill",
-  "36": "validation.md - Backend Validation Skill",
+  "36": "ingest.ts",
   "37": "rules/graphify.md",
   "38": "layout.tsx",
   "39": "AI News",
@@ -63,5 +63,14 @@
   "61": "PROGRESS.md",
   "62": "verification/SKILL.md",
   "63": "workflows/graphify.md",
-  "64": "skeleton-card.tsx"
+  "64": "loading.tsx",
+  "65": "capture-mobile.mjs",
+  "66": "Verification record — 2026-10-09",
+  "67": "ARCHITECTURE.md",
+  "68": "DEPLOYMENT.md",
+  "69": "NEWS_SOURCES.md",
+  "70": "RESEARCH.md",
+  "71": "UI_SPEC.md",
+  "72": "error.tsx",
+  "73": "taste.md"
 }

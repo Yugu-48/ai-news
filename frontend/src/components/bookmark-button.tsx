@@ -3,30 +3,33 @@
 import { Bookmark } from "lucide-react"
 import { useBookmarks } from "@/lib/use-bookmarks"
 import { Button } from "@/components/ui/button"
+import type { Article } from "@/lib/types"
 
 interface BookmarkButtonProps {
   articleId: string
+  article?: Article
   variant?: "icon" | "button"
   className?: string
 }
 
-export function BookmarkButton({ articleId, variant = "icon", className = "" }: BookmarkButtonProps) {
+export function BookmarkButton({ articleId, article, variant = "icon", className = "" }: BookmarkButtonProps) {
   const { isBookmarked, toggleBookmark, mounted } = useBookmarks()
   const active = mounted && isBookmarked(articleId)
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    toggleBookmark(articleId)
+    toggleBookmark(articleId, article)
   }
 
   if (variant === "button") {
     return (
       <Button
         variant={active ? "default" : "outline"}
-        className={`rounded-xl font-semibold gap-2 transition-all ${className}`}
+        className={`min-h-11 rounded-md font-semibold gap-2 transition-all ${className}`}
         onClick={handleClick}
         aria-label={active ? "Remove bookmark" : "Save article"}
+        aria-pressed={active}
       >
         <Bookmark className={`h-4 w-4 ${active ? "fill-current" : ""}`} />
         {active ? "Saved" : "Save Article"}
@@ -39,8 +42,9 @@ export function BookmarkButton({ articleId, variant = "icon", className = "" }: 
       type="button"
       onClick={handleClick}
       aria-label={active ? "Remove bookmark" : "Save article"}
+      aria-pressed={active}
       title={active ? "Saved to bookmarks" : "Save to bookmarks"}
-      className={`p-2 rounded-full backdrop-blur-md transition-all duration-200 ${
+      className={`min-h-11 min-w-11 p-2 flex items-center justify-center rounded-md backdrop-blur-md transition-all duration-200 ${
         active
           ? "bg-primary text-primary-foreground shadow-md scale-105"
           : "bg-background/80 text-muted-foreground hover:text-foreground hover:bg-background border border-border/40"
@@ -50,3 +54,4 @@ export function BookmarkButton({ articleId, variant = "icon", className = "" }: 
     </button>
   )
 }
+

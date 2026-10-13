@@ -1,175 +1,95 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
-import { useRouter } from "next/navigation"
+import Link from "next/link"
+import { useEffect, useMemo, useReducer, useRef, useState } from "react"
 import { ArticleCard } from "@/components/article-card"
 import { SearchFilter } from "@/components/search-filter"
+import { TopicOverview } from "@/components/topic-overview"
 import type { Article } from "@/lib/types"
-import { matchesCategory, type FeedCategory } from "@/lib/categories"
-import { BookOpen, Globe, Zap } from "lucide-react"
+import { categoryPages, collectionPages, isCollection, initialFilters, filterFeed, createFeedState, feedReducer, countNewStories, type FeedView } from "@/lib/feed-model"
+import { useFeedLayout } from "@/lib/use-feed-layout"
+import { createFeedPoller } from "@/lib/feed-poller"
+import { useBookmarks } from "@/lib/use-bookmarks"
+import { useLikes } from "@/lib/use-likes"
+import { rememberSelectedArticles, useStoredArticles } from "@/lib/use-article-selection"
+import { mergeLibraryArticles, selectLibraryArticles, parseStoredArticles } from "@/lib/article-selection"
 
-const STAGGER_CLASSES = [
-  "stagger-1","stagger-2","stagger-3","stagger-4","stagger-5","stagger-6",
-  "stagger-7","stagger-8","stagger-9","stagger-10","stagger-11","stagger-12",
-]
+interface HomeFeedProps { initialArticles: Article[]; initialView: FeedView }
 
-interface HomeFeedProps {
-  initialArticles: Article[]
-  initialCategory: FeedCategory
-}
+export function HomeFeed({ initialArticles, initialView }: HomeFeedProps) {
+  const [state, dispatch] = useReducer(feedReducer, initialArticles, createFeedState)
+  const [filters, setFilters] = useState(() => initialFilters(initialView))
+  const { layout, setLayout } = useFeedLayout(initialView)
+  const { bookmarkedIds } = useBookmarks()
+  const { likedIds } = useLikes()
+  const archived = useStoredArticles()
+  const resultsHeading = useRef<HTMLHeadingElement>(null)
+  const library = useMemo(() => mergeLibraryArticles(state.visible, archived), [state.visible, archived])
+  const saved = useMemo(() => selectLibraryArticles(library, bookmarkedIds), [library, bookmarkedIds])
+  const liked = useMemo(() => selectLibraryArticles(library, likedIds), [library, likedIds])
+  const collection = isCollection(initialView)
+  const total = initialView === "Saved" ? saved.length : initialView === "Liked" ? liked.length : 0
+  const missing = collection ? (initialView === "Saved" ? bookmarkedIds.length : likedIds.length) - total : 0
+  const base = collection ? library : state.visible
+  const filtered = useMemo(() => filterFeed(base, filters, bookmarkedIds, likedIds), [base, filters, bookmarkedIds, likedIds])
+  const options = useMemo(() => filterFeed(base, initialFilters(initialView), bookmarkedIds, likedIds), [base, initialView, bookmarkedIds, likedIds])
+  const currentIds = useMemo(() => new Set(state.visible.map(article => article.id)), [state.visible])
+  const newCount = state.pending ? countNewStories(collection ? library : state.visible, state.pending, filters, bookmarkedIds, likedIds) : 0
+  const sources = new Set(filtered.map(article => article.source)).size
+  const research = initialView === "Research"
+  const description = collection ? collectionPages[initialView].description : categoryPages[initialView].description
+  const editorial = layout === "editorial"
+  const card = (article: Article, variant: "lead" | "row" | "card") => <ArticleCard key={article.id} article={article} variant={variant} restrained={research} sourceOnly={!currentIds.has(article.id)} />
 
-export function HomeFeed({ initialArticles, initialCategory }: HomeFeedProps) {
-  const router = useRouter()
-  const [filteredArticles, setFilteredArticles] = useState<Article[]>(initialArticles.filter((article) => matchesCategory(article, initialCategory)))
-
+  useEffect(() => { rememberSelectedArticles(state.visible) }, [state.visible])
   useEffect(() => {
-    const timer = window.setInterval(() => router.refresh(), 60_000)
-    return () => window.clearInterval(timer)
-  }, [router])
-
-  useEffect(() => setFilteredArticles(initialArticles.filter((article) => matchesCategory(article, initialCategory))), [initialArticles, initialCategory])
-
-  const hasArticles = filteredArticles.length > 0
-  const featuredArticle = hasArticles ? filteredArticles[0] : null
-  const remainingArticles = hasArticles ? filteredArticles.slice(1) : []
-
-  const sourcesCount = useMemo(
-    () => new Set(initialArticles.map((a) => a.source)).size,
-    [initialArticles]
-  )
-
-  const latestDate = useMemo(() => {
-    if (initialArticles.length === 0) return "—"
-    return new Date(initialArticles[0].publishedAt).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
+    const reset = () => { setFilters(initialFilters(initialView)); dispatch({ type: "discard" }) }
+    window.addEventListener("ai-news-reset-feed", reset)
+    return () => window.removeEventListener("ai-news-reset-feed", reset)
+  }, [initialView])
+  useEffect(() => {
+    const poller = createFeedPoller({
+      isVisible: () => document.visibilityState === "visible",
+      load: async signal => {
+        const response = await fetch("/api/articles?limit=50", { signal, cache: "no-store" })
+        if (!response.ok) throw new Error("Feed refresh failed")
+        const body: unknown = await response.json()
+        if (!body || typeof body !== "object" || !("data" in body) || !Array.isArray(body.data)) throw new Error("Invalid feed")
+        const articles = parseStoredArticles(JSON.stringify(body.data))
+        if (articles.length !== body.data.length) throw new Error("Invalid article metadata")
+        return articles
+      },
+      onData: articles => dispatch({ type: "receive", articles }),
+      onError: () => dispatch({ type: "error" }),
     })
-  }, [initialArticles])
+    const timer = window.setInterval(() => { void poller.tick() }, 60_000)
+    return () => { window.clearInterval(timer); poller.stop() }
+  }, [initialView])
 
-  const isEmptyDatabase = initialArticles.length === 0
-
-  return (
-    <div className="container max-w-[1536px] mx-auto py-8 sm:py-12 px-4 sm:px-6 lg:px-10 space-y-10 w-full">
-
-      {/* Header and Brand */}
-      <div className="flex flex-col space-y-4 animate-fade-in-up">
-        <div className="flex items-center gap-2">
-          <span className="relative flex h-2 w-2" aria-hidden="true">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-70" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
-          </span>
-          <span className="text-xs font-bold uppercase tracking-widest text-primary">
-            AI News Feed
-          </span>
-        </div>
-
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-foreground via-foreground/90 to-muted-foreground bg-clip-text text-transparent leading-tight">
-          Latest AI<br className="hidden sm:block" /> Developments
-        </h1>
-        <p className="text-muted-foreground text-base max-w-2xl leading-relaxed">
-          Stay updated with high-quality digests, insights, and breakthroughs in artificial intelligence — compiled from trusted sources worldwide.
-        </p>
-      </div>
-
-      {/* Stats bar */}
-      <div className="flex flex-wrap items-center gap-4 sm:gap-8 py-4 border-y border-border/40 animate-fade-in-up stagger-2">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <BookOpen className="h-4 w-4 text-primary" aria-hidden="true" />
-          <span>
-            <strong className="text-foreground font-bold">{initialArticles.length}</strong> articles
-          </span>
-        </div>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Globe className="h-4 w-4 text-primary" aria-hidden="true" />
-          <span>
-            <strong className="text-foreground font-bold">{sourcesCount}</strong> sources
-          </span>
-        </div>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Zap className="h-4 w-4 text-primary" aria-hidden="true" />
-          <span>Latest publication <strong className="text-foreground font-bold">{latestDate}</strong></span>
-        </div>
-      </div>
-
-      {isEmptyDatabase ? (
-        <div className="text-center py-16 border border-dashed border-border/60 rounded-3xl space-y-4 animate-fade-in bg-card/30">
-          <div className="h-12 w-12 rounded-full bg-muted/60 text-muted-foreground flex items-center justify-center mx-auto">
-            <BookOpen className="h-6 w-6 opacity-60" />
-          </div>
-          <div className="space-y-1">
-            <p className="text-lg font-semibold text-foreground">No articles available yet</p>
-            <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-              Check back soon — the feed will populate as new AI news is published.
-            </p>
-          </div>
-        </div>
-      ) : (
-        <>
-          {/* Filter and Search Bar */}
-          <div className="bg-muted/30 p-2 rounded-3xl border border-border/40 backdrop-blur-sm animate-fade-in-up stagger-3">
-            <SearchFilter articles={initialArticles} onFilter={setFilteredArticles} initialCategory={initialCategory} />
-          </div>
-
-          {/* Articles Stream */}
-          {!hasArticles ? (
-            <div className="text-center py-16 border border-dashed border-border/60 rounded-3xl space-y-4 animate-fade-in bg-card/30">
-              <div className="h-12 w-12 rounded-full bg-muted/60 text-muted-foreground flex items-center justify-center mx-auto">
-                <BookOpen className="h-6 w-6 opacity-60" />
-              </div>
-              <div className="space-y-1">
-                <p className="text-lg font-semibold text-foreground">No articles match your criteria</p>
-                <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-                  Try clearing your search query, selecting another category, or saving some articles to your bookmarks.
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => window.location.assign("/")}
-                className="px-4 py-2 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 text-xs font-semibold transition-colors cursor-pointer"
-              >
-                Show All Articles
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-10">
-
-              {/* Featured Hero Article */}
-              {featuredArticle && (
-                <div className="space-y-3 animate-fade-in-up stagger-4">
-                  <span className="text-xs font-bold tracking-widest text-indigo-600 dark:text-indigo-400 uppercase">
-                    ✦ Featured Cover
-                  </span>
-                  <ArticleCard article={featuredArticle} isHero={true} />
-                </div>
-              )}
-
-              {/* Grid for remaining articles */}
-              {remainingArticles.length > 0 && (
-                <div className="space-y-5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold tracking-widest text-indigo-600 dark:text-indigo-400 uppercase">
-                      Latest Updates
-                    </span>
-                    <span className="text-xs text-muted-foreground font-medium">
-                      {remainingArticles.length} stories
-                    </span>
-                  </div>
-
-                  <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {remainingArticles.map((article, index) => (
-                      <ArticleCard
-                        key={article.id}
-                        article={article}
-                        className={`animate-fade-in-up ${STAGGER_CLASSES[index] ?? ""}`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-        </>
-      )}
+  return <div data-section={initialView} data-layout={layout} className="desk-shell">
+    <div className="desk-intro">
+      <div><p className="desk-label">{collection ? "Your collection" : "The daily briefing"}</p><h1 className="editorial-heading">{initialView}</h1><p className="desk-description">{description}</p></div>
+      <div className="collection-links" aria-label="Your collections"><Link href="/saved" prefetch={true} aria-current={initialView === "Saved" ? "page" : undefined}>Saved <span>{saved.length}</span></Link><Link href="/liked" prefetch={true} aria-current={initialView === "Liked" ? "page" : undefined}>Liked <span>{liked.length}</span></Link></div>
     </div>
-  )
+    <SearchFilter articles={options} filters={filters} onChange={setFilters} layout={layout} onLayoutChange={setLayout} />
+    <div className="feed-status">
+      <p role="status">{collection ? `Showing ${filtered.length} of ${total} ${initialView.toLowerCase()} articles` : `${filtered.length} articles shown`} <span aria-hidden="true">/</span> {sources} sources</p>
+      <div className="flex flex-wrap items-center gap-3" aria-live="polite">
+        {state.error && <span className="text-xs text-muted-foreground">Updates unavailable. Your stories are still here.</span>}
+        {state.pending && <button type="button" className="update-button" onClick={() => { dispatch({ type: "apply" }); resultsHeading.current?.focus({ preventScroll: true }) }}>{newCount > 0 ? `${newCount} new ${newCount === 1 ? "story" : "stories"}` : "Feed updated"} <span aria-hidden="true">↻</span></button>}
+      </div>
+    </div>
+    {missing > 0 && <p className="legacy-notice">{missing} older {initialView.toLowerCase()} reference{missing === 1 ? " has" : "s have"} no stored story details. The references are kept; available stories are counted above.</p>}
+    <section aria-labelledby="results-heading">
+      <h2 id="results-heading" ref={resultsHeading} tabIndex={-1} className="sr-only">{collection ? `Your ${initialView.toLowerCase()} stories` : "Latest stories"}</h2>
+      {filtered.length === 0 ? <div className="desk-empty"><h3 className="editorial-heading">{collection && total === 0 ? `No ${initialView.toLowerCase()} stories yet` : "No stories match this view"}</h3><p>{collection && total === 0 ? "Use the bookmark or heart on a story to add it to your collection." : "Try another source or clear your search and filters."}</p><button type="button" className="reader-clear" onClick={() => setFilters(initialFilters(initialView))}>Clear filters</button><Link href="/news" className="ml-4 underline">Browse all news</Link></div> : editorial ? <>
+        <div className="news-desk-grid">
+          <section className="desk-lead" aria-label="Lead story"><p className="desk-label mb-3">{research ? "Research focus" : "In focus"}</p>{card(filtered[0], "lead")}</section>
+          {filtered.length > 1 && <section className="desk-latest" aria-labelledby="latest-heading"><h2 id="latest-heading" className="desk-label mb-3">Latest headlines</h2>{filtered.slice(1, 6).map(article => card(article, "row"))}</section>}
+          <div className="desk-topics"><TopicOverview articles={state.visible} active={initialView} /></div>
+        </div>
+        {filtered.length > 6 && <section className="desk-more" aria-labelledby="more-heading"><div className="flex items-center justify-between border-t border-border pt-5 mb-5"><h2 id="more-heading" className="desk-label">More to explore</h2><span className="text-xs text-muted-foreground">{filtered.length - 6} stories</span></div><div className="news-card-grid">{filtered.slice(6).map(article => card(article, "card"))}</div></section>}
+      </> : <div className="compact-desk"><div className="compact-stories">{filtered.map(article => card(article, "row"))}</div><TopicOverview articles={state.visible} active={initialView} /></div>}
+    </section>
+  </div>
 }

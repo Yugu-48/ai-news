@@ -9,6 +9,7 @@ export interface Candidate {
   publishedAt: Date
   category: NewsCategory
   author?: string
+  imageUrl?: string
 }
 
 export interface NewsSource {

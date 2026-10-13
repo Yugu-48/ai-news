@@ -318,3 +318,112 @@ Notes:
 - Clarified URL configuration and API health states; added database preflight before ingestion and server-only bearer verification. Documented Supabase runtime/direct connection roles and migration prerequisites.
 - TypeScript, eight focused tests, Prisma schema validation and client generation, and focused ESLint passed. The current build was blocked by Google Fonts access; localhost HTTP checks were denied by sandbox socket permissions. No compatible database or real secret was available, so migration and durable ingestion remain unverified.
 ---
+
+Date: 2026-10-11
+Agent: Antigravity
+Step: News image extraction, metadata scraping, and category fallbacks
+Files touched: frontend/src/lib/news/image-resolver.ts, frontend/src/lib/news/ingest-core.ts, frontend/src/lib/news/ingest.ts, frontend/src/components/article-card.tsx, frontend/src/app/article/[slug]/page.tsx, TASKS.md, PROGRESS.md
+Notes:
+- Identified root cause for missing article images: `fetchLiveArticles()` omitted `imageUrl` when constructing Article objects, Candidate type lacked `imageUrl`, raw RSS items lacked media enclosures, and frontend lacked fallback error handling.
+- Built `image-resolver.ts` with RSS media extraction (enclosure, media:content, embedded img), OpenGraph/Twitter card concurrent metadata scraping with in-memory caching and timeouts, and deterministic high-res Unsplash category fallbacks.
+- Updated `ingest-core.ts` Candidate contract and `ingest.ts` batch ingestion pipeline to resolve and assign images across all live feeds and Prisma insert mappings.
+- Updated `article-card.tsx` and `article/[slug]/page.tsx` with error fallbacks and category cover imagery.
+- Verification: `node --experimental-strip-types --test tests/ingestion.test.mjs` passed 8/8; `tsc --noEmit` passed with 0 errors; production dev server verified with live images across TechCrunch, Sanity CDN, BBC, and category fallbacks; browser snapshot visually verified full homepage layout and article hero image.
+---
+
+---
+Date: 2026-10-12
+Agent: Codex
+Step: Start local project for browser access
+Files touched: TASKS.md, PROGRESS.md
+Notes:
+- Started `node node_modules/next/dist/bin/next dev --webpack --port 3000` from `frontend` with network access; Next.js reported ready.
+- Verified `http://localhost:3000` returns HTTP 200 using Node fetch. Initial sandbox connection checks failed; restarting with network access resolved access.
+- Left the development server running. No source or dependency changes; compilation/lint tests were not rerun for this startup-only task.
+---
+
+---
+Date: 2026-10-12
+Agent: Codex
+Step: Dedicated pages for all navigation categories
+Files touched: frontend/src/lib/categories.ts, frontend/src/app/page.tsx, frontend/src/app/news/page.tsx, frontend/src/app/news/[category]/page.tsx, frontend/src/components/layout/navbar.tsx, frontend/src/components/layout/footer.tsx, frontend/src/components/home-feed.tsx, frontend/src/components/search-filter.tsx, docs/screenshots/category-navigation.jpg, TASKS.md, PROGRESS.md
+Notes:
+- Added All News and seven dedicated topic routes with category titles, descriptions, metadata, filtered ticker, topic statistics, and active desktop/mobile navigation. Updated category tabs and footer links; valid legacy category query URLs redirect to dedicated pages.
+- TypeScript and production webpack build passed with exit 0. HTTP smoke checks verified all eight pages and their browser titles; all eight desktop navigation clicks verified correct URLs and headings.
+- At 390px, mobile links and menu-close behavior passed; unmatched search showed the empty state, and Research category tab opened its page and reset the search. Restored viewport and saved Research screenshot.
+- Focused ESLint stalled without output in sandbox and outside it; interrupted after several minutes and recorded as unverified. No dependency changes.
+- Restored local development server at http://localhost:3000 and verified Research HTTP 200 after the build.
+---
+
+---
+Date: 2026-10-12
+Agent: Codex
+Step: Final verification and React effect fixes for category navigation
+Files touched: frontend/src/components/layout/navbar.tsx, frontend/src/components/home-feed.tsx, frontend/src/components/search-filter.tsx, docs/screenshots/category-navigation.jpg, TASKS.md, PROGRESS.md
+Notes:
+- The initial slow ESLint run produced two existing effect state-update errors as it was interrupted, after the preceding progress entry was written. Replaced navbar hydration effect state with useSyncExternalStore and derived feed results using a filter function. Clicking the current topic restores results from Saved.
+- Final focused ESLint passed (exit 0). Second production webpack build passed (exit 0). Final standalone TypeScript check passed (exit 0); an intermediate overlapping build/typecheck raced generated .next/types files and was retried successfully after the build.
+- Browser verified unmatched search and Saved return zero cards, clearing search restores results, and the Research tab restores 29 topic articles with the Research heading and /news/research URL. Updated the final screenshot.
+- Development server remains running at http://localhost:3000. No dependencies added.
+---
+
+---
+Date: 2026-10-12
+Agent: Codex
+Step: Verify and open the running site
+Files touched: TASKS.md, PROGRESS.md
+Notes:
+- Reused the existing local server and verified http://localhost:3000/news via Node fetch: HTTP 200, title All News | AI News.
+- Opened the site in the browser panel. No source or dependency changes; startup-only verification did not require repeating build/lint/typecheck.
+---
+
+---
+Date: 2026-10-12
+Agent: Codex
+Step: Start local app and provide browser link
+Files touched: TASKS.md, PROGRESS.md
+Notes:
+- Started node node_modules/next/dist/bin/next dev --webpack --port 3000 from frontend; Next.js reported ready.
+- Server logs verified GET / HTTP 200 after initial compilation; first Node fetch timed out.
+- Queued browser panel opening at http://localhost:3000 and left server running. No source/dependency changes; no build/lint/typecheck rerun.
+---
+
+
+---
+Date: 2026-10-12
+Agent: Codex
+Step: Editorial palette, faster sections and teacher demo launcher
+Files touched: frontend/src/app/globals.css, frontend/src/app/layout.tsx, frontend/src/app/article/[slug]/page.tsx, frontend/src/components/home-feed.tsx, frontend/src/components/layout/navbar.tsx, frontend/src/components/layout/footer.tsx, frontend/src/components/search-filter.tsx, frontend/src/components/article-card.tsx, frontend/src/components/reading-progress-bar.tsx, frontend/src/lib/news/ingest.ts, frontend/src/lib/news/feed-cache.ts, frontend/tests/feed-cache.test.mjs, frontend/scripts/verify-preview.mjs, frontend/package.json, start-demo.mjs, README.md, docs/COLOR_DIRECTION.md, docs/screenshots/editorial-desktop.png, TASKS.md, PROGRESS.md
+Notes:
+- Researched NN/g and GOV.UK guidance; implemented paper/ink/forest palette, serif headings, charcoal dark mode, quieter cards, reduced motion and local fonts. Preserved eight topic pages and added prefetching.
+- Added shared cold loads and nonblocking cache refreshes; removed article-page image scraping from navigation. Failed sources retain real previous headlines. Final healthy preview displayed 46 stories across five sources.
+- Twelve tests, initial/final TypeScript, focused frontend ESLint, two production webpack builds and final route/article/missing-page smoke check passed. Launcher syntax checked separately; root launcher outside frontend lint scope. Detailed commands and limitations in TASKS.md.
+- Warm topic responses 31–51 ms, All News 195 ms; prefetched browser navigation 22–68 ms. All eight routes/active links, search empty/clear, light/dark themes, 390px mobile navigation/menu-close/no-overflow verified. Specific contrast pairs exceeded 4.5:1; light desktop and dark mobile visually inspected.
+- Added node start-demo.mjs: production build/reuse, feed warmup, browser launch and Ctrl+C shutdown. Tested rebuild, reuse, invalid port and fixed/tested occupied-port handling. Final production server remains at http://localhost:3000/news. No new dependencies or version-control commands; database/scheduler limitations remain.
+---
+
+---
+Date: 2026-10-12
+Agent: Codex
+Step: Fix Saved/Liked counts and audit prototype controls
+Files touched: frontend/src/lib/article-selection.ts, frontend/src/lib/use-article-selection.ts, frontend/src/lib/use-bookmarks.ts, frontend/src/lib/use-likes.ts, frontend/src/components/bookmark-button.tsx, frontend/src/components/like-button.tsx, frontend/src/components/article-card.tsx, frontend/src/components/home-feed.tsx, frontend/src/components/search-filter.tsx, frontend/src/components/share-button.tsx, frontend/src/components/newsletter-modal.tsx, frontend/src/components/layout/navbar.tsx, frontend/src/components/layout/footer.tsx, frontend/src/app/article/[slug]/page.tsx, frontend/src/app/rss/route.ts, frontend/tests/article-selection.test.mjs, frontend/scripts/verify-preview.mjs, README.md, TASKS.md, PROGRESS.md
+Notes:
+- Replaced stale filter closures and storage side effects inside React updaters with controlled filters and shared external-store subscriptions. Deduplicated/validated selection IDs; available unique cards drive collection badges, and displayed cards drive page counts. Old unavailable references remain preserved and explained separately.
+- Selected genuine story metadata persists locally after feed turnover; archived cards link to original sources. Added working RSS, clipboard-error fallback, aria-pressed states and same-topic navigation reset. Replaced fake newsletter subscription success with an honest accessible preview.
+- Eighteen tests, initial/final TypeScript, focused ESLint and production webpack build passed. Expanded smoke check passed all section/article routes, RSS XML, API search/category/pagination and ingestion authorization rejection; DB remains unconfigured.
+- Isolated browser checked 2-to-1 Saved/Liked removal, reload, search/clear, ten rapid toggles, cross-tab sync, duplicate/archive/legacy references, eight category URLs, detail Save/Like, real clipboard success and denied-clipboard fallback, newsletter focus/Escape, themes and 390px mobile menu/no-overflow. Detailed outcomes/limits recorded in TASKS.md.
+- Left updated production demo at http://localhost:3000/news; existing browser pages need refresh. No new dependencies or version-control commands. Newsletter delivery, account sync and database ingestion remain unverified/not configured.
+---
+
+---
+Date: 2026-10-13
+Agent: Codex
+Step: Complete editorial news desk, collection routes and controlled source updates
+Files touched: frontend/src/lib/feed-model.ts, frontend/src/lib/categories.ts, frontend/src/lib/feed-poller.ts, frontend/src/lib/use-feed-layout.ts, frontend/src/lib/news/image-resolver.ts, frontend/src/components/home-feed.tsx, frontend/src/components/search-filter.tsx, frontend/src/components/article-card.tsx, frontend/src/components/story-image.tsx, frontend/src/components/topic-overview.tsx, frontend/src/components/article-preview.tsx, frontend/src/components/layout/navbar.tsx, frontend/src/components/layout/footer.tsx, frontend/src/components/bookmark-button.tsx, frontend/src/components/like-button.tsx, frontend/src/components/share-button.tsx, frontend/src/app/globals.css, frontend/src/app/page.tsx, frontend/src/app/news/page.tsx, frontend/src/app/news/[category]/page.tsx, frontend/src/app/saved/page.tsx, frontend/src/app/liked/page.tsx, frontend/src/app/article/[slug]/page.tsx, frontend/src/app/loading.tsx, frontend/src/app/error.tsx, frontend/src/app/not-found.tsx, frontend/tests/feed-reader.test.mjs, frontend/scripts/verify-preview.mjs, README.md, docs/EDITORIAL_DESK.md, docs/screenshots/news-desk-390.png, docs/screenshots/news-desk-768.png, docs/screenshots/news-desk-1366.png, docs/screenshots/news-desk-1920.png, docs/screenshots/news-desk-dark.png, TASKS.md, PROGRESS.md
+Notes:
+- Implemented the approved cream/forest desk with lead/latest/topic hierarchy, reusable lead/card/row stories, Research abstracts, 720px article previews, source filtering, persistent layouts and separate Saved/Liked URLs. Preserved source data, API/schema and browser collections; no dependencies or version-control operations.
+- Added non-overlapping visible-tab polling and explicit update application with stable visible stories, failure retention and focus preservation. Corrected image labeling/width, initial-hydration source-selection race, mobile touch sizes, menu Escape focus and an existing lint error.
+- Twenty-eight tests, TypeScript, expanded/focused ESLint, final production webpack build and ten-route/RSS/API smoke checks passed. Warm All News median 44.5 ms; cached section transitions 57–218 ms. Detailed exact commands and limitations recorded in TASKS.md.
+- Four target viewport screenshots and dark mode inspected; no overflow/duplicate stories. Lead image, four headlines and topic panel fit in 1366x768 first screen. Verified collections/removal/reload/search, source filtering, cross-tab/legacy/archive behavior, explicit updates/failure/hidden/overlap, mobile ten-link menu and 44px targets, article/source/sharing and honest newsletter preview.
+- Production left running at http://localhost:3000/news. Teacher launcher node start-demo.mjs preserved. Newsletter delivery, accounts, DB persistence/ingestion, scheduler and historical analytics remain outside this pass.
+---
