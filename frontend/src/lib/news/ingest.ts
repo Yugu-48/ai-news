@@ -2,9 +2,11 @@ import { XMLParser } from "fast-xml-parser"
 import { prisma } from "@/lib/prisma"
 import type { Article } from "@/lib/types"
 import { aiRelevant, articleSlug, canonicalUrl, ingestSources, type Candidate, type IngestionStore, type NewsCategory, type NewsSource } from "./ingest-core"
+import { extractFeedImage, getCategoryFallbackImage } from "./image-resolver"
+import { createFeedCache } from "./feed-cache"
 
 const parser = new XMLParser({ ignoreAttributes: false, processEntities: true })
-const timeoutMs = 12_000
+const timeoutMs = 8_000
 
 function list<T>(value: T | T[] | undefined): T[] {
   return value === undefined ? [] : Array.isArray(value) ? value : [value]
@@ -84,6 +86,7 @@ async function rss(url: string, category: NewsCategory): Promise<Candidate[]> {
       const link = canonicalUrl(text(item.link))
       const publishedAt = validDate(item.pubDate ?? item["dc:date"])
       if (!title || !link || !publishedAt) return null
+      const feedImage = extractFeedImage(item)
       return {
         title,
         url: link,
@@ -91,6 +94,7 @@ async function rss(url: string, category: NewsCategory): Promise<Candidate[]> {
         publishedAt,
         category: classify(title, category),
         author: text(item["dc:creator"]) || undefined,
+        imageUrl: feedImage,
       }
     })
     .filter((item): item is Candidate => item !== null)
@@ -138,16 +142,20 @@ const sources: NewsSource[] = [
   { name: "Hugging Face Papers", slug: "hugging-face", websiteUrl: "https://huggingface.co/papers", feedUrl: "https://huggingface.co/api/daily_papers?limit=30", feedType: "api", category: "Research", load: huggingFace },
 ]
 
-let liveCache: { articles: Article[]; fetchedAt: number } | null = null
 let liveSourceHealth: Array<{ name: string; fetched: number; error: string | null }> = []
+const sourceSnapshots = new Map<string, Candidate[]>()
+const liveCache = createFeedCache(loadLiveArticles)
 
 export function getLiveCacheStatus(): { articleCount: number; lastFetchedAt: string | null; sources: typeof liveSourceHealth } {
-  return { articleCount: liveCache?.articles.length ?? 0, lastFetchedAt: liveCache ? new Date(liveCache.fetchedAt).toISOString() : null, sources: liveSourceHealth }
+  return { ...liveCache.status(), sources: liveSourceHealth }
 }
 
 /** Read-through live mode for installations without a database. Nothing is fabricated or persisted. */
 export async function fetchLiveArticles(limit = 50): Promise<Article[]> {
-  if (liveCache && Date.now() - liveCache.fetchedAt < 60_000) return liveCache.articles.slice(0, limit)
+  return (await liveCache.read()).slice(0, limit)
+}
+
+async function loadLiveArticles(): Promise<Article[]> {
   const batches = await Promise.allSettled(sources.map(async (source) => ({ source, items: await source.load() })))
   liveSourceHealth = batches.map((batch, index) => ({
     name: sources[index].name,
@@ -155,19 +163,57 @@ export async function fetchLiveArticles(limit = 50): Promise<Article[]> {
     error: batch.status === "rejected" ? (batch.reason instanceof Error ? batch.reason.message : "Unknown error") : null,
   }))
   const seen = new Set<string>()
-  const articles: Article[] = []
-  for (const batch of batches) {
-    if (batch.status === "rejected") continue
-    const { source, items } = batch.value
+  const candidateArticles: Array<{
+    slug: string
+    title: string
+    source: string
+    summary: string
+    publishedAt: string
+    url: string
+    category: NewsCategory
+    feedImage?: string
+  }> = []
+  for (const [index, batch] of batches.entries()) {
+    const source = sources[index]
+    if (batch.status === "fulfilled") sourceSnapshots.set(source.slug, batch.value.items)
+    // A slow/offline source must not remove its previously fetched headlines.
+    const items = sourceSnapshots.get(source.slug) ?? []
     for (const item of items.slice(0, 10)) {
       if (seen.has(item.url) || (!aiRelevant(item.title, item.summary) && item.category !== "Research")) continue
       seen.add(item.url)
       const slug = articleSlug(item.title, item.url)
-      articles.push({ id: slug, slug, title: item.title, source: source.name, summary: item.summary, publishedAt: item.publishedAt.toISOString(), url: item.url, tags: [], category: item.category })
+      candidateArticles.push({
+        slug,
+        title: item.title,
+        source: source.name,
+        summary: item.summary,
+        publishedAt: item.publishedAt.toISOString(),
+        url: item.url,
+        category: item.category,
+        feedImage: item.imageUrl,
+      })
     }
   }
-  if (articles.length > 0) liveCache = { articles: articles.sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt)), fetchedAt: Date.now() }
-  return (liveCache?.articles ?? []).slice(0, limit)
+
+  const articles: Article[] = candidateArticles.map((c) => {
+    // Feed imagery is immediate; never block navigation on article-page scraping.
+    const imageUrl = c.feedImage ?? getCategoryFallbackImage(c.category, c.url || c.title)
+
+    return {
+      id: c.slug,
+      slug: c.slug,
+      title: c.title,
+      source: c.source,
+      summary: c.summary,
+      publishedAt: c.publishedAt,
+      url: c.url,
+      tags: [],
+      category: c.category,
+      imageUrl,
+    }
+  })
+
+  return articles.sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt))
 }
 
 const prismaStore: IngestionStore = {
@@ -179,7 +225,7 @@ const prismaStore: IngestionStore = {
   }),
   insertArticles: async (articles) => {
     const result = await prisma.article.createMany({
-      data: articles.map(({ sourceId, title, slug, url, summary, author, category, publishedAt }) => ({ sourceId, title, slug, url, summary, author, category, publishedAt })),
+      data: articles.map(({ sourceId, title, slug, url, summary, author, category, publishedAt, imageUrl }) => ({ sourceId, title, slug, url, summary, author, category, publishedAt, imageUrl })),
       skipDuplicates: true,
     })
     return result.count

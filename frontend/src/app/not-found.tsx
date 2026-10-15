@@ -13,17 +13,17 @@ export default function NotFound() {
         <span className="text-xs font-bold uppercase tracking-widest text-primary">
           404 Error
         </span>
-        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-foreground">
+        <h1 className="editorial-heading text-4xl sm:text-5xl text-foreground">
           Page Not Found
         </h1>
         <p className="text-muted-foreground text-base max-w-md mx-auto leading-relaxed">
-          The article or page you are looking for doesn't exist, has been moved, or is temporarily unavailable.
+          The article or page you are looking for does not exist, has been moved, or is temporarily unavailable.
         </p>
       </div>
 
       <div className="pt-4">
-        <Button asChild className="rounded-full px-6 font-semibold gap-2 shadow-lg">
-          <Link href="/">
+        <Button asChild className="min-h-11 rounded-md px-6 font-semibold gap-2">
+          <Link href="/news">
             <ArrowLeft className="h-4 w-4" />
             Back to AI News Feed
           </Link>
@@ -32,3 +32,4 @@ export default function NotFound() {
     </div>
   )
 }
+

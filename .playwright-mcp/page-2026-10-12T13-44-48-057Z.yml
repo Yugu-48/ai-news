@@ -1,0 +1,526 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "AI News" [ref=e4] [cursor=pointer]:
+        - /url: /
+      - navigation "Main navigation" [ref=e8]:
+        - link "All News" [ref=e9] [cursor=pointer]:
+          - /url: /news
+        - link "Breaking" [ref=e10] [cursor=pointer]:
+          - /url: /news/breaking
+        - link "AI Models" [ref=e11] [cursor=pointer]:
+          - /url: /news/ai-models
+        - link "Research" [ref=e12] [cursor=pointer]:
+          - /url: /news/research
+        - link "Companies" [ref=e13] [cursor=pointer]:
+          - /url: /news/companies
+        - link "Open Source" [ref=e14] [cursor=pointer]:
+          - /url: /news/open-source
+        - link "AI Policy" [ref=e15] [cursor=pointer]:
+          - /url: /news/ai-policy
+        - link "AI Hardware" [ref=e16] [cursor=pointer]:
+          - /url: /news/ai-hardware
+      - button "Toggle color theme" [ref=e18]
+  - main [ref=e21]:
+    - generic [ref=e23]:
+      - generic [ref=e24]: Latest
+      - generic [ref=e29]:
+        - link "[Industry] Former Plaud exec raises $26M for AI app that listens to you in the background /" [ref=e30] [cursor=pointer]:
+          - /url: /article/former-plaud-exec-raises-26m-for-ai-app-that-listens-to-you-in-the-background-923391ccc7
+          - generic [ref=e31]: "[Industry]"
+          - generic [ref=e32]: Former Plaud exec raises $26M for AI app that listens to you in the background
+          - generic [ref=e33]: /
+        - link "[Industry] Can the AI industry persuade data center opponents by getting rid of NDAs? /" [ref=e34] [cursor=pointer]:
+          - /url: /article/can-the-ai-industry-persuade-data-center-opponents-by-getting-rid-of-ndas-2b53753757
+          - generic [ref=e35]: "[Industry]"
+          - generic [ref=e36]: Can the AI industry persuade data center opponents by getting rid of NDAs?
+          - generic [ref=e37]: /
+        - link "[Industry] These execs think voice AI hasn’t reached its ChatGPT moment yet /" [ref=e38] [cursor=pointer]:
+          - /url: /article/these-execs-think-voice-ai-hasn-t-reached-its-chatgpt-moment-yet-fa2bbe1298
+          - generic [ref=e39]: "[Industry]"
+          - generic [ref=e40]: These execs think voice AI hasn’t reached its ChatGPT moment yet
+          - generic [ref=e41]: /
+        - link "[Industry] Microsoft’s Satya Nadella says AI models need an ‘emergency brake’ /" [ref=e42] [cursor=pointer]:
+          - /url: /article/microsoft-s-satya-nadella-says-ai-models-need-an-emergency-brake-e3e71b588b
+          - generic [ref=e43]: "[Industry]"
+          - generic [ref=e44]: Microsoft’s Satya Nadella says AI models need an ‘emergency brake’
+          - generic [ref=e45]: /
+        - link "[Industry] Apple discloses deal to hire team and license tech from personalized podcast startup Huxe /" [ref=e46] [cursor=pointer]:
+          - /url: /article/apple-discloses-deal-to-hire-team-and-license-tech-from-personalized-podcast-startup-huxe-498030eadd
+          - generic [ref=e47]: "[Industry]"
+          - generic [ref=e48]: Apple discloses deal to hire team and license tech from personalized podcast startup Huxe
+          - generic [ref=e49]: /
+    - generic [ref=e50]:
+      - generic [ref=e51]:
+        - generic [ref=e52]: The daily briefing
+        - heading "All News" [level=1] [ref=e56]
+        - paragraph [ref=e57]: The latest AI news, research, and developments from trusted sources worldwide.
+      - generic [ref=e58]:
+        - generic [ref=e62]:
+          - strong [ref=e63]: "17"
+          - text: articles
+        - generic [ref=e68]:
+          - strong [ref=e69]: "2"
+          - text: sources
+        - generic [ref=e73]:
+          - text: Latest publication
+          - strong [ref=e74]: Oct 12
+      - generic [ref=e76]:
+        - generic [ref=e77]:
+          - textbox "Search articles" [ref=e82]:
+            - /placeholder: Search AI articles, research, and analysis...
+          - combobox "Filter by specific tag" [ref=e84] [cursor=pointer]:
+            - option "Filter by Tag" [selected]
+        - generic [ref=e86]:
+          - link "All News" [ref=e87] [cursor=pointer]:
+            - /url: /news
+          - link "Breaking" [ref=e89] [cursor=pointer]:
+            - /url: /news/breaking
+          - link "AI Models" [ref=e90] [cursor=pointer]:
+            - /url: /news/ai-models
+          - link "Research" [ref=e91] [cursor=pointer]:
+            - /url: /news/research
+          - link "Companies" [ref=e92] [cursor=pointer]:
+            - /url: /news/companies
+          - link "Open Source" [ref=e93] [cursor=pointer]:
+            - /url: /news/open-source
+          - link "AI Policy" [ref=e94] [cursor=pointer]:
+            - /url: /news/ai-policy
+          - link "AI Hardware" [ref=e95] [cursor=pointer]:
+            - /url: /news/ai-hardware
+          - button "Saved 0" [ref=e96]:
+            - text: Saved
+            - generic [ref=e99]: "0"
+          - button "Liked 0" [ref=e100]:
+            - text: Liked
+            - generic [ref=e103]: "0"
+      - generic [ref=e104]:
+        - generic [ref=e105]:
+          - text: In focus
+          - article [ref=e106]:
+            - generic [ref=e107]:
+              - generic [ref=e108]:
+                - link "Read Former Plaud exec raises $26M for AI app that listens to you in the background" [ref=e109] [cursor=pointer]:
+                  - /url: /article/former-plaud-exec-raises-26m-for-ai-app-that-listens-to-you-in-the-background-923391ccc7
+                  - img "Former Plaud exec raises $26M for AI app that listens to you in the background" [ref=e110]
+                - generic [ref=e111]: Industry
+                - generic [ref=e112]:
+                  - button "Like article" [ref=e113]
+                  - button "Save article" [ref=e116]
+              - generic [ref=e119]:
+                - generic [ref=e120]:
+                  - generic [ref=e121]: TechCrunch AI
+                  - generic [aria-hidden] [ref=e122]: ·
+                  - time [ref=e123]: Oct 12, 2026
+                - heading [level=3] [ref=e124]:
+                  - link "Former Plaud exec raises $26M for AI app that listens to you in the background" [ref=e125] [cursor=pointer]:
+                    - /url: /article/former-plaud-exec-raises-26m-for-ai-app-that-listens-to-you-in-the-background-923391ccc7
+                - paragraph [ref=e126]: Ambi is releasing apps for iPhone, Mac, and Apple Watch that enables ambient capture
+                - generic [ref=e127]:
+                  - generic "Tags"
+                  - button "Save article" [ref=e129]
+        - generic [ref=e132]:
+          - generic [ref=e133]:
+            - generic [ref=e134]: Latest Updates
+            - generic [ref=e135]: 16 stories
+          - generic [ref=e136]:
+            - article [ref=e137]:
+              - generic [ref=e138]:
+                - generic [ref=e139]:
+                  - link "Read Can the AI industry persuade data center opponents by getting rid of NDAs?" [ref=e140] [cursor=pointer]:
+                    - /url: /article/can-the-ai-industry-persuade-data-center-opponents-by-getting-rid-of-ndas-2b53753757
+                    - img "Can the AI industry persuade data center opponents by getting rid of NDAs?" [ref=e141]
+                  - generic [ref=e142]: Industry
+                  - generic [ref=e143]:
+                    - button "Like article" [ref=e144]
+                    - button "Save article" [ref=e147]
+                - generic [ref=e150]:
+                  - generic [ref=e151]:
+                    - generic [ref=e152]: TechCrunch AI
+                    - generic [aria-hidden] [ref=e153]: ·
+                    - time [ref=e154]: Oct 11, 2026
+                  - heading [level=3] [ref=e155]:
+                    - link "Can the AI industry persuade data center opponents by getting rid of NDAs?" [ref=e156] [cursor=pointer]:
+                      - /url: /article/can-the-ai-industry-persuade-data-center-opponents-by-getting-rid-of-ndas-2b53753757
+                  - paragraph [ref=e157]: On Equity, we debate the impact of data center moratoriums and whether the AI industry has a communication problem.
+                  - generic [ref=e158]:
+                    - generic "Tags"
+                    - button "Save article" [ref=e160]
+            - article [ref=e163]:
+              - generic [ref=e164]:
+                - generic [ref=e165]:
+                  - link "Read These execs think voice AI hasn’t reached its ChatGPT moment yet" [ref=e166] [cursor=pointer]:
+                    - /url: /article/these-execs-think-voice-ai-hasn-t-reached-its-chatgpt-moment-yet-fa2bbe1298
+                    - img "These execs think voice AI hasn’t reached its ChatGPT moment yet" [ref=e167]
+                  - generic [ref=e168]: Industry
+                  - generic [ref=e169]:
+                    - button "Like article" [ref=e170]
+                    - button "Save article" [ref=e173]
+                - generic [ref=e176]:
+                  - generic [ref=e177]:
+                    - generic [ref=e178]: TechCrunch AI
+                    - generic [aria-hidden] [ref=e179]: ·
+                    - time [ref=e180]: Oct 11, 2026
+                  - heading [level=3] [ref=e181]:
+                    - link "These execs think voice AI hasn’t reached its ChatGPT moment yet" [ref=e182] [cursor=pointer]:
+                      - /url: /article/these-execs-think-voice-ai-hasn-t-reached-its-chatgpt-moment-yet-fa2bbe1298
+                  - paragraph [ref=e183]: Voice AI's often misses important points for its context layer, and causes the whole pipeline to break
+                  - generic [ref=e184]:
+                    - generic "Tags"
+                    - button "Save article" [ref=e186]
+            - article [ref=e189]:
+              - generic [ref=e190]:
+                - generic [ref=e191]:
+                  - link "Read Microsoft’s Satya Nadella says AI models need an ‘emergency brake’" [ref=e192] [cursor=pointer]:
+                    - /url: /article/microsoft-s-satya-nadella-says-ai-models-need-an-emergency-brake-e3e71b588b
+                    - img "Microsoft’s Satya Nadella says AI models need an ‘emergency brake’" [ref=e193]
+                  - generic [ref=e194]: Industry
+                  - generic [ref=e195]:
+                    - button "Like article" [ref=e196]
+                    - button "Save article" [ref=e199]
+                - generic [ref=e202]:
+                  - generic [ref=e203]:
+                    - generic [ref=e204]: TechCrunch AI
+                    - generic [aria-hidden] [ref=e205]: ·
+                    - time [ref=e206]: Oct 11, 2026
+                  - heading [level=3] [ref=e207]:
+                    - link "Microsoft’s Satya Nadella says AI models need an ‘emergency brake’" [ref=e208] [cursor=pointer]:
+                      - /url: /article/microsoft-s-satya-nadella-says-ai-models-need-an-emergency-brake-e3e71b588b
+                  - paragraph [ref=e209]: In a Saturday morning post, Microsoft's CEO wrote that it’s time “to step back and assess the trust architecture” of AI.
+                  - generic [ref=e210]:
+                    - generic "Tags"
+                    - button "Save article" [ref=e212]
+            - article [ref=e215]:
+              - generic [ref=e216]:
+                - generic [ref=e217]:
+                  - link "Read Apple discloses deal to hire team and license tech from personalized podcast startup Huxe" [ref=e218] [cursor=pointer]:
+                    - /url: /article/apple-discloses-deal-to-hire-team-and-license-tech-from-personalized-podcast-startup-huxe-498030eadd
+                    - img "Apple discloses deal to hire team and license tech from personalized podcast startup Huxe" [ref=e219]
+                  - generic [ref=e220]: Industry
+                  - generic [ref=e221]:
+                    - button "Like article" [ref=e222]
+                    - button "Save article" [ref=e225]
+                - generic [ref=e228]:
+                  - generic [ref=e229]:
+                    - generic [ref=e230]: TechCrunch AI
+                    - generic [aria-hidden] [ref=e231]: ·
+                    - time [ref=e232]: Oct 11, 2026
+                  - heading [level=3] [ref=e233]:
+                    - link "Apple discloses deal to hire team and license tech from personalized podcast startup Huxe" [ref=e234] [cursor=pointer]:
+                      - /url: /article/apple-discloses-deal-to-hire-team-and-license-tech-from-personalized-podcast-startup-huxe-498030eadd
+                  - paragraph [ref=e235]: Is Apple hoping to get into the AI-generated podcast business?
+                  - generic [ref=e236]:
+                    - generic "Tags"
+                    - button "Save article" [ref=e238]
+            - article [ref=e241]:
+              - generic [ref=e242]:
+                - generic [ref=e243]:
+                  - link "Read Here are the top AI agents that can live in your text messages" [ref=e244] [cursor=pointer]:
+                    - /url: /article/here-are-the-top-ai-agents-that-can-live-in-your-text-messages-2640e3ae8d
+                    - img "Here are the top AI agents that can live in your text messages" [ref=e245]
+                  - generic [ref=e246]: Industry
+                  - generic [ref=e247]:
+                    - button "Like article" [ref=e248]
+                    - button "Save article" [ref=e251]
+                - generic [ref=e254]:
+                  - generic [ref=e255]:
+                    - generic [ref=e256]: TechCrunch AI
+                    - generic [aria-hidden] [ref=e257]: ·
+                    - time [ref=e258]: Oct 10, 2026
+                  - heading [level=3] [ref=e259]:
+                    - link "Here are the top AI agents that can live in your text messages" [ref=e260] [cursor=pointer]:
+                      - /url: /article/here-are-the-top-ai-agents-that-can-live-in-your-text-messages-2640e3ae8d
+                  - paragraph [ref=e261]: We created a list of the most notable AI agents that can live in your text messages, from general assistants to agents designed for families, travel, and work.
+                  - generic [ref=e262]:
+                    - generic "Tags"
+                    - button "Save article" [ref=e264]
+            - article [ref=e267]:
+              - generic [ref=e268]:
+                - generic [ref=e269]:
+                  - link "Read Anthropic can’t reliably control its AI agents. It’s cutting off its internal evals from the live internet instead" [ref=e270] [cursor=pointer]:
+                    - /url: /article/anthropic-can-t-reliably-control-its-ai-agents-it-s-cutting-off-its-internal-evals-from-th-4c4dce735e
+                    - img "Anthropic can’t reliably control its AI agents. It’s cutting off its internal evals from the live internet instead" [ref=e271]
+                  - generic [ref=e272]: Industry
+                  - generic [ref=e273]:
+                    - button "Like article" [ref=e274]
+                    - button "Save article" [ref=e277]
+                - generic [ref=e280]:
+                  - generic [ref=e281]:
+                    - generic [ref=e282]: TechCrunch AI
+                    - generic [aria-hidden] [ref=e283]: ·
+                    - time [ref=e284]: Oct 10, 2026
+                  - heading [level=3] [ref=e285]:
+                    - link "Anthropic can’t reliably control its AI agents. It’s cutting off its internal evals from the live internet instead" [ref=e286] [cursor=pointer]:
+                      - /url: /article/anthropic-can-t-reliably-control-its-ai-agents-it-s-cutting-off-its-internal-evals-from-th-4c4dce735e
+                  - paragraph [ref=e287]: Anthropic said it "turned off live internet access" for "all our internal evaluations" until further notice.
+                  - generic [ref=e288]:
+                    - generic "Tags"
+                    - button "Save article" [ref=e290]
+            - article [ref=e293]:
+              - generic [ref=e294]:
+                - generic [ref=e295]:
+                  - 'link "Read S-Space: Exploring Spatial Workspace in Multimodal Language Models" [ref=e296] [cursor=pointer]':
+                    - /url: /article/s-space-exploring-spatial-workspace-in-multimodal-language-models-a17403b131
+                    - 'img "S-Space: Exploring Spatial Workspace in Multimodal Language Models" [ref=e297]'
+                  - generic [ref=e298]: Research
+                  - generic [ref=e299]:
+                    - button "Like article" [ref=e300]
+                    - button "Save article" [ref=e303]
+                - generic [ref=e306]:
+                  - generic [ref=e307]:
+                    - generic [ref=e308]: Hugging Face Papers
+                    - generic [aria-hidden] [ref=e309]: ·
+                    - time [ref=e310]: Oct 9, 2026
+                  - heading [level=3] [ref=e311]:
+                    - 'link "S-Space: Exploring Spatial Workspace in Multimodal Language Models" [ref=e312] [cursor=pointer]':
+                      - /url: /article/s-space-exploring-spatial-workspace-in-multimodal-language-models-a17403b131
+                  - paragraph [ref=e313]: Multimodal language models (MLLMs) exhibit promising spatial reasoning capabilities, yet the internal mechanisms supporting them remain poorly understood. We uncover S-Space, a linear representation subspace in which object-token representations encode continuous coordinates along horizontal, vertical, and distance axes. Although we identify these axes by differentiating spatial-answer scores with respect to object-token activations, S-Space is intrinsic rather than induced by specific data or p
+                  - generic [ref=e314]:
+                    - generic "Tags"
+                    - button "Save article" [ref=e316]
+            - article [ref=e319]:
+              - generic [ref=e320]:
+                - generic [ref=e321]:
+                  - 'link "Read Dex-One2Many: Learning Dexterous Manipulation from a Single Human Demonstration" [ref=e322] [cursor=pointer]':
+                    - /url: /article/dex-one2many-learning-dexterous-manipulation-from-a-single-human-demonstration-9c07da6d60
+                    - 'img "Dex-One2Many: Learning Dexterous Manipulation from a Single Human Demonstration" [ref=e323]'
+                  - generic [ref=e324]: Research
+                  - generic [ref=e325]:
+                    - button "Like article" [ref=e326]
+                    - button "Save article" [ref=e329]
+                - generic [ref=e332]:
+                  - generic [ref=e333]:
+                    - generic [ref=e334]: Hugging Face Papers
+                    - generic [aria-hidden] [ref=e335]: ·
+                    - time [ref=e336]: Oct 8, 2026
+                  - heading [level=3] [ref=e337]:
+                    - 'link "Dex-One2Many: Learning Dexterous Manipulation from a Single Human Demonstration" [ref=e338] [cursor=pointer]':
+                      - /url: /article/dex-one2many-learning-dexterous-manipulation-from-a-single-human-demonstration-9c07da6d60
+                  - paragraph [ref=e339]: While learning dexterous manipulation from a single human video offers a promising alternative to costly robot demonstrations, many recent methods predominantly imitate demonstrated motions. Such strict motion matching often limits generalization to initial object poses, goal poses, and grasps not shown in the video. Alternatively, discovering a policy via reinforcement learning (RL) allows for broad generalization, but without prior guidance, it struggles with high-dimensional exploration in co
+                  - generic [ref=e340]:
+                    - generic "Tags"
+                    - button "Save article" [ref=e342]
+            - article [ref=e345]:
+              - generic [ref=e346]:
+                - generic [ref=e347]:
+                  - link "Read When Do We Need On-Policy Distillation? Distilling on Offline Student Rollouts Is Often Better" [ref=e348] [cursor=pointer]:
+                    - /url: /article/when-do-we-need-on-policy-distillation-distilling-on-offline-student-rollouts-is-often-bet-bbe5a89530
+                    - img "When Do We Need On-Policy Distillation? Distilling on Offline Student Rollouts Is Often Better" [ref=e349]
+                  - generic [ref=e350]: Research
+                  - generic [ref=e351]:
+                    - button "Like article" [ref=e352]
+                    - button "Save article" [ref=e355]
+                - generic [ref=e358]:
+                  - generic [ref=e359]:
+                    - generic [ref=e360]: Hugging Face Papers
+                    - generic [aria-hidden] [ref=e361]: ·
+                    - time [ref=e362]: Oct 8, 2026
+                  - heading [level=3] [ref=e363]:
+                    - link "When Do We Need On-Policy Distillation? Distilling on Offline Student Rollouts Is Often Better" [ref=e364] [cursor=pointer]:
+                      - /url: /article/when-do-we-need-on-policy-distillation-distilling-on-offline-student-rollouts-is-often-bet-bbe5a89530
+                  - paragraph [ref=e365]: "On-policy distillation (OPD) has become increasingly popular for transferring teacher capabilities to student models. In this work, we ask a critical research question: Is on-policy sampling always beneficial for distilling arbitrary teacher-student pairs? We show that a simple alternative, Semi-OPD, which distills from offline rollouts generated by the initial student, can often outperform OPD in both accuracy and training efficiency. Across 17 teacher-student pairs ranging from 1.5B to 235B pa"
+                  - generic [ref=e366]:
+                    - generic "Tags"
+                    - button "Save article" [ref=e368]
+            - article [ref=e371]:
+              - generic [ref=e372]:
+                - generic [ref=e373]:
+                  - 'link "Read MAMHOI: Factorizing Scene-Aware Human-Object Interaction through Affordances" [ref=e374] [cursor=pointer]':
+                    - /url: /article/mamhoi-factorizing-scene-aware-human-object-interaction-through-affordances-6e6b9fab3e
+                    - 'img "MAMHOI: Factorizing Scene-Aware Human-Object Interaction through Affordances" [ref=e375]'
+                  - generic [ref=e376]: Research
+                  - generic [ref=e377]:
+                    - button "Like article" [ref=e378]
+                    - button "Save article" [ref=e381]
+                - generic [ref=e384]:
+                  - generic [ref=e385]:
+                    - generic [ref=e386]: Hugging Face Papers
+                    - generic [aria-hidden] [ref=e387]: ·
+                    - time [ref=e388]: Oct 8, 2026
+                  - heading [level=3] [ref=e389]:
+                    - 'link "MAMHOI: Factorizing Scene-Aware Human-Object Interaction through Affordances" [ref=e390] [cursor=pointer]':
+                      - /url: /article/mamhoi-factorizing-scene-aware-human-object-interaction-through-affordances-6e6b9fab3e
+                  - paragraph [ref=e391]: "Generating realistic human-object interactions (HOI) in complex 3D scenes requires two complementary capabilities: reasoning about interaction feasibility in the environment and synthesizing realistic human-object motion. However, supervision for these capabilities is rarely available jointly at scale. Human-scene datasets provide rich information about environment-aware motion, while human-object datasets capture detailed interaction dynamics, yet paired human-object-scene data remain scarce. W"
+                  - generic [ref=e392]:
+                    - generic "Tags"
+                    - button "Save article" [ref=e394]
+            - article [ref=e397]:
+              - generic [ref=e398]:
+                - generic [ref=e399]:
+                  - link "Read Universal Textual Teaching for LLMs" [ref=e400] [cursor=pointer]:
+                    - /url: /article/universal-textual-teaching-for-llms-98cbb02683
+                    - img "Universal Textual Teaching for LLMs" [ref=e401]
+                  - generic [ref=e402]: Research
+                  - generic [ref=e403]:
+                    - button "Like article" [ref=e404]
+                    - button "Save article" [ref=e407]
+                - generic [ref=e410]:
+                  - generic [ref=e411]:
+                    - generic [ref=e412]: Hugging Face Papers
+                    - generic [aria-hidden] [ref=e413]: ·
+                    - time [ref=e414]: Oct 8, 2026
+                  - heading [level=3] [ref=e415]:
+                    - link "Universal Textual Teaching for LLMs" [ref=e416] [cursor=pointer]:
+                      - /url: /article/universal-textual-teaching-for-llms-98cbb02683
+                  - paragraph [ref=e417]: Knowledge distillation (KD) transfers knowledge from stronger Teacher models to weaker Student models, but most methods require training the Student parameters, thereby binding the distilled knowledge to a specific architecture and checkpoint. This implicit representation is difficult to interpret or reuse across models and limits KD for API-only or costly-to-train models. This paper studies knowledge transfer for large language models (LLMs). We introduce Universal Textual Teaching (UTT), a par
+                  - generic [ref=e418]:
+                    - generic "Tags"
+                    - button "Save article" [ref=e420]
+            - article [ref=e423]:
+              - generic [ref=e424]:
+                - generic [ref=e425]:
+                  - 'link "Read Less from More: Reinforcing Sparse Video Reasoning from Dense References" [ref=e426] [cursor=pointer]':
+                    - /url: /article/less-from-more-reinforcing-sparse-video-reasoning-from-dense-references-6a785b4b78
+                    - 'img "Less from More: Reinforcing Sparse Video Reasoning from Dense References" [ref=e427]'
+                  - generic [ref=e428]: Research
+                  - generic [ref=e429]:
+                    - button "Like article" [ref=e430]
+                    - button "Save article" [ref=e433]
+                - generic [ref=e436]:
+                  - generic [ref=e437]:
+                    - generic [ref=e438]: Hugging Face Papers
+                    - generic [aria-hidden] [ref=e439]: ·
+                    - time [ref=e440]: Oct 7, 2026
+                  - heading [level=3] [ref=e441]:
+                    - 'link "Less from More: Reinforcing Sparse Video Reasoning from Dense References" [ref=e442] [cursor=pointer]':
+                      - /url: /article/less-from-more-reinforcing-sparse-video-reasoning-from-dense-references-6a785b4b78
+                  - paragraph [ref=e443]: Video-language models commonly assume that more temporal observations lead to more reliable reasoning. We question this assumption and argue that the key challenge is not merely processing more video frames efficiently, but learning to reason reliably under limited temporal evidence. We propose SAVER, a dense-to-sparse post-training framework that uses dense video views as training-time references for sparse-frame inference. During reinforcement post-training, paired dense and sparse views are o
+                  - generic [ref=e444]:
+                    - generic "Tags"
+                    - button "Save article" [ref=e446]
+            - article [ref=e449]:
+              - generic [ref=e450]:
+                - generic [ref=e451]:
+                  - 'link "Read When to Rethink: Learning Multi-Perspective Self-Verification for Vision-Language Models" [ref=e452] [cursor=pointer]':
+                    - /url: /article/when-to-rethink-learning-multi-perspective-self-verification-for-vision-language-models-07fe27449d
+                    - 'img "When to Rethink: Learning Multi-Perspective Self-Verification for Vision-Language Models" [ref=e453]'
+                  - generic [ref=e454]: Research
+                  - generic [ref=e455]:
+                    - button "Like article" [ref=e456]
+                    - button "Save article" [ref=e459]
+                - generic [ref=e462]:
+                  - generic [ref=e463]:
+                    - generic [ref=e464]: Hugging Face Papers
+                    - generic [aria-hidden] [ref=e465]: ·
+                    - time [ref=e466]: Oct 4, 2026
+                  - heading [level=3] [ref=e467]:
+                    - 'link "When to Rethink: Learning Multi-Perspective Self-Verification for Vision-Language Models" [ref=e468] [cursor=pointer]':
+                      - /url: /article/when-to-rethink-learning-multi-perspective-self-verification-for-vision-language-models-07fe27449d
+                  - paragraph [ref=e469]: Vision-language models (VLMs) have achieved strong performance in multimodal reasoning, yet they remain prone to generating plausible but incorrect answers. Self-verification offers a practical way to improve answer reliability without relying on external judges, but existing methods typically depend on a single verification criterion or fixed prompt, resulting in incomplete and unstable reliability estimates. We first systematically analyze how verifier capability and prompt design affect verif
+                  - generic [ref=e470]:
+                    - generic "Tags"
+                    - button "Save article" [ref=e472]
+            - article [ref=e475]:
+              - generic [ref=e476]:
+                - generic [ref=e477]:
+                  - 'link "Read MetaKernelBench: Measuring GPU Kernel Knowledge Transfer Beyond Code" [ref=e478] [cursor=pointer]':
+                    - /url: /article/metakernelbench-measuring-gpu-kernel-knowledge-transfer-beyond-code-10b052e3d6
+                    - 'img "MetaKernelBench: Measuring GPU Kernel Knowledge Transfer Beyond Code" [ref=e479]'
+                  - generic [ref=e480]: Research
+                  - generic [ref=e481]:
+                    - button "Like article" [ref=e482]
+                    - button "Save article" [ref=e485]
+                - generic [ref=e488]:
+                  - generic [ref=e489]:
+                    - generic [ref=e490]: Hugging Face Papers
+                    - generic [aria-hidden] [ref=e491]: ·
+                    - time [ref=e492]: Oct 4, 2026
+                  - heading [level=3] [ref=e493]:
+                    - 'link "MetaKernelBench: Measuring GPU Kernel Knowledge Transfer Beyond Code" [ref=e494] [cursor=pointer]':
+                      - /url: /article/metakernelbench-measuring-gpu-kernel-knowledge-transfer-beyond-code-10b052e3d6
+                  - paragraph [ref=e495]: Recent GPU kernel optimization agents retain what they learn in knowledge bases or as distilled skills. Kernel benchmarks score each attempt's implementation for correctness and speed but leave the reuse value of retained experience unmeasured. We introduce MetaKernelBench, which measures whether experience distilled from an attempt in one kernel domain-specific language (DSL) improves a fresh attempt at the same problem in another. Its 74 problems are fused subgraphs in six families, each posed
+                  - generic [ref=e496]:
+                    - generic "Tags"
+                    - button "Save article" [ref=e498]
+            - article [ref=e501]:
+              - generic [ref=e502]:
+                - generic [ref=e503]:
+                  - 'link "Read QuantMLA: Function-Aligned Dual-Path Quantization for Low-Bit MLA KV Caching" [ref=e504] [cursor=pointer]':
+                    - /url: /article/quantmla-function-aligned-dual-path-quantization-for-low-bit-mla-kv-caching-dc243adec2
+                    - 'img "QuantMLA: Function-Aligned Dual-Path Quantization for Low-Bit MLA KV Caching" [ref=e505]'
+                  - generic [ref=e506]: Research
+                  - generic [ref=e507]:
+                    - button "Like article" [ref=e508]
+                    - button "Save article" [ref=e511]
+                - generic [ref=e514]:
+                  - generic [ref=e515]:
+                    - generic [ref=e516]: Hugging Face Papers
+                    - generic [aria-hidden] [ref=e517]: ·
+                    - time [ref=e518]: Sep 30, 2026
+                  - heading [level=3] [ref=e519]:
+                    - 'link "QuantMLA: Function-Aligned Dual-Path Quantization for Low-Bit MLA KV Caching" [ref=e520] [cursor=pointer]':
+                      - /url: /article/quantmla-function-aligned-dual-path-quantization-for-low-bit-mla-kv-caching-dc243adec2
+                  - paragraph [ref=e521]: Multi-Head Latent Attention (MLA) enables expressive multi-head attention with compact caches for its content and decoupled RoPE paths, yet cache memory still scales linearly with context length and batch size. In this work, we establish a systematic model of MLA's dual-path quantization errors, characterizing their distinct effects on attention-output distortion and explaining the pronounced amplification of RoPE-path errors. Guided by this analysis, we introduce QuantMLA, a function-aligned fr
+                  - generic [ref=e522]:
+                    - generic "Tags"
+                    - button "Save article" [ref=e524]
+            - article [ref=e527]:
+              - generic [ref=e528]:
+                - generic [ref=e529]:
+                  - 'link "Read Encore: Few-Shot Agentic Discovery of Manipulation Strategies" [ref=e530] [cursor=pointer]':
+                    - /url: /article/encore-few-shot-agentic-discovery-of-manipulation-strategies-8b3bc021ba
+                    - 'img "Encore: Few-Shot Agentic Discovery of Manipulation Strategies" [ref=e531]'
+                  - generic [ref=e532]: Research
+                  - generic [ref=e533]:
+                    - button "Like article" [ref=e534]
+                    - button "Save article" [ref=e537]
+                - generic [ref=e540]:
+                  - generic [ref=e541]:
+                    - generic [ref=e542]: Hugging Face Papers
+                    - generic [aria-hidden] [ref=e543]: ·
+                    - time [ref=e544]: Sep 29, 2026
+                  - heading [level=3] [ref=e545]:
+                    - 'link "Encore: Few-Shot Agentic Discovery of Manipulation Strategies" [ref=e546] [cursor=pointer]':
+                      - /url: /article/encore-few-shot-agentic-discovery-of-manipulation-strategies-8b3bc021ba
+                  - paragraph [ref=e547]: Coding agents can now write, run, and debug programs with little human help. Robot tasks, however, are usually specified by a sentence that leaves out how to grasp, in what order to make contact, and what the result should look like, and an agent given only the sentence must find these details by trial and error. We introduce ENCORE, which gives the agent a few demonstrations as evidence to read rather than as training data. A deterministic builder distills each demonstration into a pack of mult
+                  - generic [ref=e548]:
+                    - generic "Tags"
+                    - button "Save article" [ref=e550]
+  - contentinfo [ref=e553]:
+    - generic [ref=e555]:
+      - generic [ref=e556]:
+        - generic [ref=e557]:
+          - link "AI News" [ref=e558] [cursor=pointer]:
+            - /url: /
+          - paragraph [ref=e562]: Your daily digest of the most important developments in artificial intelligence — curated from trusted sources worldwide.
+          - generic [ref=e563]:
+            - link "GitHub" [ref=e564] [cursor=pointer]:
+              - /url: https://github.com
+            - link "Twitter / X" [ref=e568] [cursor=pointer]:
+              - /url: https://twitter.com
+            - link "RSS Feed" [ref=e571] [cursor=pointer]:
+              - /url: /rss
+        - generic [ref=e576]:
+          - heading "Explore" [level=3] [ref=e577]
+          - navigation [ref=e578]:
+            - link "Home" [ref=e579] [cursor=pointer]:
+              - /url: /
+            - link "Research" [ref=e580] [cursor=pointer]:
+              - /url: /news/research
+            - link "Companies" [ref=e581] [cursor=pointer]:
+              - /url: /news/companies
+            - link "AI Policy" [ref=e582] [cursor=pointer]:
+              - /url: /news/ai-policy
+            - link "AI Hardware" [ref=e583] [cursor=pointer]:
+              - /url: /news/ai-hardware
+        - generic [ref=e584]:
+          - heading "Stay Updated" [level=3] [ref=e585]
+          - paragraph [ref=e586]: Get a weekly digest of the top AI stories delivered to your inbox.
+          - generic [ref=e587]:
+            - textbox "Email for newsletter" [ref=e588]:
+              - /placeholder: you@email.com
+            - button "Subscribe" [ref=e589] [cursor=pointer]
+          - paragraph [ref=e590]: No spam, unsubscribe any time.
+      - generic [ref=e591]:
+        - paragraph [ref=e592]: © 2026 AI News. All rights reserved.
+        - paragraph [ref=e593]:
+          - text: Built with
+          - link "Next.js" [ref=e594] [cursor=pointer]:
+            - /url: https://nextjs.org
+          - text: ·
+          - link "Tailwind" [ref=e595] [cursor=pointer]:
+            - /url: https://tailwindcss.com
+          - text: ·
+          - link "Shadcn/UI" [ref=e596] [cursor=pointer]:
+            - /url: https://ui.shadcn.com
+  - alert [ref=e597]
