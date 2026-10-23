@@ -1,9 +1,3 @@
+# sharp (image optimiser) does not need its install script for this project
 allowBuilds:
-  '@prisma/client': set this to true or false
-  '@prisma/engines': true
-  prisma: true
-  sharp: true
-  unrs-resolver: true
-ignoredBuiltDependencies:
-  - sharp
-  - unrs-resolver
+  sharp: false

@@ -1,0 +1,76 @@
+// src/lib/news.js
+// All news fetching lives in this ONE file (runs on the server only).
+// Two sources: Hacker News (a JSON API) and TechCrunch AI (an RSS/XML feed).
+// Every source is turned into the same shape:
+//   { id, title, source, summary, publishedAt, url, imageUrl }
+
+import { XMLParser } from "fast-xml-parser";
+import sampleNews from "./sample-news.json";
+
+const HN_URL = "https://hn.algolia.com/api/v1/search_by_date?query=AI&tags=story&hitsPerPage=30";
+const TC_URL = "https://techcrunch.com/category/artificial-intelligence/feed/";
+const TIMEOUT_MS = 8000; // give up on a slow site after 8 seconds
+
+// Fetch one URL and return its text. Throws an error if the site fails.
+async function getText(url) {
+  const response = await fetch(url, {
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+    cache: "no-store",
+  });
+  if (!response.ok) throw new Error("HTTP " + response.status);
+  return response.text();
+}
+
+// Remove HTML tags from a string and shorten it to a short excerpt.
+function toExcerpt(html) {
+  return String(html || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, 300);
+}
+
+// Source 1: Hacker News Algolia API. The answer is JSON, so we use JSON.parse().
+async function getHackerNews() {
+  const json = JSON.parse(await getText(HN_URL));
+  return json.hits
+    // keep only stories whose title looks AI-related (the search also matches random words)
+    .filter((hit) => hit.title && /\bAI\b|GPT|LLM|OpenAI|Anthropic|Claude|Gemini|neural|machine learning/i.test(hit.title))
+    .map((hit) => ({
+      id: "hn-" + hit.objectID,
+      title: hit.title,
+      source: "Hacker News",
+      summary: toExcerpt(hit.story_text),
+      publishedAt: hit.created_at,
+      // If the story has no link, link to its Hacker News discussion page
+      url: hit.url || "https://news.ycombinator.com/item?id=" + hit.objectID,
+      imageUrl: "", // Hacker News has no images
+    }));
+}
+
+// Source 2: TechCrunch AI. RSS is XML, so we parse it with fast-xml-parser.
+async function getTechCrunch() {
+  const xml = new XMLParser({ ignoreAttributes: false }).parse(await getText(TC_URL));
+  let items = xml.rss.channel.item || [];
+  if (!Array.isArray(items)) items = [items]; // one item comes back as an object, not a list
+  return items.map((item) => ({
+    id: "tc-" + item.link,
+    title: item.title,
+    source: "TechCrunch",
+    summary: toExcerpt(item.description),
+    publishedAt: new Date(item.pubDate).toISOString(),
+    url: item.link,
+    // TechCrunch puts the picture in <media:content url="...">, when it has one
+    imageUrl: item["media:content"]?.["@_url"] || "",
+  }));
+}
+
+// Main function: get both sources, merge them, newest first.
+// If BOTH fail (for example no internet), return the saved sample articles.
+export async function getNews() {
+  const results = await Promise.allSettled([
+    // NEWS_OFFLINE=1 is only for testing the fallback
+    process.env.NEWS_OFFLINE ? Promise.reject(new Error("offline")) : getHackerNews(),
+    process.env.NEWS_OFFLINE ? Promise.reject(new Error("offline")) : getTechCrunch(),
+  ]);
+  // keep only the sources that worked, then flatten into one list
+  const articles = results.filter((r) => r.status === "fulfilled").flatMap((r) => r.value);
+  if (articles.length === 0) return sampleNews;
+  return articles.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+}
