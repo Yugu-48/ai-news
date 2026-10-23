@@ -53,6 +53,15 @@ const single = await fetch(new URL("/api/articles?limit=1", base)).then(response
 assert.ok(single.data.length <= 1)
 const unauthorized = await fetch(new URL("/api/ingest", base), { method: "POST" })
 assert.equal(unauthorized.status, 401)
+const unauthorizedGet = await fetch(new URL("/api/ingest", base), { method: "GET" })
+assert.equal(unauthorizedGet.status, 401)
+const trendingApi = await fetch(new URL("/api/articles?sort=trending&limit=5", base)).then(response => response.json())
+assert.ok(Array.isArray(trendingApi.data))
+const oldestApi = await fetch(new URL("/api/articles?sort=oldest&limit=5", base)).then(response => response.json())
+assert.ok(Array.isArray(oldestApi.data))
+if (oldestApi.data.length >= 2) {
+  assert.ok(Date.parse(oldestApi.data[0].publishedAt) <= Date.parse(oldestApi.data[1].publishedAt))
+}
 const status = await fetch(new URL("/api/status", base)).then(response => response.json())
 assert.ok(typeof status.databaseStatus === "string")
-console.log(`API search, category, pagination and unauthorized ingestion checks passed. Database: ${status.databaseStatus}`)
+console.log(`API search, category, sort, pagination and unauthorized ingestion checks passed. Database: ${status.databaseStatus}`)

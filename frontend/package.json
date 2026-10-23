@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test tests/*.test.mjs"
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "ingest": "node --experimental-strip-types scripts/run-ingest.mjs"
   },
   "dependencies": {
     "@prisma/client": "^6.4.0",

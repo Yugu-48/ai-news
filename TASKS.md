@@ -1,19 +1,19 @@
 # AI News implementation tracker
 
-Updated: 2026-10-13. Source code and executed checks determine completion.
+Updated: 2026-10-23. Source code and executed checks determine completion.
 
 | Priority | Task | Status | Acceptance evidence / blocker |
 |---|---|---|---|
 | P0 | 1. Audit existing source | Done | Next.js 16, React 19, Prisma 6, existing homepage and detail pages verified in source. Mock fallback, mock ticker, no ingestion, and missing refresh confirmed. |
 | P0 | 2. Initialize accurate documentation | Done | README, AGENTS, env examples and six concise docs updated. |
 | P0 | 3. Refine homepage UI | Done | Existing editorial design preserved; fake live claims and ticker corrected. Desktop and emulated mobile inspected; loading skeleton and retry error state added; live cover images extracted from feeds and OG metadata with robust category fallbacks across featured hero and article cards. |
-| P0 | 4. Complete navigation, filters, article details | Partial | Dedicated pages for all eight navigation topics, category/search filter, live article route, mobile menu and theme verified. Trending sort remains. |
+| P0 | 4. Complete navigation, filters, article details | Done | Dedicated pages for all eight navigation topics, category/search filter, live article route, mobile menu and theme verified. Reader sort controls (Latest, Trending, Oldest) and API sort parameters implemented and verified. |
 | P0 | 5. Browser and functional UI verification | Done | Chrome 390px emulation: no document overflow, menu 8 links, Research 46→24 cards, unmatched search 0, theme toggled. Live desktop and detail routes verified with full cover image rendering. |
 | P0 | 6. Verify three live sources | Done | Five endpoints returned HTTP 200; final production API served 48 current stories across TechCrunch 9, arXiv AI 10, arXiv ML 9, HN 10 and HF 10. |
 | P0 | 7. Normalize and deduplicate | Partial | URL canonicalization, timestamps, relevance, category, and exact-URL deduplication implemented. Per-source `createMany({skipDuplicates:true})` now relies on the database unique URL/slug constraints for concurrent safety. Eight focused tests pass, including repeated and concurrent ingestion against an atomic test store. PostgreSQL behavior remains unverified. |
 | P0 | 8. Database and article APIs | Partial | Existing Prisma schema retained; GET/status/ingest routes distinguish unconfigured, unavailable, empty, and operational states. Prisma schema validation and client generation pass. Database URL is placeholder, so migration and persistence are unverified. |
 | P0 | 9. Connect live feed | Done for preview | Home, ticker, API and article detail use genuine source metadata when DB unconfigured. Fabricated seed URLs excluded from DB reads. |
-| P0 | 10. Ingestion and refresh | Partial | Authenticated POST and 60-second browser refresh implemented; external scheduler still must be configured and DB writes tested. |
+| P0 | 10. Ingestion and refresh | Done for prototype | Authenticated POST/GET and 60-second browser refresh implemented; Vercel Cron configured in vercel.json (every 15 min); manual RSS ingestion CLI built and verified via npm run ingest and --dry-run; reading time and word count estimation added; CRON_SECRET supported. Durable DB writes remain unverified until compatible PostgreSQL is connected. |
 | P0 | 11. Critical tests and fixes | Partial | Earlier production build and browser interactions passed. Current stabilization pass: TypeScript, eight focused tests, Prisma validate/generate, and focused ESLint pass. Current production build is blocked by sandbox access to Google Fonts; local HTTP smoke test was blocked by socket permissions. No DB integration test. |
 | P0 | 12. Final documentation | Done | README, source, architecture, test and deployment docs reflect verified state. |
 | P1 | Research enhancements, ranking, polish, performance | Deferred | After P0. |
@@ -155,3 +155,43 @@ Browser/visual outcomes:
 - Initial broad browser test timed out during immediate source interaction; narrowed checks exposed/fixed the hydration race. Clean isolated reruns passed; an earlier reload preference anomaly did not reproduce when instrumented and final reload persistence passed.
 
 Delivery: production remains running at http://localhost:3000/news. Teacher command unchanged: from project root, `node .\start-demo.mjs`; keep terminal open, Ctrl+C to stop, --port=3001 if occupied. README and docs/EDITORIAL_DESK.md describe reader/update behavior. Existing pages need refresh to load the new build. Newsletter remains a preview; account sync, AI summaries, durable DB ingestion/scheduler and historical analytics remain excluded/unverified. Browser collections are local; main feed cache remains memory-only.
+
+
+## Reader sort controls (Latest, Trending, Oldest) and API sort — implemented and verified 2026-10-21
+
+Files changed: `frontend/src/lib/feed-model.ts`, `frontend/src/components/search-filter.tsx`, `frontend/src/app/api/articles/route.ts`, `frontend/tests/feed-reader.test.mjs`, `frontend/scripts/verify-preview.mjs`, `TASKS.md`, `PROGRESS.md`. No new dependencies.
+
+Implementation:
+- Added `FeedSort` type (`latest` | `trending` | `oldest`) and integrated `sort` into `FeedFilters` with default `"latest"`.
+- Implemented `calculateTrendingScore(article, savedIds, likedIds)`: combines local reader interaction boosts (+50 for likes, +30 for bookmarks), recency velocity decay over 72h, topical impact keyword scoring (breakthrough, frontier, releases, reasoning, agentic, llm), and in-depth reading time weighting, with deterministic fallback to publication timestamp for ties.
+- Added `<select aria-label="Sort articles">` into `SearchFilter` with options Sort: Latest, Sort: Trending, and Sort: Oldest. Integrated with hydration readiness and Clear Filters reset.
+- Extended `GET /api/articles` with optional `sort` parameter (`latest`, `trending`, `oldest`) across both Prisma database queries and live-read-through mode.
+- Added 3 new unit tests to `frontend/tests/feed-reader.test.mjs` verifying trending ranking with engagement boosts and recency velocity, oldest chronological ordering, and default latest sort behavior. Total test suite expanded to 31/31 passing tests.
+- Extended `frontend/scripts/verify-preview.mjs` with API sort verification.
+
+Commands and outcomes:
+- `node --experimental-strip-types --test tests/feed-reader.test.mjs`: 13/13 passed.
+- `node --experimental-strip-types --test tests/*.test.mjs`: 31/31 passed across all 4 test suites.
+- `node node_modules/typescript/bin/tsc --noEmit`: passed with 0 errors.
+- `node node_modules/eslint/bin/eslint.js src/lib/feed-model.ts src/components/search-filter.tsx src/app/api/articles/route.ts tests/feed-reader.test.mjs scripts/verify-preview.mjs`: passed with 0 errors.
+- `graphify update .`: updated AST knowledge graph (1105 nodes, 1404 edges).
+
+## Ingestion scheduling, manual CLI runner and reading time estimation (BD7/BD8) — 2026-10-23
+
+Files changed: `frontend/vercel.json`, `frontend/scripts/run-ingest.mjs`, `frontend/package.json`, `frontend/tsconfig.json`, `frontend/src/lib/news/ingest-core.ts`, `frontend/src/lib/news/ingest.ts`, `frontend/src/lib/ingest-auth.ts`, `frontend/src/app/api/ingest/route.ts`, `frontend/tests/ingestion.test.mjs`, `frontend/scripts/verify-preview.mjs`, `ROADMAP.md`, `TASKS.md`, `PROGRESS.md`. No new dependencies.
+
+Implementation:
+- External Scheduler (BD8 / Task 10): Configured `frontend/vercel.json` with cron schedule `*/15 * * * *` invoking `/api/ingest` every 15 minutes.
+- Ingestion API handler: Added `GET` export alongside `POST` in `frontend/src/app/api/ingest/route.ts` to support Vercel Cron invocations.
+- Ingestion Authentication: Extended `isIngestAuthorized` in `frontend/src/lib/ingest-auth.ts` to accept `CRON_SECRET` alongside `INGEST_SECRET`.
+- Manual Ingestion CLI Runner (BD7 / Task 10): Created `frontend/scripts/run-ingest.mjs` and added `"ingest": "node --experimental-strip-types scripts/run-ingest.mjs"` to `package.json`. Supports `--dry-run` and `--source=<slug>` flags. When DB is unconfigured, gracefully executes dry-run parsing across all 5 live feeds and displays candidate counts, category breakdown, and sample headlines. When DB is configured, executes Prisma ingestion with duplicate safety.
+- Reading Time & Word Count: Added `estimateReadingTime(text)` in `ingest-core.ts` (minimum 1 minute, 200 words per minute). Added `wordCount` and `readingTime` to `Candidate`, `ArticleInsert`, Prisma `createMany` data, and live `Article` objects.
+- Unit Tests: Added 2 new tests in `frontend/tests/ingestion.test.mjs` verifying `estimateReadingTime` calculations and `prepareArticles` reading time/word count attachment, plus verified `isIngestAuthorized` with GET requests and `CRON_SECRET`. Total test suite expanded to 33/33 passing tests across 4 test suites.
+
+Commands and outcomes:
+- `node --experimental-strip-types --test tests/*.test.mjs`: 33/33 passed across all 4 test suites (6 selection, 4 feed-cache, 13 feed-reader, 10 ingestion).
+- `node --experimental-strip-types --test tests/feed-reader.test.mjs`: 13/13 passed.
+- `node node_modules/typescript/bin/tsc --noEmit`: passed with 0 errors.
+- `npm run ingest -- --dry-run`: successfully fetched and parsed all 5 live news sources (833 candidates, 176 AI-relevant and prepared, 51 Industry, 123 Research, 2 Policy).
+- `node --check scripts/run-ingest.mjs` and `node --check scripts/verify-preview.mjs`: syntax checks passed with 0 errors.
+- `graphify update .`: updated AST knowledge graph (1120 nodes, 1431 edges, 92 communities).

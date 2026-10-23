@@ -1,27 +1,27 @@
-# Graph Report - AI-News  (2026-10-11)
+# Graph Report - AI-News  (2026-10-23)
 
 ## Corpus Check
-- 117 files · ~45,891 words
+- 140 files · ~110,360 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 999 nodes · 1158 edges · 74 communities (59 shown, 15 thin omitted)
-- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.65)
+- 1121 nodes · 1432 edges · 92 communities (71 shown, 21 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 19 edges (avg confidence: 0.56)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `bf84b16f`
+- Built from commit: `a969984c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- [slug]/page.tsx
+- home-feed.tsx
 - PROJECT_BRIEF.md
 - TASK_SKILL_MAPPING.md
 - compilerOptions
 - compilerOptions
 - devDependencies
-- SKILLS_INDEX.md
+- caching.md - Caching Strategies Skill
 - nextjs.md - Next.js App Router Skill
 - dependencies
 - Database Schema — AI News Platform
@@ -54,7 +54,7 @@
 - ingest.ts
 - rules/graphify.md
 - layout.tsx
-- AI News
+- AI News implementation tracker
 - AGENTS.md
 - FEATURE.md
 - ARCHITECTURE.md
@@ -87,39 +87,56 @@
 - NEWS_SOURCES.md
 - RESEARCH.md
 - UI_SPEC.md
+- use-article-selection.ts
+- button.tsx
+- validation.md - Backend Validation Skill
+- start-demo.mjs
+- scripts
+- SKILL_DEPENDENCIES.md
+- SKILL_CHANGELOG.md
+- Editorial news desk
+- frontend/package.json
+- SKILLS_INDEX.md
+- COLOR_DIRECTION.md
+- fast-xml-parser
+- react-dom
+- Best Practices
+- react
+- verify-preview.mjs
+- vercel.json
 
 ## God Nodes (most connected - your core abstractions)
-1. `compilerOptions` - 16 edges
-2. `compilerOptions` - 16 edges
-3. `nextjs.md - Next.js App Router Skill` - 15 edges
-4. `react.md - React Patterns Skill` - 15 edges
-5. `Article` - 14 edges
-6. `architecture.md - Backend Architecture Skill` - 13 edges
-7. `authentication.md - Backend Authentication Skill` - 13 edges
-8. `database.md - Database Design Skill` - 13 edges
-9. `prisma.md - Prisma ORM Skill` - 13 edges
-10. `redis.md - Redis Usage Skill` - 13 edges
+1. `Article` - 26 edges
+2. `HomeFeed()` - 21 edges
+3. `fetchArticles()` - 18 edges
+4. `compilerOptions` - 17 edges
+5. `compilerOptions` - 16 edges
+6. `nextjs.md - Next.js App Router Skill` - 15 edges
+7. `react.md - React Patterns Skill` - 15 edges
+8. `useArticleSelection()` - 13 edges
+9. `architecture.md - Backend Architecture Skill` - 13 edges
+10. `authentication.md - Backend Authentication Skill` - 13 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `ingestSources()` --indirect_call--> `source()`  [INFERRED]
   frontend/src/lib/news/ingest-core.ts → frontend/tests/ingestion.test.mjs
-- `HomePage()` --calls--> `fetchArticles()`  [EXTRACTED]
-  frontend/src/app/page.tsx → frontend/src/lib/articles.ts
-- `ArticleCardProps` --references--> `Article`  [EXTRACTED]
-  frontend/src/components/article-card.tsx → frontend/src/lib/types.ts
-- `fetchArticles()` --indirect_call--> `toArticle()`  [INFERRED]
-  frontend/src/lib/articles.ts → frontend/src/lib/article-mapper.ts
-- `fetchLiveArticles()` --calls--> `getCategoryFallbackImage()`  [EXTRACTED]
-  frontend/src/lib/news/ingest.ts → frontend/src/lib/news/image-resolver.ts
+- `GET()` --calls--> `calculateTrendingScore()`  [EXTRACTED]
+  frontend/src/app/api/articles/route.ts → frontend/src/lib/feed-model.ts
+- `LikedPage()` --calls--> `fetchArticles()`  [EXTRACTED]
+  frontend/src/app/liked/page.tsx → frontend/src/lib/articles.ts
+- `generateMetadata()` --calls--> `categoryFromSlug()`  [EXTRACTED]
+  frontend/src/app/news/[category]/page.tsx → frontend/src/lib/feed-model.ts
+- `AllNewsPage()` --calls--> `fetchArticles()`  [EXTRACTED]
+  frontend/src/app/news/page.tsx → frontend/src/lib/articles.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (74 total, 15 thin omitted)
+## Communities (92 total, 21 thin omitted)
 
-### Community 0 - "[slug]/page.tsx"
-Cohesion: 0.06
-Nodes (48): ArticlePage(), ArticlePageProps, CATEGORY_ACCENT, CATEGORY_GRADIENT, generateMetadata(), getArticleBySlug, HomePage(), ArticleCard() (+40 more)
+### Community 0 - "home-feed.tsx"
+Cohesion: 0.05
+Nodes (69): ArticlePage(), ArticlePageProps, generateMetadata(), getArticleBySlug, getRelatedArticles(), LikedPage(), metadata, CategoryPage() (+61 more)
 
 ### Community 1 - "PROJECT_BRIEF.md"
 Cohesion: 0.05
@@ -130,28 +147,28 @@ Cohesion: 0.05
 Nodes (38): Add Animations, Add Authentication, Add Authorization, Add Caching, Add SEO, AI Tasks, Backend Tasks, Background Jobs (+30 more)
 
 ### Community 3 - "compilerOptions"
-Cohesion: 0.07
-Nodes (29): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+21 more)
+Cohesion: 0.06
+Nodes (30): compilerOptions, allowImportingTsExtensions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib (+22 more)
 
 ### Community 4 - "compilerOptions"
 Cohesion: 0.07
 Nodes (26): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+18 more)
 
 ### Community 5 - "devDependencies"
-Cohesion: 0.07
-Nodes (28): eslint, eslint-config-next, devDependencies, eslint, eslint-config-next, prisma, tailwindcss, @tailwindcss/postcss (+20 more)
+Cohesion: 0.11
+Nodes (19): eslint, eslint-config-next, devDependencies, eslint, eslint-config-next, prisma, tailwindcss, @tailwindcss/postcss (+11 more)
 
-### Community 6 - "SKILLS_INDEX.md"
-Cohesion: 0.04
-Nodes (40): 2026-07-23, Actions, Changelog, Entry Template, Purpose, Version History, Authentication Chain, Circular Dependency Check (+32 more)
+### Community 6 - "caching.md - Caching Strategies Skill"
+Cohesion: 0.14
+Nodes (13): Best Practices, caching.md - Caching Strategies Skill, Checklist, Common Mistakes, In-Memory Cache, Prerequisites, Problem Solved, Project Conventions (+5 more)
 
 ### Community 7 - "nextjs.md - Next.js App Router Skill"
 Cohesion: 0.10
 Nodes (19): Best Practices, Checklist, Client Component (When Needed), Common Mistakes, Future Improvements, nextjs.md - Next.js App Router Skill, Parallel Data Fetching, Prerequisites (+11 more)
 
 ### Community 8 - "dependencies"
-Cohesion: 0.09
-Nodes (23): class-variance-authority, clsx, fast-xml-parser, dependencies, class-variance-authority, clsx, fast-xml-parser, lucide-react (+15 more)
+Cohesion: 0.12
+Nodes (17): class-variance-authority, clsx, dependencies, class-variance-authority, clsx, lucide-react, next, next-themes (+9 more)
 
 ### Community 9 - "Database Schema — AI News Platform"
 Cohesion: 0.10
@@ -182,8 +199,8 @@ Cohesion: 0.12
 Nodes (16): Common Mistakes, Core Rules, Loading Sequence, MCP Integration, Purpose, Rule 1: Never Load Unrelated Skills, Rule 2: Never Load an Entire Category, Rule 3: Prefer 2-5 Skills Maximum (+8 more)
 
 ### Community 16 - "Skill Categories"
-Cohesion: 0.14
-Nodes (13): AI Skills, Backend Skills, By Size, By Task, Deployment Skills, Frontend Skills, General Skills, Git Skills (+5 more)
+Cohesion: 0.22
+Nodes (9): AI Skills, Backend Skills, Deployment Skills, Frontend Skills, General Skills, Git Skills, Quality Skills, Security Skills (+1 more)
 
 ### Community 17 - "accessibility.md - Accessibility Skill"
 Cohesion: 0.12
@@ -238,8 +255,8 @@ Cohesion: 0.13
 Nodes (14): Best Practices, Checklist, Common Mistakes, Permission Check, Prerequisites, Problem Solved, Project Conventions, Purpose (+6 more)
 
 ### Community 31 - "workers.md - Background Workers Skill"
-Cohesion: 0.13
-Nodes (14): Best Practices, Checklist, Common Mistakes, Job Definition, Prerequisites, Problem Solved, Project Conventions, Purpose (+6 more)
+Cohesion: 0.18
+Nodes (11): Checklist, Common Mistakes, Prerequisites, Problem Solved, Project Conventions, Purpose, Related Skills, Rules (+3 more)
 
 ### Community 32 - "forms.md - Form Handling Skill"
 Cohesion: 0.13
@@ -258,16 +275,16 @@ Cohesion: 0.13
 Nodes (14): authorization.md - Backend Authorization Skill, Best Practices, Checklist, Common Mistakes, Middleware Pattern, Prerequisites, Problem Solved, Project Conventions (+6 more)
 
 ### Community 36 - "ingest.ts"
-Cohesion: 0.07
-Nodes (49): GET(), POST(), GET(), getRelatedArticles(), ArticleRow, toArticle(), fetchArticles(), isDatabaseConfigured() (+41 more)
+Cohesion: 0.06
+Nodes (60): args, categoryCounts, dbConfig, isDryRun, sourceArg, startTime, GET(), executeIngest() (+52 more)
 
 ### Community 38 - "layout.tsx"
-Cohesion: 0.15
-Nodes (9): geistMono, geistSans, metadata, Footer(), NAV_LINKS, Navbar(), NewsletterModal(), NewsletterModalProps (+1 more)
+Cohesion: 0.17
+Nodes (8): metadata, Footer(), NAV_LINKS, Navbar(), subscribe(), NewsletterModal(), NewsletterModalProps, ThemeProvider()
 
-### Community 39 - "AI News"
-Cohesion: 0.25
-Nodes (6): AI News, Checks, Local setup, AI News implementation tracker, Files changed and evidence, P0 database and ingestion stabilization — 2026-10-09
+### Community 39 - "AI News implementation tracker"
+Cohesion: 0.10
+Nodes (19): AI News, Checks, Development, Editorial reader, Local setup, Teacher demo (Windows terminal), AI News implementation tracker, Browser startup — 2026-10-12 (+11 more)
 
 ### Community 40 - "AGENTS.md"
 Cohesion: 0.25
@@ -345,25 +362,69 @@ Nodes (3): Agent Branches, Branching, Workflow
 Cohesion: 0.33
 Nodes (4): pending, socket, tabs, target
 
+### Community 74 - "use-article-selection.ts"
+Cohesion: 0.26
+Nodes (16): mergeLibraryArticles(), parseSelectionIds(), parseStoredArticles(), selectLibraryArticles(), toggleSelection(), emptySnapshot(), memory, read() (+8 more)
+
+### Community 75 - "button.tsx"
+Cohesion: 0.11
+Nodes (16): ShareButton(), Badge(), BadgeProps, badgeVariants, Button, ButtonProps, buttonVariants, Card (+8 more)
+
+### Community 76 - "validation.md - Backend Validation Skill"
+Cohesion: 0.14
+Nodes (13): Best Practices, Checklist, Common Mistakes, Prerequisites, Problem Solved, Project Conventions, Purpose, Related Skills (+5 more)
+
+### Community 77 - "start-demo.mjs"
+Cohesion: 0.18
+Nodes (8): args, frontend, [major, minor], marker, next, port, portArgument, root
+
+### Community 78 - "scripts"
+Cohesion: 0.29
+Nodes (7): scripts, build, dev, ingest, lint, start, test
+
+### Community 79 - "SKILL_DEPENDENCIES.md"
+Cohesion: 0.22
+Nodes (8): Authentication Chain, Circular Dependency Check, Database Chain, Prerequisite Chains, Purpose, Rules, Search Chain, Skill Dependency Graph
+
+### Community 80 - "SKILL_CHANGELOG.md"
+Cohesion: 0.25
+Nodes (6): 2026-07-23, Actions, Changelog, Entry Template, Purpose, Version History
+
+### Community 81 - "Editorial news desk"
+Cohesion: 0.33
+Nodes (5): Design, Editorial news desk, Reader behavior, Updates and performance, Verification
+
+### Community 83 - "frontend/package.json"
+Cohesion: 0.50
+Nodes (3): name, private, version
+
+### Community 84 - "SKILLS_INDEX.md"
+Cohesion: 0.40
+Nodes (4): By Size, By Task, Purpose, Quick Reference
+
+### Community 88 - "Best Practices"
+Cohesion: 0.67
+Nodes (3): Best Practices, Job Definition, Worker Pattern
+
 ## Knowledge Gaps
-- **658 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+653 more)
+- **694 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+689 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **15 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **21 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
+- **Are the 2 inferred relationships involving `HomeFeed()` (e.g. with `createFeedState()` and `feedReducer()`) actually correct?**
+  _`HomeFeed()` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `$schema`, `style`, `rsc` to the rest of the system?**
-  _658 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `[slug]/page.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.06169772256728778 - nodes in this community are weakly interconnected._
+  _694 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `home-feed.tsx` be split into smaller, more focused modules?**
+  _Cohesion score 0.05380333951762523 - nodes in this community are weakly interconnected._
 - **Should `PROJECT_BRIEF.md` be split into smaller, more focused modules?**
   _Cohesion score 0.05 - nodes in this community are weakly interconnected._
 - **Should `TASK_SKILL_MAPPING.md` be split into smaller, more focused modules?**
   _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._
 - **Should `compilerOptions` be split into smaller, more focused modules?**
-  _Cohesion score 0.06666666666666667 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06451612903225806 - nodes in this community are weakly interconnected._
 - **Should `compilerOptions` be split into smaller, more focused modules?**
   _Cohesion score 0.07407407407407407 - nodes in this community are weakly interconnected._
-- **Should `devDependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.06896551724137931 - nodes in this community are weakly interconnected._

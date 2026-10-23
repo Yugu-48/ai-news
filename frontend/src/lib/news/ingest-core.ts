@@ -10,6 +10,8 @@ export interface Candidate {
   category: NewsCategory
   author?: string
   imageUrl?: string
+  readingTime?: number
+  wordCount?: number
 }
 
 export interface NewsSource {
@@ -66,7 +68,13 @@ export function articleSlug(title: string, url: string): string {
   return `${title.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 90)}-${createHash("sha256").update(url).digest("hex").slice(0, 10)}`
 }
 
-function prepareArticles(candidates: Candidate[], sourceId: string): ArticleInsert[] {
+export function estimateReadingTime(text: string): { wordCount: number; readingTime: number } {
+  const words = text.trim().split(/\s+/).filter(Boolean).length
+  const readingTime = Math.max(1, Math.ceil(words / 200))
+  return { wordCount: words, readingTime }
+}
+
+export function prepareArticles(candidates: Candidate[], sourceId: string): ArticleInsert[] {
   const seen = new Set<string>()
   const prepared: ArticleInsert[] = []
   for (const item of candidates.slice(0, 50)) {
@@ -74,7 +82,17 @@ function prepareArticles(candidates: Candidate[], sourceId: string): ArticleInse
     if (!url || !item.title.trim() || !Number.isFinite(item.publishedAt.getTime())) continue
     if (seen.has(url) || (!aiRelevant(item.title, item.summary) && item.category !== "Research")) continue
     seen.add(url)
-    prepared.push({ ...item, url, slug: articleSlug(item.title, url), sourceId })
+    const stats = estimateReadingTime(`${item.title} ${item.summary}`)
+    const wordCount = item.wordCount ?? stats.wordCount
+    const readingTime = item.readingTime ?? stats.readingTime
+    prepared.push({
+      ...item,
+      url,
+      slug: articleSlug(item.title, url),
+      sourceId,
+      wordCount,
+      readingTime,
+    })
   }
   return prepared
 }

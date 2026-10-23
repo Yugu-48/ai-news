@@ -427,3 +427,32 @@ Notes:
 - Four target viewport screenshots and dark mode inspected; no overflow/duplicate stories. Lead image, four headlines and topic panel fit in 1366x768 first screen. Verified collections/removal/reload/search, source filtering, cross-tab/legacy/archive behavior, explicit updates/failure/hidden/overlap, mobile ten-link menu and 44px targets, article/source/sharing and honest newsletter preview.
 - Production left running at http://localhost:3000/news. Teacher launcher node start-demo.mjs preserved. Newsletter delivery, accounts, DB persistence/ingestion, scheduler and historical analytics remain outside this pass.
 ---
+
+---
+Date: 2026-10-21
+Agent: Antigravity
+Step: Implement reader sort controls (Latest, Trending, Oldest) and API sort
+Files touched: frontend/src/lib/feed-model.ts, frontend/src/components/search-filter.tsx, frontend/src/app/api/articles/route.ts, frontend/tests/feed-reader.test.mjs, frontend/scripts/verify-preview.mjs, TASKS.md, PROGRESS.md
+Notes:
+- Implemented FeedSort ("latest" | "trending" | "oldest") and integrated sort state into FeedFilters and initialFilters with default "latest".
+- Added calculateTrendingScore to rank stories by local reader engagement (like/bookmark boosts), recency velocity decay over 72h, topical AI impact keywords (breakthrough, frontier, reasoning, agentic), and reading depth with deterministic timestamp tie-breaking.
+- Added accessible sort select dropdown to SearchFilter in reader-toolbar with hydration safety and Clear Filters reset support.
+- Extended GET /api/articles with sort query parameter across both Prisma orderBy queries and live read-through fallback mode.
+- Added 3 new unit tests in feed-reader.test.mjs covering trending engagement/velocity ranking, oldest ordering, and default latest sort (13/13 passing, 31/31 across all test suites).
+- TypeScript check (tsc --noEmit) and focused ESLint passed with 0 errors. Updated graphify knowledge graph.
+---
+
+---
+Date: 2026-10-23
+Agent: Antigravity
+Step: Ingestion scheduling, manual CLI runner and reading time estimation (BD7/BD8)
+Files touched: frontend/vercel.json, frontend/scripts/run-ingest.mjs, frontend/package.json, frontend/tsconfig.json, frontend/src/lib/news/ingest-core.ts, frontend/src/lib/news/ingest.ts, frontend/src/lib/ingest-auth.ts, frontend/src/app/api/ingest/route.ts, frontend/tests/ingestion.test.mjs, frontend/scripts/verify-preview.mjs, ROADMAP.md, TASKS.md, PROGRESS.md
+Notes:
+- Configured Vercel Cron in frontend/vercel.json (schedule */15 * * * * calling /api/ingest) for automated ingestion scheduling (BD8 / Task 10).
+- Extended frontend/src/app/api/ingest/route.ts to support HTTP GET alongside POST for Vercel Cron invocation.
+- Updated frontend/src/lib/ingest-auth.ts to authorize CRON_SECRET alongside INGEST_SECRET.
+- Created standalone manual RSS ingestion CLI runner frontend/scripts/run-ingest.mjs and added "ingest" script to package.json (BD7), supporting --dry-run and --source=<slug>. Verified live execution across all 5 sources (833 fetched, 176 prepared).
+- Implemented estimateReadingTime in ingest-core.ts; populated wordCount and readingTime across Candidate, ArticleInsert, Prisma createMany, and live Article objects.
+- Added 2 new tests in ingestion.test.mjs covering reading time estimation and candidate preparation, plus verified GET request authorization (33/33 total tests passing).
+- TypeScript check (node node_modules/typescript/bin/tsc --noEmit) passed with 0 errors. Updated graphify knowledge graph.
+---

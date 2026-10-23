@@ -1,6 +1,6 @@
 import test from "node:test"
 import assert from "node:assert/strict"
-import { filterFeed, initialFilters, countNewStories, feedFingerprint, createFeedState, feedReducer, resolveFeedLayout } from "../src/lib/feed-model.ts"
+import { filterFeed, initialFilters, countNewStories, feedFingerprint, createFeedState, feedReducer, resolveFeedLayout, calculateTrendingScore } from "../src/lib/feed-model.ts"
 import { createFeedPoller } from "../src/lib/feed-poller.ts"
 
 const article = (id, fields = {}) => ({ id, slug: id, title: "AI model research", summary: "An abstract", source: "arXiv AI", category: "Research", tags: ["models"], url: `https://example.org/${id}`, publishedAt: "2026-10-12T08:00:00Z", ...fields })
@@ -94,4 +94,31 @@ test("stopping a request aborts it and suppresses callbacks after navigation", a
   done([article("a")])
   await work
   assert.equal(callbacks, 0)
+})
+test("trending sort ranks engaged, recent and high-impact stories above older quiet stories", () => {
+  const quietOld = article("quiet_old", { publishedAt: "2026-10-01T00:00:00Z", title: "Standard archive item" })
+  const trendingTopic = article("trending_topic", { publishedAt: new Date(Date.now() - 3600000).toISOString(), title: "Major breakthrough in reasoning model" })
+  const likedStory = article("liked_story", { publishedAt: new Date(Date.now() - 7200000).toISOString(), title: "Standard article" })
+  const data = [quietOld, likedStory, trendingTopic]
+
+  const sorted = filterFeed(data, { ...initialFilters("All News"), sort: "trending" }, [], ["liked_story"])
+  assert.equal(sorted[0].id, "liked_story") // Engagement boost (+50) plus recent recency
+  assert.equal(sorted[1].id, "trending_topic") // Breakthrough + reasoning keywords + recent velocity
+  assert.equal(sorted[2].id, "quiet_old") // Old quiet story has lowest trending score
+  assert.ok(calculateTrendingScore(likedStory, [], ["liked_story"]) > calculateTrendingScore(quietOld))
+})
+test("oldest sort orders stories by earliest publication date first", () => {
+  const old = article("old", { publishedAt: "2026-10-01T00:00:00Z" })
+  const mid = article("mid", { publishedAt: "2026-10-10T00:00:00Z" })
+  const recent = article("recent", { publishedAt: "2026-10-20T00:00:00Z" })
+  const sorted = filterFeed([mid, recent, old], { ...initialFilters("All News"), sort: "oldest" })
+  assert.deepEqual(sorted.map(a => a.id), ["old", "mid", "recent"])
+})
+test("initialFilters defaults to latest sort and latest sort orders newest first", () => {
+  const filters = initialFilters("All News")
+  assert.equal(filters.sort, "latest")
+  const old = article("old", { publishedAt: "2026-10-01T00:00:00Z" })
+  const recent = article("recent", { publishedAt: "2026-10-20T00:00:00Z" })
+  const sorted = filterFeed([old, recent], filters)
+  assert.deepEqual(sorted.map(a => a.id), ["recent", "old"])
 })

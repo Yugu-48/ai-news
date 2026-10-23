@@ -1,6 +1,6 @@
 import test from "node:test"
 import assert from "node:assert/strict"
-import { aiRelevant, articleSlug, canonicalUrl, ingestSources } from "../src/lib/news/ingest-core.ts"
+import { aiRelevant, articleSlug, canonicalUrl, estimateReadingTime, ingestSources, prepareArticles } from "../src/lib/news/ingest-core.ts"
 import { getDatabaseConfiguration } from "../src/lib/database-config.ts"
 import { isIngestAuthorized } from "../src/lib/ingest-auth.ts"
 import { summarizeDatabaseHealth } from "../src/lib/status-core.ts"
@@ -99,16 +99,45 @@ test("empty database reports awaiting first ingestion; health reports counts and
 })
 
 test("article row mapping preserves persisted source and publication metadata", () => {
-  const article = toArticle({ id: "id-1", title: "New AI model released", summary: null, publishedAt, url: "https://example.org/ai-story", slug: "new-ai-model", category: "Industry", imageUrl: null, readingTime: null, source: { name: "Publisher" }, tags: [{ tag: { name: "AI" } }] })
+  const article = toArticle({ id: "id-1", title: "New AI model released", summary: null, publishedAt, url: "https://example.org/ai-story", slug: "new-ai-model", category: "Industry", imageUrl: null, readingTime: 3, source: { name: "Publisher" }, tags: [{ tag: { name: "AI" } }] })
   assert.equal(article.source, "Publisher")
   assert.equal(article.publishedAt, "2026-10-09T08:00:00.000Z")
   assert.deepEqual(article.tags, ["AI"])
+  assert.equal(article.readingTime, 3)
 })
 
-test("ingestion authentication rejects missing or wrong tokens", () => {
-  const request = (authorization) => new Request("http://localhost/api/ingest", { method: "POST", headers: authorization ? { authorization } : {} })
+test("ingestion authentication rejects missing or wrong tokens and accepts valid secrets", () => {
+  const request = (authorization, method = "POST") => new Request("http://localhost/api/ingest", { method, headers: authorization ? { authorization } : {} })
   assert.equal(isIngestAuthorized(request(null), "correct"), false)
   assert.equal(isIngestAuthorized(request("Bearer wrong"), "correct"), false)
   assert.equal(isIngestAuthorized(request("Bearer correct"), "correct"), true)
   assert.equal(isIngestAuthorized(request("Bearer correct"), ""), false)
+
+  // Verify GET requests (e.g. Vercel Cron invocation)
+  assert.equal(isIngestAuthorized(request("Bearer correct", "GET"), "correct"), true)
+  assert.equal(isIngestAuthorized(request("Bearer wrong", "GET"), "correct"), false)
+})
+
+test("estimateReadingTime accurately calculates word count and reading duration", () => {
+  assert.deepEqual(estimateReadingTime(""), { wordCount: 0, readingTime: 1 })
+  assert.deepEqual(estimateReadingTime("Hello world"), { wordCount: 2, readingTime: 1 })
+  const twoHundredWords = Array(200).fill("word").join(" ")
+  assert.deepEqual(estimateReadingTime(twoHundredWords), { wordCount: 200, readingTime: 1 })
+  const fourHundredWords = Array(401).fill("word").join(" ")
+  assert.deepEqual(estimateReadingTime(fourHundredWords), { wordCount: 401, readingTime: 3 })
+})
+
+test("prepareArticles attaches estimated wordCount and readingTime to prepared candidates", () => {
+  const sample = {
+    title: "Breakthrough reasoning AI system released",
+    url: "https://example.org/breakthrough-ai",
+    summary: Array(250).fill("model").join(" "),
+    publishedAt,
+    category: "Research",
+  }
+  const prepared = prepareArticles([sample], "source-1")
+  assert.equal(prepared.length, 1)
+  assert.equal(prepared[0].sourceId, "source-1")
+  assert.equal(prepared[0].readingTime, 2)
+  assert.equal(prepared[0].wordCount, 255)
 })

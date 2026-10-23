@@ -1,9 +1,9 @@
 import { XMLParser } from "fast-xml-parser"
-import { prisma } from "@/lib/prisma"
-import type { Article } from "@/lib/types"
-import { aiRelevant, articleSlug, canonicalUrl, ingestSources, type Candidate, type IngestionStore, type NewsCategory, type NewsSource } from "./ingest-core"
-import { extractFeedImage, getCategoryFallbackImage } from "./image-resolver"
-import { createFeedCache } from "./feed-cache"
+import { prisma } from "../prisma.ts"
+import type { Article } from "../types.ts"
+import { aiRelevant, articleSlug, canonicalUrl, estimateReadingTime, ingestSources, type Candidate, type IngestionStore, type NewsCategory, type NewsSource } from "./ingest-core.ts"
+import { extractFeedImage, getCategoryFallbackImage } from "./image-resolver.ts"
+import { createFeedCache } from "./feed-cache.ts"
 
 const parser = new XMLParser({ ignoreAttributes: false, processEntities: true })
 const timeoutMs = 8_000
@@ -134,7 +134,7 @@ async function huggingFace(): Promise<Candidate[]> {
   })
 }
 
-const sources: NewsSource[] = [
+export const sources: NewsSource[] = [
   { name: "TechCrunch AI", slug: "techcrunch-ai", websiteUrl: "https://techcrunch.com", feedUrl: "https://techcrunch.com/category/artificial-intelligence/feed/", feedType: "rss", category: "Industry", load: () => rss("https://techcrunch.com/category/artificial-intelligence/feed/", "Industry") },
   { name: "arXiv AI", slug: "arxiv-ai", websiteUrl: "https://arxiv.org", feedUrl: "https://rss.arxiv.org/rss/cs.AI", feedType: "rss", category: "Research", load: () => rss("https://rss.arxiv.org/rss/cs.AI", "Research") },
   { name: "arXiv Machine Learning", slug: "arxiv-ml", websiteUrl: "https://arxiv.org", feedUrl: "https://rss.arxiv.org/rss/cs.LG", feedType: "rss", category: "Research", load: () => rss("https://rss.arxiv.org/rss/cs.LG", "Research") },
@@ -172,6 +172,7 @@ async function loadLiveArticles(): Promise<Article[]> {
     url: string
     category: NewsCategory
     feedImage?: string
+    readingTime?: number
   }> = []
   for (const [index, batch] of batches.entries()) {
     const source = sources[index]
@@ -182,6 +183,7 @@ async function loadLiveArticles(): Promise<Article[]> {
       if (seen.has(item.url) || (!aiRelevant(item.title, item.summary) && item.category !== "Research")) continue
       seen.add(item.url)
       const slug = articleSlug(item.title, item.url)
+      const stats = estimateReadingTime(`${item.title} ${item.summary}`)
       candidateArticles.push({
         slug,
         title: item.title,
@@ -191,6 +193,7 @@ async function loadLiveArticles(): Promise<Article[]> {
         url: item.url,
         category: item.category,
         feedImage: item.imageUrl,
+        readingTime: item.readingTime ?? stats.readingTime,
       })
     }
   }
@@ -210,6 +213,7 @@ async function loadLiveArticles(): Promise<Article[]> {
       tags: [],
       category: c.category,
       imageUrl,
+      readingTime: c.readingTime,
     }
   })
 
@@ -225,7 +229,19 @@ const prismaStore: IngestionStore = {
   }),
   insertArticles: async (articles) => {
     const result = await prisma.article.createMany({
-      data: articles.map(({ sourceId, title, slug, url, summary, author, category, publishedAt, imageUrl }) => ({ sourceId, title, slug, url, summary, author, category, publishedAt, imageUrl })),
+      data: articles.map(({ sourceId, title, slug, url, summary, author, category, publishedAt, imageUrl, readingTime, wordCount }) => ({
+        sourceId,
+        title,
+        slug,
+        url,
+        summary,
+        author,
+        category,
+        publishedAt,
+        imageUrl,
+        readingTime,
+        wordCount,
+      })),
       skipDuplicates: true,
     })
     return result.count

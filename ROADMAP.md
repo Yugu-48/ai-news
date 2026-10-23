@@ -57,8 +57,8 @@ Don't start this until Phase 1 is fully checked off and deployed.
 - [x] **BD4** — Build one real API route: `GET /api/articles` returning real DB rows (seed the DB manually with a few rows first).
 - [x] **BD5** — Replace mock data in the homepage (FD12) with a real fetch from BD4. Confirm it still renders correctly.
 - [x] **BD6** — Replace article detail page (FD13) with real data fetch by ID/slug.
-- [ ] **BD7** — Build RSS ingestion script: fetch 1-2 RSS feeds, parse, insert into `articles` table manually (run by hand, not automated yet).
-- [ ] **BD8** — Automate BD7 as a scheduled job (cron / Vercel cron / worker) so articles come in on their own.
+- [x] **BD7** — Build RSS ingestion script: fetch 1-2 RSS feeds, parse, insert into `articles` table manually (run by hand, not automated yet).
+- [x] **BD8** — Automate BD7 as a scheduled job (cron / Vercel cron / worker) so articles come in on their own.
 - [ ] **BD9** — Add Supabase Auth: basic signup/login, even if nothing is gated yet.
 - [ ] **BD10** — Only now, if pages are actually slow: add caching. Don't add Redis before this point.
 

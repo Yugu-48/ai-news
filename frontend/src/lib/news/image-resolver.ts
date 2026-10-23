@@ -1,4 +1,4 @@
-import type { NewsCategory } from "./ingest-core"
+import type { NewsCategory } from "./ingest-core.ts"
 
 /**
  * Curated high-resolution AI/tech photography for editorial fallbacks.

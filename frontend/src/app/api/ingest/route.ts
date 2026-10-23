@@ -7,7 +7,7 @@ import { prisma } from "@/lib/prisma"
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 
-export async function POST(request: Request) {
+async function executeIngest(request: Request) {
   if (!isIngestAuthorized(request)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   if (!getDatabaseConfiguration().configured) return NextResponse.json({ error: "Database is not configured" }, { status: 503 })
 
@@ -28,4 +28,12 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json({ error: "Ingestion failed" }, { status: 500 })
   }
+}
+
+export async function POST(request: Request) {
+  return executeIngest(request)
+}
+
+export async function GET(request: Request) {
+  return executeIngest(request)
 }
