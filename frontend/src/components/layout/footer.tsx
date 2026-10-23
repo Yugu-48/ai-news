@@ -51,21 +51,20 @@ export function Footer() {
         className="absolute inset-x-0 top-0 h-px"
         style={{
           background:
-            "linear-gradient(90deg, transparent 0%, hsl(var(--primary)) 30%, hsl(267 84% 81%) 70%, transparent 100%)",
+            "hsl(var(--border))",
         }}
       />
 
-      <div className="container max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-10 py-12 w-full">
+      <div className="container max-w-[1440px] mx-auto px-4 sm:px-8 py-12 w-full">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16">
 
           {/* Column 1: Brand */}
           <div className="space-y-4">
-            <Link href="/" className="inline-flex items-center gap-2 group">
+            <Link href="/" className="inline-flex min-h-11 items-center gap-2 group">
               <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60" />
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary" />
               </span>
-              <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
+              <span className="editorial-heading text-2xl text-foreground">
                 AI News
               </span>
             </Link>
@@ -78,7 +77,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
-                className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                className="p-3 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
               >
                 <GithubIcon className="h-4 w-4" />
               </a>
@@ -87,14 +86,14 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Twitter / X"
-                className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                className="p-3 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
               >
                 <TwitterIcon className="h-4 w-4" />
               </a>
               <a
                 href="/rss"
                 aria-label="RSS Feed"
-                className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                className="p-3 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
               >
                 <Rss className="h-4 w-4" />
               </a>
@@ -108,11 +107,13 @@ export function Footer() {
             </h3>
             <nav className="flex flex-col gap-2.5">
               {[
-                { label: "Home", href: "/" },
-                { label: "Research", href: "/?category=Research" },
-                { label: "Industry", href: "/?category=Industry" },
-                { label: "Policy", href: "/?category=Policy" },
-                { label: "Hardware", href: "/?category=Hardware" },
+                { label: "All News", href: "/news" },
+                { label: "Saved", href: "/saved" },
+                { label: "Liked", href: "/liked" },
+                { label: "Research", href: "/news/research" },
+                { label: "Companies", href: "/news/companies" },
+                { label: "AI Policy", href: "/news/ai-policy" },
+                { label: "AI Hardware", href: "/news/ai-hardware" },
               ].map(({ label, href }) => (
                 <Link
                   key={label}
@@ -131,25 +132,19 @@ export function Footer() {
               Stay Updated
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Get a weekly digest of the top AI stories delivered to your inbox.
+              Newsletter delivery is planned. Explore the preview or follow our RSS feed for source headlines.
             </p>
             <div className="flex gap-2">
-              <input
-                type="email"
-                placeholder="you@email.com"
-                aria-label="Email for newsletter"
-                className="flex-1 h-9 px-3 rounded-lg border border-border/60 bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 placeholder:text-muted-foreground/60"
-              />
               <button
                 type="button"
                 onClick={() => setShowModal(true)}
-                className="h-9 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity shrink-0 cursor-pointer"
+                className="h-11 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity shrink-0 cursor-pointer"
               >
-                Subscribe
+                Newsletter preview
               </button>
             </div>
             <p className="text-[11px] text-muted-foreground/60">
-              No spam, unsubscribe any time.
+              Prototype preview — no emails are collected or sent.
             </p>
           </div>
         </div>
@@ -159,38 +154,12 @@ export function Footer() {
           <p className="text-xs text-muted-foreground">
             © {year} AI News. All rights reserved.
           </p>
-          <p className="text-xs text-muted-foreground">
-            Built with{" "}
-            <a
-              href="https://nextjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline underline-offset-2 hover:text-foreground transition-colors"
-            >
-              Next.js
-            </a>
-            {" · "}
-            <a
-              href="https://tailwindcss.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline underline-offset-2 hover:text-foreground transition-colors"
-            >
-              Tailwind
-            </a>
-            {" · "}
-            <a
-              href="https://ui.shadcn.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline underline-offset-2 hover:text-foreground transition-colors"
-            >
-              Shadcn/UI
-            </a>
-          </p>
+          <p className="text-xs text-muted-foreground">Headlines from original publishers. Collections stored in your browser.</p>
         </div>
       </div>
     </footer>
     </>
   )
 }
+
+

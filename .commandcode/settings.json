@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Shell(npx next build > build.log 2>&1 & set EXIT=%ERRORLEVEL% & echo EXIT_CODE=%EXIT% & powershell -NoProfile -Command \"$u = (Get-Content .env.local | Select-String 'DATABASE_URL=' | Select-Object -First 1).ToString(); if ($u -match 'your-project-ref') { 'DB_URL_PLACEHOLDER' } elseif ($u -match 'DATABASE_URL') { 'DB_URL_SET' } else { 'DB_URL_UNSET' }\")",
+      "Shell(npx next build > build2.log 2>&1; echo EXIT_CODE=$?)"
+    ],
+    "deny": [],
+    "defaultMode": "default"
+  }
+}

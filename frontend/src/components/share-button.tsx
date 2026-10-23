@@ -6,20 +6,26 @@ import { Button } from "@/components/ui/button"
 
 export function ShareButton() {
   const [copied, setCopied] = useState(false)
+  const [manualLink, setManualLink] = useState<string | null>(null)
 
-  const handleShare = () => {
-    if (typeof navigator !== "undefined" && navigator.clipboard) {
-      navigator.clipboard.writeText(window.location.href).then(() => {
+  const handleShare = async () => {
+    try {
+      if (!navigator.clipboard) throw new Error("Clipboard unavailable")
+      await navigator.clipboard.writeText(window.location.href)
+      setManualLink(null)
         setCopied(true)
         setTimeout(() => setCopied(false), 2000)
-      })
+    } catch {
+      setCopied(false)
+      setManualLink(window.location.href)
     }
   }
 
   return (
+    <div className="flex-1 space-y-2">
     <Button
       variant={copied ? "default" : "outline"}
-      className={`flex-1 rounded-xl font-semibold gap-2 transition-all ${
+      className={`w-full rounded-xl font-semibold gap-2 transition-all ${
         copied ? "bg-emerald-600 hover:bg-emerald-700 text-white" : ""
       }`}
       onClick={handleShare}
@@ -37,5 +43,11 @@ export function ShareButton() {
         </>
       )}
     </Button>
+    {manualLink && <label className="block text-xs text-muted-foreground">
+      Copy this article link manually:
+      <input aria-label="Article link to copy" className="w-full min-h-11 mt-1 p-2 border rounded-md bg-background" value={manualLink} readOnly onFocus={event => event.currentTarget.select()} />
+    </label>}
+    </div>
   )
 }
+
