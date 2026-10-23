@@ -6,10 +6,22 @@
 
 export default function ArticleCard({ article, isSaved, onToggleSave }) {
   const date = new Date(article.publishedAt).toLocaleDateString();
+  // Only http/https images (saved articles come from localStorage, so check again here)
+  const hasImage = /^https?:\/\//i.test(article.imageUrl || "");
   return (
     <article className="card">
-      {/* use the article image, or the placeholder if it has none */}
-      <img src={article.imageUrl || "/placeholder.svg"} alt="" />
+      {/* article image, or the placeholder if it has none or it fails to load */}
+      <img
+        src={hasImage ? article.imageUrl : "/placeholder.svg"}
+        alt={hasImage ? article.title : ""}
+        loading="lazy"
+        onError={(e) => {
+          if (!e.currentTarget.src.endsWith("/placeholder.svg")) {
+            e.currentTarget.src = "/placeholder.svg";
+            e.currentTarget.alt = "";
+          }
+        }}
+      />
       <div className="card-body">
         <p className="meta">
           {article.source} · {date}

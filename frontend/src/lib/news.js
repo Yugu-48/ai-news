@@ -26,6 +26,24 @@ function toExcerpt(html) {
   return String(html || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, 300);
 }
 
+// Image URLs come from other sites, so only allow normal web links (http/https).
+// Anything else (javascript:, data:, empty) becomes "" and the card shows the placeholder.
+function safeImageUrl(url) {
+  return typeof url === "string" && /^https?:\/\//i.test(url) ? url : "";
+}
+
+// Find a picture inside one RSS item: <media:content>, <media:thumbnail>,
+// <enclosure>, or the first <img src="..."> in the item's HTML text.
+function rssImage(item) {
+  const html = String(item["content:encoded"] || item.description || "");
+  return safeImageUrl(
+    item["media:content"]?.["@_url"] ||
+    item["media:thumbnail"]?.["@_url"] ||
+    item.enclosure?.["@_url"] ||
+    html.match(/<img[^>]+src=["']([^"']+)["']/i)?.[1]
+  );
+}
+
 // Source 1: Hacker News Algolia API. The answer is JSON, so we use JSON.parse().
 async function getHackerNews() {
   const json = JSON.parse(await getText(HN_URL));
@@ -56,8 +74,7 @@ async function getTechCrunch() {
     summary: toExcerpt(item.description),
     publishedAt: new Date(item.pubDate).toISOString(),
     url: item.link,
-    // TechCrunch puts the picture in <media:content url="...">, when it has one
-    imageUrl: item["media:content"]?.["@_url"] || "",
+    imageUrl: rssImage(item), // "" when the feed has no picture for this item
   }));
 }
 
