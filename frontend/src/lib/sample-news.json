@@ -1,7 +1,7 @@
 [
   {
     "id": "sample-1",
-    "title": "OpenAI Announces GPT-5 with Revolutionary Reasoning Capabilities",
+    "title": "[Sample] OpenAI Announces GPT-5 with Revolutionary Reasoning Capabilities",
     "source": "TechCrunch",
     "summary": "OpenAI has unveiled GPT-5, featuring significant improvements in multi-step reasoning, code generation, and factual accuracy. The model demonstrates near-human performance on complex scientific benchmarks, representing a fundamental shift in how large language models approach problem-solving tasks.",
     "publishedAt": "2026-07-22T10:00:00Z",
@@ -10,7 +10,7 @@
   },
   {
     "id": "sample-2",
-    "title": "Google DeepMind Solves New Protein Folding Challenge",
+    "title": "[Sample] Google DeepMind Solves New Protein Folding Challenge",
     "source": "Hacker News",
     "summary": "DeepMind's latest AlphaFold iteration can now predict protein interactions with membrane-bound complexes, opening new avenues for drug discovery and personalized medicine. The breakthrough represents a decade of computational biology research coming to fruition.",
     "publishedAt": "2026-07-21T14:30:00Z",
@@ -19,7 +19,7 @@
   },
   {
     "id": "sample-3",
-    "title": "EU AI Act Enforcement Begins: What Companies Need to Know",
+    "title": "[Sample] EU AI Act Enforcement Begins: What Companies Need to Know",
     "source": "TechCrunch",
     "summary": "The European Union's comprehensive AI regulation officially takes effect, requiring companies to meet transparency and safety requirements for high-risk AI systems. Fines of up to 6% of global revenue await non-compliant organizations.",
     "publishedAt": "2026-07-20T09:15:00Z",
@@ -28,7 +28,7 @@
   },
   {
     "id": "sample-4",
-    "title": "Tesla Optimus Robot Achieves Warehouse Autonomy",
+    "title": "[Sample] Tesla Optimus Robot Achieves Warehouse Autonomy",
     "source": "Hacker News",
     "summary": "Tesla's humanoid robot Optimus has successfully completed a 30-day trial in Amazon warehouses, performing complex pick-and-place tasks with 99.2% accuracy. The milestone signals a turning point for commercial humanoid robotics at scale.",
     "publishedAt": "2026-07-19T16:45:00Z",
@@ -37,7 +37,7 @@
   },
   {
     "id": "sample-5",
-    "title": "Anthropic Introduces Constitutional AI 2.0",
+    "title": "[Sample] Anthropic Introduces Constitutional AI 2.0",
     "source": "TechCrunch",
     "summary": "Anthropic's new framework enables AI systems to self-correct harmful outputs in real-time while maintaining helpfulness, marking a significant advance in AI safety. The system uses a novel set of principles to guide model behavior without human feedback on every interaction.",
     "publishedAt": "2026-07-18T11:20:00Z",
@@ -46,7 +46,7 @@
   },
   {
     "id": "sample-6",
-    "title": "NVIDIA Announces Next-Gen AI Chips with 10x Performance",
+    "title": "[Sample] NVIDIA Announces Next-Gen AI Chips with 10x Performance",
     "source": "Hacker News",
     "summary": "NVIDIA's Blackwell Ultra architecture delivers unprecedented performance for large language model training, reducing costs by 80% compared to previous generations. The new chip line is set to reshape the economics of AI infrastructure for enterprises globally.",
     "publishedAt": "2026-07-17T08:00:00Z",
@@ -55,7 +55,7 @@
   },
   {
     "id": "sample-7",
-    "title": "AI-Powered Drug Discovery Leads to New Antibiotic",
+    "title": "[Sample] AI-Powered Drug Discovery Leads to New Antibiotic",
     "source": "TechCrunch",
     "summary": "Researchers at MIT have used machine learning to discover a novel antibiotic effective against drug-resistant bacteria, potentially saving millions of lives. The model screened over 100 million compounds in days — a task that would have taken decades by traditional methods.",
     "publishedAt": "2026-07-16T13:30:00Z",
@@ -64,7 +64,7 @@
   },
   {
     "id": "sample-8",
-    "title": "Microsoft Copilot Now Integrated into All Office Applications",
+    "title": "[Sample] Microsoft Copilot Now Integrated into All Office Applications",
     "source": "Hacker News",
     "summary": "Microsoft's AI assistant Copilot is now embedded across Word, Excel, PowerPoint, and Outlook, fundamentally changing how knowledge workers interact with productivity software. Early data suggests a 40% reduction in time spent on routine tasks.",
     "publishedAt": "2026-07-15T10:45:00Z",
@@ -73,7 +73,7 @@
   },
   {
     "id": "sample-9",
-    "title": "China's AI Industry Reaches New Milestone in Autonomous Vehicles",
+    "title": "[Sample] China's AI Industry Reaches New Milestone in Autonomous Vehicles",
     "source": "TechCrunch",
     "summary": "Chinese tech giants Baidu and Alibaba have deployed fully autonomous ride-hailing fleets in 50 cities, surpassing Western competitors in scale. The rollout covers over 10 million rides in the past quarter with zero reported serious incidents.",
     "publishedAt": "2026-07-14T07:15:00Z",
@@ -82,7 +82,7 @@
   },
   {
     "id": "sample-10",
-    "title": "Breakthrough in Quantum-AI Hybrid Computing",
+    "title": "[Sample] Breakthrough in Quantum-AI Hybrid Computing",
     "source": "Hacker News",
     "summary": "IBM and Google jointly announce a quantum processor that can accelerate specific AI workloads by 1000x, bridging the gap between quantum and classical computing. The prototype demonstrates stable entanglement at room temperature for the first time.",
     "publishedAt": "2026-07-13T15:00:00Z",

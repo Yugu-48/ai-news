@@ -11,7 +11,7 @@ pnpm build          # production build
 pnpm start          # run the production build, http://localhost:3000
 ```
 - No `.env`, no database, no API keys needed. Needs internet for live news.
-- Offline? It shows 10 sample articles instead. To test that: `NEWS_OFFLINE=1 pnpm start`.
+- Offline? It shows 10 sample articles instead (made-up demo text, titles start with "[Sample]"). To test that: `NEWS_OFFLINE=1 pnpm start`.
 - Change port: `pnpm dev -p 4000` (or edit `package.json` lines 6 and 8: `"next dev -p 4000"`, `"next start -p 4000"`).
 - Switch versions: `git checkout main` (full old project) / `git checkout simple` (this one).
 
