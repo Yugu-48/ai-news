@@ -61,7 +61,8 @@ async function getOgImage(url) {
     // Find a <meta> tag naming an image property; content can come before or after it
     for (const tag of html.match(/<meta\b[^>]*>/gi) || []) {
       if (!/(property|name)=["'](og:image(:url)?|twitter:image)["']/i.test(tag)) continue;
-      const image = safeImageUrl(tag.match(/content=["']([^"']+)["']/i)?.[1]);
+      // HTML escapes "&" as "&amp;" inside attributes, so turn it back into a real "&"
+      const image = safeImageUrl(tag.match(/content=["']([^"']+)["']/i)?.[1]?.replace(/&amp;/g, "&"));
       if (image) return image;
     }
     return "";
