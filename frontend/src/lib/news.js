@@ -98,7 +98,8 @@ async function getHackerNews() {
 
 // Source 2: TechCrunch AI. RSS is XML, so we parse it with fast-xml-parser.
 async function getTechCrunch() {
-  const xml = new XMLParser({ ignoreAttributes: false }).parse(await getText(TC_URL));
+  // htmlEntities: turn codes like &#8217; into real characters (’) in titles
+  const xml = new XMLParser({ ignoreAttributes: false, htmlEntities: true }).parse(await getText(TC_URL));
   let items = xml.rss.channel.item || [];
   if (!Array.isArray(items)) items = [items]; // one item comes back as an object, not a list
   return items.map((item) => ({

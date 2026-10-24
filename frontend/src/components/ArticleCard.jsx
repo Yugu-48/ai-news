@@ -10,7 +10,9 @@ export default function ArticleCard({ article, isSaved, onToggleSave }) {
   const hasImage = /^https?:\/\//i.test(article.imageUrl || "");
   return (
     <article className="card">
-      {/* article image, or the placeholder if it has none or it fails to load */}
+      {/* article image, or the placeholder if it has none or it fails to load.
+          The image links to the article too, so clicking it opens the story. */}
+      <a href={article.url} target="_blank" rel="noreferrer" tabIndex={-1} aria-hidden="true">
       <img
         src={hasImage ? article.imageUrl : "/placeholder.svg"}
         alt={hasImage ? article.title : ""}
@@ -22,6 +24,7 @@ export default function ArticleCard({ article, isSaved, onToggleSave }) {
           }
         }}
       />
+      </a>
       <div className="card-body">
         <p className="meta">
           {article.source} · {date}
